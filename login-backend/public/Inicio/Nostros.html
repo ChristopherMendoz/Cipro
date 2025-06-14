@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nosotros – Clínica Cipro</title>
+    <link rel="stylesheet" href="styleNosotros.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="icon" href="../favicon1.png" type="image/png" />
+</head>
+
+<body>
+
+    <div id="navbar-placeholder"></div>
+    <script>
+        // Cargar navbar
+        fetch('../componentes/navbar.html')
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById('navbar-placeholder').innerHTML = html;
+
+                // Marcar automáticamente la sección activa según <title>
+                const seccion = document.title.split('–')[0].trim();
+                document.querySelectorAll('.nav-links a').forEach(link => {
+                    if (link.dataset.section === seccion) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+    </script>
+
+
+    <div class="breadcrumb">
+        <a href="../Clinica.html">Inicio</a> <span>›</span> <span>Nosotros</span>
+    </div>
+
+    <main>
+        <section class="hero-nosotros">
+            <div class="hero-text">
+                <h1>Sobre Clínica Cipro</h1>
+                <p>Más de 10 años de experiencia en diagnóstico por imagen de alta calidad.</p>
+            </div>
+        </section>
+
+        <section class="historia fade-in">
+            <h2>Nuestra Historia</h2>
+            <p>
+                Clínica Cipro nació con el objetivo de brindar servicios diagnósticos precisos y humanos. Desde nuestros
+                inicios hemos crecido tecnológicamente, incorporando equipos de última generación y un equipo médico
+                especializado.
+            </p>
+        </section>
+
+        <section class="equipo fade-in">
+            <h2>Nuestro Equipo</h2>
+            <div class="equipo-cards">
+
+                <div class="card">
+                    <img src="https://cdn.pixabay.com/photo/2016/11/14/03/16/doctor-1822565_960_720.jpg"
+                        alt="Radiólogo">
+                    <h3>Dr. Manuel Herrera</h3>
+                    <p>Radiólogo Jefe – 15 años de experiencia en TAC y RM.</p>
+                </div>
+
+                <div class="card">
+                    <img src="https://cdn.pixabay.com/photo/2017/08/06/11/24/woman-2593366_960_720.jpg" alt="Técnica">
+                    <h3>Dra. Karla Gómez</h3>
+                    <p>Especialista en ultrasonografía obstétrica y vascular.</p>
+                </div>
+
+                <div class="card">
+                    <img src="https://cdn.pixabay.com/photo/2021/04/05/07/25/nurse-6152412_960_720.jpg"
+                        alt="Recepcionista">
+                    <h3>Sra. Miriam Álvarez</h3>
+                    <p>Recepción y atención al paciente con calidez y eficiencia.</p>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script>
+        // Cargar el footer
+        fetch('../Componentes/footer.html')
+            .then(res => res.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+                // Cambia dinámicamente el nombre de la página
+                const actual = document.title.replace('– Clínica Cipro', '').trim();
+                document.getElementById('ubicacionFooter').textContent = actual;
+            });
+    </script>
+
+    <!-- Modal Login -->
+    <div id="modalContainer"></div>
+
+    <script>
+        fetch("../Componentes/modal.html")
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById("modalContainer").innerHTML = html;
+
+                // Busca y ejecuta los scripts embebidos en el HTML cargado
+                const scripts = document.getElementById("modalContainer").querySelectorAll("script");
+                scripts.forEach(oldScript => {
+                    const newScript = document.createElement("script");
+                    if (oldScript.src) {
+                        newScript.src = oldScript.src;
+                    } else {
+                        newScript.textContent = oldScript.textContent;
+                    }
+                    document.body.appendChild(newScript);
+                });
+            });
+    </script>
+
+</body>
+
+</html>

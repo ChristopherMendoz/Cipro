@@ -1,0 +1,571 @@
+/* FUENTE BASE */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #f9fcff;
+  color: #333;
+}
+
+/* HERO */
+.hero {
+  margin-top: 80px;
+  position: relative;
+  height: 70vh;
+  background: #e9f3ff url('https://clinicadentalcachero.com/wp-content/uploads/2020/07/fondo-contacto-inicio-2-2.jpg') center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-overlay {
+  background: rgba(255, 255, 255, 0.85);
+  padding: 40px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-overlay header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.hero-overlay .logo {
+    margin-bottom: 8px;
+}
+
+.hero-overlay h1 {
+    color: #007BFF;
+    font-size: 2.2rem;
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+.hero-text h2 {
+  font-size: 1.8rem;
+  margin: 10px 0;
+  color: #004080;
+}
+
+.hero-text p {
+  font-size: 1rem;
+  color: #444;
+  max-width: 500px;
+}
+
+/* HEADER */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+
+/* BOTÓN LOGIN */
+.btn-login {
+  background: #007BFF;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-login:hover {
+  background-color: #0056b3;
+}
+
+/* MAIN */
+.container {
+  padding: 40px 20px;
+  max-width: 1000px;
+  margin: auto;
+}
+
+h2 {
+  color: #007BFF;
+  margin-bottom: 15px;
+}
+
+ul {
+  padding-left: 20px;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  flex: 1 1 280px;
+  max-width: 300px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 16px rgba(0, 123, 255, 0.2);
+}
+
+.card .icon {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+footer {
+  text-align: center;
+  padding: 30px;
+  font-size: 0.9em;
+  background: #f1f6fb;
+  margin-top: 40px;
+  border-top: 1px solid #ddd;
+}
+
+/* MODAL LOGIN */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 0px 30px 30px 30px !important;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 450px;
+  overflow: hidden;
+  position: relative;
+  transition: max-width 0.4s ease, transform 0.4s ease, height 0.4s ease;
+  height: auto;
+}
+
+/* Establece una altura mínima para login */
+.modal-content.login-size {
+  height: 500px; /* o el tamaño justo para tu formulario de login */
+}
+
+/* Establece una altura mayor para registro */
+.modal-content.registro-size {
+  height: 1000px; /* o el tamaño justo para tu formulario de registro */
+}
+
+
+.modal-content.expand {
+  max-width: auto; /* más ancho para que entren ambos formularios */
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 24px;
+  color: #999;
+  cursor: pointer;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.login-form input {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 90%;         /* <-- Añade o ajusta esta línea */
+  margin: 0 auto;     /* Centra los campos si el contenedor es más pequeño */
+}
+
+.login-form button {
+  background: #007BFF;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  width: 90%;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.login-form button:hover {
+  background: #0056b3;
+}
+
+.modal-logo {
+  width: 70px;
+  margin: auto;
+  display: block;
+  margin-bottom: 8px; /* antes 15px, ahora menos */
+}
+
+.login-form h2, .registro-form h2 {
+  margin-top: 10px;
+  margin-bottom: 12px; /* antes podía ser más grande */
+}
+
+.error-msg {
+  display: none;
+  margin-top: 15px;
+  padding: 12px;
+  background-color: #ffe6e6;
+  border: 1px solid #ff4d4d;
+  color: #cc0000;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.registro {
+  font-size: 0.85em;
+  text-align: center;
+}
+
+.registro a {
+  color: #007BFF;
+  text-decoration: none;
+}
+
+.registro a:hover {
+  text-decoration: underline;
+}
+
+/* --- MODAL SLIDER --- */
+/* Haz que el slider y los paneles ocupen el 100% de la altura del modal */
+.slide-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.form-slider {
+  display: flex;
+  width: 200%;
+  height: 100%;
+  transition: transform 0.4s ease;
+}
+
+.form-panel {
+  width: 50%;
+  min-width: 300px;
+  max-width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  padding: 0 10px 10px 10px;
+  height: 100%;           /* <-- Cambia flex: 1 por height: 100% */
+  min-height: unset;      /* <-- Elimina min-height para evitar conflictos */
+  justify-content: flex-start;
+  overflow-y: auto;       /* <-- Permite scroll si el contenido es muy grande */
+}
+
+.password-container {
+  width: 90%;
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-container input[type="password"],
+.password-container input[type="text"] {
+  width: 100%;
+  padding-right: 40px; /* Espacio para el icono */
+  box-sizing: border-box;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.2em;
+  color: #333;
+  user-select: none;
+}
+
+.modal-content.animate-in {
+  animation: scaleIn 0.4s cubic-bezier(0.4,0,0.2,1) both;
+}
+@media (max-width: 500px) {
+  .slide-container, .modal-content {
+    max-width: 98vw;
+    padding: 10px 0;
+  }
+  .form-panel {
+    padding: 0 2vw 10px 2vw;
+  }
+}
+
+/* ANIMACIONES */
+.fade-in {
+  animation: fadeInUp 0.8s ease both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .hero-text h2 {
+    font-size: 1.5rem;
+  }
+
+  .cards {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  header {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+
+/* NAVBAR */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  z-index: 1000;
+  height: 68px;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-container {
+  max-width: 1200px;
+  margin: auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 68px;
+}
+
+.logo-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-small {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.logo-text {
+  font-weight: 700;
+  font-size: 1.25em;
+  color: #007BFF;
+  letter-spacing: 0.5px;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 32px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: #222;
+  font-weight: 500;
+  font-size: 1.05em;
+  padding: 8px 0;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-bottom 0.2s;
+}
+
+.nav-links li a:hover {
+  color: #007BFF;
+  border-bottom: 2px solid #007BFF;
+}
+
+.btn-login-nav {
+  background: #f4f8fb;
+  color: #007BFF;
+  border: none;
+  padding: 9px 22px;
+  border-radius: 7px;
+  font-weight: 600;
+  font-size: 1em;
+  margin-left: 24px;
+  box-shadow: none;
+  transition: background 0.2s, color 0.2s;
+  outline: none;
+}
+
+.btn-login-nav:hover {
+  background: #007BFF;
+  color: #fff;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .navbar-container {
+    padding: 0 10px;
+    gap: 0;
+  }
+  .nav-links {
+    gap: 16px;
+  }
+  .logo-text {
+    font-size: 1em;
+  }
+  .btn-login-nav {
+    padding: 8px 14px;
+    font-size: 0.95em;
+    margin-left: 10px;
+  }
+}
+
+/* Footer */
+.footer-main {
+  background: #003f74;
+  color: white;
+  padding: 40px 20px 20px;
+  margin-top: 60px;
+  font-size: 0.95em;
+}
+.footer-container {
+  max-width: 1100px;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: space-between;
+}
+.footer-col {
+  flex: 1 1 250px;
+}
+.footer-col h3, .footer-col h4 {
+  color: #fff;
+  margin-bottom: 15px;
+}
+.footer-col p, .footer-col li {
+  margin-bottom: 10px;
+  color: #e0e0e0;
+}
+.footer-col a {
+  color: #aad8ff;
+  text-decoration: none;
+  display: block;
+}
+.footer-col a:hover {
+  text-decoration: underline;
+}
+.footer-social a {
+  display: inline-block;
+  margin-right: 10px;
+  margin-top: 8px;
+}
+.footer-social {
+  margin-top: 12px;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+.footer-social .social-icon {
+  width: 40px;
+  height: 40px;
+  background: #007BFF;
+  color: white;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2em;
+  transition: transform 0.3s, background 0.3s;
+}
+.footer-social .social-icon:hover {
+  transform: scale(1.1);
+  background: #0056b3;
+}
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  text-align: center;
+  padding-top: 20px;
+  margin-top: 30px;
+  color: #ccc;
+}
+.ubicacion-actual {
+  margin-top: 8px;
+  font-size: 0.85em;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .footer-col {
+    flex: 1 1 100%;
+  }
+}
+

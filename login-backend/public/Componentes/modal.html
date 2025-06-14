@@ -1,0 +1,195 @@
+<!-- Modal Login/Registro -->
+  <div id="modalLogin" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="cerrarModal()">&times;</span>
+      <div class="slide-container">
+        <div class="form-slider" id="formSlider">
+          <!-- Login Panel -->
+          <form id="loginForm" class="login-form form-panel">
+            <img src="../logo.jpg" alt="Logo" class="modal-logo" />
+            <h2>Iniciar Sesión</h2>
+            <input type="text" name="username" placeholder="Usuario" required />
+            <input type="password" name="contrasena" placeholder="Contraseña" required />
+            <button type="submit">Entrar</button>
+            <p id="mensajeError" class="error-msg"></p>
+            <p class="registro">¿No tienes cuenta? <a href="#" onclick="mostrarRegistro(event)">Regístrate aquí</a></p>
+          </form>
+          <!-- Registro Panel -->
+          <form id="registroForm" class="login-form form-panel">
+            <img src="../logo.jpg" alt="Logo" class="modal-logo" />
+            <h2>Registro de Usuario</h2>
+            <input type="text" name="primerNombre" placeholder="Primer Nombre" required />
+            <input type="text" name="segundoNombre" placeholder="Segundo Nombre" required />
+            <input type="text" name="primerApellido" placeholder="Primer Apellido" required />
+            <input type="text" name="segundoApellido" placeholder="Segundo Apellido" required />
+            <label for="fechaNacimiento">Fecha de Nacimiento</label>
+            <input type="date" name="fechaNacimiento" required>
+            <label for="sexo">Género</label>
+            <select name="sexo" required>
+              <option value="">Seleccione</option>
+              <option value="masculino">Masculino</option>
+              <option value="femenino">Femenino</option>
+            </select>
+            <input type="text" name="direccion" placeholder="Dirección" required>
+            <input type="text" name="telefono" placeholder="Teléfono" required>
+            <input type="text" name="tipoSangre" placeholder="Tipo de Sangre" required>
+            <input type="email" name="correo" placeholder="Correo Electrónico" required />
+            <input type="text" name="nombreUsuario" placeholder="Nombre de Usuario" required />
+            <div class="password-container">
+              <input type="password" name="contraseña" id="password" placeholder="Contraseña" required />
+              <span class="toggle-password" onclick="togglePassword()">👁️</span>
+            </div>
+            <button type="submit">Registrar</button>
+            <p id="mensajeErrorRegistro" class="error-msg"></p>
+            <p class="registro">¿Ya tienes cuenta? <a href="#" onclick="mostrarLogin(event)">Iniciar sesión</a></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function abrirModal() {
+      const modal = document.getElementById('modalLogin');
+      const modalContent = modal.querySelector('.modal-content');
+      modal.style.display = 'flex';
+      modalContent.classList.remove('animate-in', 'registro-size'); // Reinicia animación y registro
+      void modalContent.offsetWidth; // Fuerza reflow para reiniciar animación
+      modalContent.classList.add('animate-in', 'login-size'); // Siempre login-size al abrir
+      document.getElementById("formSlider").style.transform = "translateX(0)"; // Asegura mostrar login
+    }
+
+    function cerrarModal() {
+      document.getElementById("modalLogin").style.display = "none";
+    }
+
+    window.onclick = function (e) {
+      const modal = document.getElementById("modalLogin");
+      if (e.target === modal) cerrarModal();
+    };
+
+    document.getElementById("loginForm").addEventListener("submit", async function (event) {
+      event.preventDefault();
+      const username = event.target.username.value;
+      const contrasena = event.target.contrasena.value;
+      const mensaje = document.getElementById("mensajeError");
+
+      try {
+        const res = await fetch("/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ Username: username, Contrasena: contrasena })
+        });
+
+        const data = await res.json();
+
+        if (data.ok) {
+          // ✅ Guarda el idUsuario en sessionStorage para usarlo después
+          sessionStorage.setItem("idUsuario", data.idUsuario); // 👈 ESTA LÍNEA ES CLAVE
+          window.location.href = data.redireccion;
+        } else {
+          mensaje.textContent = data.mensaje;
+          mensaje.style.display = "block";
+          setTimeout(() => (mensaje.style.display = "none"), 4000);
+        }
+      } catch (err) {
+        mensaje.textContent = "Error del servidor.";
+        mensaje.style.display = "block";
+        setTimeout(() => (mensaje.style.display = "none"), 4000);
+      }
+    });
+
+    // Slide entre login y registro
+    function mostrarRegistro(e) {
+      e.preventDefault();
+      document.getElementById("formSlider").style.transform = "translateX(-50%)";
+      const modal = document.querySelector('.modal-content');
+      modal.classList.remove('login-size');
+      modal.classList.add('registro-size');
+    }
+
+
+    function mostrarLogin(e) {
+      e.preventDefault();
+      document.getElementById("formSlider").style.transform = "translateX(0)";
+      const modal = document.querySelector('.modal-content');
+      modal.classList.remove('registro-size');
+      modal.classList.add('login-size');
+    }
+
+    // Mostrar/ocultar contraseña en registro
+    function togglePassword() {
+      const input = document.getElementById("password");
+      input.type = input.type === "password" ? "text" : "password";
+    }
+
+    // Registro AJAX
+    document.getElementById("registroForm").addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      const form = event.target;
+      const datos = {
+        primerNombre: form.primerNombre.value.trim(),
+        segundoNombre: form.segundoNombre.value.trim(),
+        primerApellido: form.primerApellido.value.trim(),
+        segundoApellido: form.segundoApellido.value.trim(),
+        fechaNacimiento: form.fechaNacimiento.value,
+        sexo: form.sexo.value,
+        direccion: form.direccion.value.trim(),
+        telefono: form.telefono.value.trim(),
+        tipoSangre: form.tipoSangre.value.trim(),
+        correo: form.correo.value.trim(),
+        nombreUsuario: form.nombreUsuario.value.trim(),
+        contrasena: form.contraseña.value.trim()
+      };
+
+      const mensaje = document.getElementById("mensajeErrorRegistro");
+      mensaje.style.display = "none";
+
+      const soloLetras = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+      const passwordSegura = /^(?=.*[a-zA-Z])(?=.*\d).{5,}$/;
+
+      if (!soloLetras.test(datos.primerNombre)) {
+        return mostrarMensaje("El nombre solo debe contener letras.");
+      }
+      if (!soloLetras.test(datos.primerApellido)) {
+        return mostrarMensaje("El apellido solo debe contener letras.");
+      }
+      if (!passwordSegura.test(datos.contrasena)) {
+        return mostrarMensaje("La contraseña debe tener al menos 5 caracteres y contener al menos un número.");
+      }
+
+      try {
+        const res = await fetch("/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(datos)
+        });
+
+        const data = await res.json();
+
+        if (data.ok) {
+          mensaje.style.color = "green";
+          mostrarMensaje("✅ Registro exitoso, redirigiendo...");
+          setTimeout(() => {
+            window.location.href = "/Clinica.html";
+          }, 2000);
+        } else {
+          mensaje.style.color = "#cc0000";
+          mostrarMensaje(data.mensaje || "Error al registrar.");
+        }
+      } catch (err) {
+        mensaje.style.color = "#cc0000";
+        mostrarMensaje("Error del servidor.");
+      }
+
+      function mostrarMensaje(texto) {
+        mensaje.innerText = texto;
+        mensaje.style.display = "block";
+        setTimeout(() => {
+          mensaje.style.display = "none";
+        }, 4000);
+      }
+    });
+
+  </script>

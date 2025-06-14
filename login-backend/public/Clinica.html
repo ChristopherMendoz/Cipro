@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clínica Cipro</title>
+  <link rel="stylesheet" href="styleclinica.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" href="favicon1.png" type="image/png" />
+</head>
+
+<body>
+
+  <div id="navbar-placeholder"></div>
+  <script>
+    // Cargar navbar
+    fetch('../componentes/navbar.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('navbar-placeholder').innerHTML = html;
+
+        // Marcar automáticamente la sección activa según <title>
+        const seccion = document.title.split('–')[0].trim();
+        document.querySelectorAll('.nav-links a').forEach(link => {
+          if (link.dataset.section === seccion) {
+            link.classList.add('active');
+          }
+        });
+      });
+  </script>
+
+
+
+  <div class="hero">
+    <div class="hero-overlay">
+      <header>
+        <img src="logo.jpg" alt="Logo" class="logo" />
+        <h1>Clínica Cipro</h1>
+      </header>
+      <div class="hero-text">
+        <h2>Diagnóstico por Imagen Avanzado</h2>
+        <p>Servicios médicos con tecnología de vanguardia y atención humana.</p>
+      </div>
+    </div>
+  </div>
+
+  <main class="container">
+    <section class="fade-in">
+      <h2>Servicios Destacados</h2>
+      <div class="cards">
+        <div class="card">
+          <div class="icon">🖥️​</div>
+          <h3>Rayos X Digitales</h3>
+          <p>Imágenes precisas con equipos modernos.</p>
+        </div>
+        <div class="card">
+          <div class="icon">🧪</div>
+          <h3>Ultrasonido</h3>
+          <p>General y especializado, con alta definición.</p>
+        </div>
+        <div class="card">
+          <div class="icon">👩‍⚕️</div>
+          <h3>Interpretación Médica</h3>
+          <p>Resultados confiables por especialistas.</p>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="fade-in">
+      <h2>¿Por qué elegirnos?</h2>
+      <ul>
+        <li>✔️ Atención cálida y personalizada</li>
+        <li>✔️ Resultados rápidos y seguros</li>
+        <li>✔️ Tecnología de última generación</li>
+        <li>✔️ Profesionales certificados</li>
+      </ul>
+    </section>
+
+    <section class="fade-in">
+      <h2>Horarios de atención</h2>
+      <p>Lunes a Viernes: 8:00 a.m. - 6:00 p.m.<br />
+        Sábados: 8:00 a.m. - 2:00 p.m.</p>
+      <p>Contáctanos: (505) 2266-3542 | clinicacipro@gmail.com</p>
+    </section>
+  </main>
+
+
+  <!-- Modal Login/Registro -->
+<div id="modalContainer"></div>
+
+<script>
+  fetch("../Componentes/modal.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("modalContainer").innerHTML = html;
+
+      // Busca y ejecuta los scripts embebidos en el HTML cargado
+      const scripts = document.getElementById("modalContainer").querySelectorAll("script");
+      scripts.forEach(oldScript => {
+        const newScript = document.createElement("script");
+        if (oldScript.src) {
+          newScript.src = oldScript.src;
+        } else {
+          newScript.textContent = oldScript.textContent;
+        }
+        document.body.appendChild(newScript);
+      });
+    });
+</script>
+
+
+  <div id="footer-placeholder"></div>
+  <script>
+    // Cargar el footer
+    fetch('../Componentes/footer.html')
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById('footer-placeholder').innerHTML = data;
+        // Cambia dinámicamente el nombre de la página
+        const actual = document.title.replace('– Clínica Cipro', '').trim();
+        document.getElementById('ubicacionFooter').textContent = actual;
+      });
+  </script>
+
+</body>
+
+</html>

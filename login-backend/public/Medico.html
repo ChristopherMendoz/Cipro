@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Médico</title>
+    <link rel="stylesheet" href="medicostyle.css" />
+</head>
+<body>
+    <header>
+        <button id="cerrarSesion">Cerrar sesión</button>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar">
+            <h2 id="nombreUsuario">👨‍⚕️ Cargando...</h2>
+            <h3>Gestión Médico</h3>
+            <a href="#" id="btnDatosPersonales">Datos Personales</a>
+            <a href="#" id="btnAgenda">Agenda</a>
+            <a href="#" id="btnDatosConsulta">Datos Consultas</a>
+            <a href="#" id="btnResultados">Cargar Resultados</a>
+        </aside>
+        <section class="contenido" id="contenido">
+            <!-- Aquí se cargan los datos personales -->
+        </section>
+        <section id="formConsulta">
+            <h2>Agregar Nueva Consulta</h2>
+            <form id="formAgregarConsulta">
+                <label>Fecha: <input type="date" name="fecha" required></label><br><br>
+                <label>Hora: <input type="time" name="hora" required></label><br><br>
+                <label>Estado:
+                    <select name="estado" required>
+                        <option value="pendiente">Pendiente</option>
+                        <option value="realizada">Realizada</option>
+                        <option value="cancelada">Cancelada</option>
+                    </select>
+                </label><br><br>
+                <label>Tipo de Estudio: <input type="text" name="tipoEstudio" required></label><br><br>
+                <label>Observaciones: <textarea name="observaciones"></textarea></label><br><br>
+                <label>Paciente:
+                    <select id="selectPaciente" name="idPaciente" required>
+                        <option value="">Cargando…</option>
+                    </select>
+                </label><br><br>
+                <label>Médico:
+                    <select id="selectMedico" name="idMedico" required>
+                        <option value="">Cargando…</option>
+                    </select>
+                </label><br><br>
+                <label>Sala:
+                    <select id="selectSala" name="idSala" required>
+                        <option value="">Cargando…</option>
+                    </select>
+                </label><br><br>
+                <label>Recepcionista:
+                    <select id="selectRecepcionista" name="idRecepcionista" required>
+                        <option value="">Cargando…</option>
+                    </select>
+                </label><br><br>
+                <button type="submit">Agregar Consulta</button>
+            </form>
+            <div id="mensajeConsulta" style="margin-top:10px; color: green;"></div>
+        </section>
+
+
+        <section id="listaConsultas" class="consultas-container">
+            <h2>Lista de Consultas</h2>
+            <div class="filtros">
+                <label for="filtroEstado">Filtrar por estado:</label>
+                <select id="filtroEstado">
+                    <option value="">Todos</option>
+                    <option value="pendiente">Pendiente</option>
+                    <option value="realizada">Realizada</option>
+                    <option value="cancelada">Cancelada</option>
+                </select>
+
+                <label for="busquedaPaciente">Buscar paciente:</label>
+                <input type="text" id="busquedaPaciente" placeholder="Nombre del paciente...">
+            </div>
+            <table id="tablaConsultas" border="1" cellpadding="8" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Estado</th>
+                        <th>Tipo Estudio</th>
+                        <th>Paciente</th>
+                        <th>Médico</th>
+                        <th>Sala</th>
+                        <th>Recepcionista</th>
+                        <th>Observaciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Se llenará con JS -->
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+</body>
+<script>
+
+    // Cargar catálogos de pacientes, médicos, salas y recepcionistas
+    async function cargarCatalogos() {
+        try {
+            const [pacientesRes, medicosRes, salasRes, recepcionistasRes] = await Promise.all([
+                fetch('/catalogos/pacientes'),
+                fetch('/catalogos/medicos'),
+                fetch('/catalogos/salas'),
+                fetch('/catalogos/recepcionistas')
+            ]);
+            1
+            const pacientes = await pacientesRes.json();
+            const medicos = await medicosRes.json();
+            const salas = await salasRes.json();
+            const recepcionistas = await recepcionistasRes.json();
+
+            const selectPaciente = document.getElementById('selectPaciente');
+            const selectMedico = document.getElementById('selectMedico');
+            const selectSala = document.getElementById('selectSala');
+            const selectRecepcionista = document.getElementById('selectRecepcionista');
+
+            pacientes.forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p.idPaciente;
+                opt.textContent = p.nombreCompleto;
+                selectPaciente.appendChild(opt);
+            });
+
+            medicos.forEach(m => {
+                const opt = document.createElement('option');
+                opt.value = m.idMedico;
+                opt.textContent = m.nombreCompleto;
+                selectMedico.appendChild(opt);
+            });
+
+            salas.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.idSala;
+                opt.textContent = s.nombre;
+                selectSala.appendChild(opt);
+            });
+
+            recepcionistas.forEach(r => {
+                const opt = document.createElement('option');
+                opt.value = r.idRecepcionista;
+                opt.textContent = r.nombreCompleto;
+                selectRecepcionista.appendChild(opt);
+            });
+
+        } catch (error) {
+            console.error("Error al cargar los catálogos:", error);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', cargarCatalogos);
+</script>
+<script>
+
+    // Función para llenar un select con datos de un endpoint
+    async function llenarSelect(url, selectId, valueField, textField) {
+        try {
+            const res = await fetch(url);
+            const datos = await res.json();
+
+            const sel = document.getElementById(selectId);
+            sel.innerHTML = '<option value="">Seleccione…</option>';
+            datos.forEach(item => {
+                const opt = document.createElement('option');
+                opt.value = item[valueField];
+                opt.textContent = item[textField];
+                sel.appendChild(opt);
+            });
+        } catch (err) {
+            console.error(`Error cargando ${selectId}:`, err);
+        }
+    }
+</script>
+<script>
+
+    // Función para mostrar u ocultar secciones
+    function mostrarSecciones(idsMostrar) {
+    const secciones = ["contenido", "formConsulta", "listaConsultas"];
+    secciones.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+    el.style.display = idsMostrar.includes(id) ? "block" : "none";
+    }
+    });
+}
+
+// Mostrar sección de contenido al cargar
+document.addEventListener("DOMContentLoaded", () => {
+    mostrarSecciones(["contenido"]);
+});
+    document.addEventListener("DOMContentLoaded", () => {
+        mostrarSecciones(null); // Ocultar todo al inicio
+        cargarCatalogos();
+        cargarConsultas();
+    });
+
+    // Funciones para mostrar secciones específicas
+    function mostrarDatosPersonales() {
+        mostrarSecciones(["contenido"]);
+    }
+
+    function mostrarConsulta() {
+        mostrarSecciones(["formConsulta", "listaConsultas"]);
+    }
+
+
+    // Manejar botón cerrar sesión
+    document.getElementById("cerrarSesion").addEventListener("click", () => {
+        sessionStorage.clear();
+        localStorage.clear();
+        window.location.href = "/Clinica.html";
+    });
+
+    // Obtener idUsuario de sessionStorage
+    const idUsuario = sessionStorage.getItem("idUsuario");
+
+    // Verificar si hay usuario logueado
+    if (!idUsuario) {
+        document.getElementById("contenido").innerHTML = "<p>No hay usuario logueado.</p>";
+    } else {
+        // Mostrar nombre de usuario en sidebar
+        fetch(`/nombre-usuario/${idUsuario}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.ok) {
+                    document.getElementById("nombreUsuario").textContent = `👨‍⚕️ ${data.nombreUsuario}`;
+                } else {
+                    document.getElementById("nombreUsuario").textContent = "Usuario no encontrado";
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                document.getElementById("nombreUsuario").textContent = "Error al cargar usuario";
+            });
+
+        // Función para cargar datos personales y mostrar en div #contenido
+        function mostrarDatosPersonales() {
+            fetch(`/obtener-medico/${idUsuario}`)
+                .then(res => res.json())
+                .then(data => {
+                    console.log("Respuesta recibida:", data);
+                    if (data.ok) {
+                        const info = data.datos;
+                        const html = `
+            <h2>Datos Personales</h2>
+            <p><strong>Nombre Completo:</strong> ${info.nombreCompleto}</p>
+            <p><strong>Cédula Profesional:</strong> ${info.cedulaProfesional}</p>
+            <p><strong>Teléfono:</strong> ${info.telefono}</p>
+            <p><strong>Especialización:</strong> ${info.nombreEspecializacion}</p>
+            <p><strong>Nombre de Usuario:</strong> ${info.nombreUsuario}</p>
+        `;
+                        console.log("HTML generado:", html);
+                        document.getElementById("contenido").innerHTML = html;
+                    } else {
+                        document.getElementById("contenido").innerHTML =
+                            "<p>No se encontraron datos del médico.</p>";
+                    }
+                })
+                .catch(err => {
+                    console.error("Error al obtener datos personales:", err);
+                    document.getElementById("contenido").innerHTML =
+                        "<p>Error al obtener los datos personales.</p>";
+                });
+        }
+    }
+</script>
+<script>
+
+    // Función para agregar una nueva consulta
+    async function agregarConsulta(datos) {
+        try {
+            const res = await fetch('/agregar-consulta', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(datos)
+            });
+
+            return await res.json(); // Retorna la respuesta JSON
+        } catch (err) {
+            console.error(err);
+            return { ok: false, mensaje: 'Error al conectar con el servidor' };
+        }
+    }
+    // Manejar el envío del formulario de agregar consulta
+    document.getElementById('formAgregarConsulta').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const form = e.target;
+        const datos = {
+            fecha: form.fecha.value,
+            hora: form.hora.value,
+            estado: form.estado.value,
+            tipoEstudio: form.tipoEstudio.value,
+            observaciones: form.observaciones.value,
+            idPaciente: parseInt(form.idPaciente.value),
+            idMedico: parseInt(form.idMedico.value),
+            idSala: parseInt(form.idSala.value),
+            idRecepcionista: parseInt(form.idRecepcionista.value),
+        };
+
+        const data = await agregarConsulta(datos); // esta función debe enviar los datos al backend
+
+        const mensajeDiv = document.getElementById('mensajeConsulta');
+        if (data.ok) {
+            mensajeDiv.style.color = 'green';
+            mensajeDiv.textContent = data.mensaje;
+            form.reset();
+            cargarConsultas(); // refrescar tabla
+        } else {
+            mensajeDiv.style.color = 'red';
+            mensajeDiv.textContent = data.mensaje || 'Error al agregar consulta';
+        }
+    });
+</script>
+
+<script>
+
+    let consultasGlobales = []; // para guardar todas las consultas
+
+    // Función para cargar las consultas y aplicar filtros
+    async function cargarConsultas() {
+        try {
+            const res = await fetch('/consultas');
+            const data = await res.json();
+
+            if (data.ok) {
+                consultasGlobales = data.consultas;
+                aplicarFiltros();
+                const tbody = document.querySelector('#tablaConsultas tbody');
+                tbody.innerHTML = ''; // Limpiar tabla
+
+                data.consultas.forEach(c => {
+                    const fila = document.createElement('tr');
+
+                    fila.innerHTML = `
+            <td>${c.idConsulta}</td>
+            <td>${c.fecha.split('T')[0]}</td>
+            <td>${c.hora}</td>
+            <td>${c.estado}</td>
+            <td>${c.tipoEstudio}</td>
+            <td>${c.nombrePaciente}</td>
+            <td>${c.nombreMedico}</td>
+            <td>${c.nombreSala}</td>
+            <td>${c.nombreRecepcionista}</td>
+            <td>${c.observaciones || ''}</td>
+        `;
+
+                    tbody.appendChild(fila);
+                });
+            } else {
+                alert('Error al cargar consultas');
+            }
+        } catch (err) {
+            alert('Error al conectar con el servidor');
+        }
+    }
+    function aplicarFiltros() {
+        const filtroEstado = document.querySelector('#filtroEstado').value.toLowerCase();
+        const busquedaPaciente = document.querySelector('#busquedaPaciente').value.toLowerCase();
+
+        const tbody = document.querySelector('#tablaConsultas tbody');
+        tbody.innerHTML = '';
+
+        // Filtrar y mostrar
+        const filtradas = consultasGlobales.filter(c => {
+            const estadoMatch = filtroEstado === '' || c.estado.toLowerCase() === filtroEstado;
+            const pacienteMatch = c.nombrePaciente.toLowerCase().includes(busquedaPaciente);
+            return estadoMatch && pacienteMatch;
+        });
+
+        filtradas.forEach(c => {
+            const fila = document.createElement('tr');
+            fila.innerHTML = `
+        <td>${c.idConsulta}</td>
+        <td>${new Date(c.fecha).toLocaleDateString()}</td>
+        <td>${c.hora}</td>
+        <td>${c.estado}</td>
+        <td>${c.tipoEstudio}</td>
+        <td>${c.nombrePaciente}</td>
+        <td>${c.nombreMedico}</td>
+        <td>${c.nombreSala}</td>
+        <td>${c.nombreRecepcionista}</td>
+        <td>${c.observaciones || ''}</td>
+    `;
+            tbody.appendChild(fila);
+        });
+    }
+
+    // Eventos para los filtros
+    document.querySelector('#filtroEstado').addEventListener('change', aplicarFiltros);
+    document.querySelector('#busquedaPaciente').addEventListener('input', aplicarFiltros);
+
+
+    // Llamar la función para cargar las consultas cuando la página esté lista
+    //document.addEventListener('DOMContentLoaded', cargarConsultas);
+    window.addEventListener("DOMContentLoaded", () => {
+        cargarConsultas();
+    });
+    
+
+    // Manejar los clics en los enlaces de la sidebar
+    document.getElementById("btnDatosPersonales").addEventListener("click", (e) => {
+    e.preventDefault();
+    mostrarSecciones(["contenido"]);
+    mostrarDatosPersonales();
+});
+
+document.getElementById("btnDatosConsulta").addEventListener("click", (e) => {
+    e.preventDefault();
+    mostrarConsulta();
+    cargarConsultas();
+});
+</script>
+</html >

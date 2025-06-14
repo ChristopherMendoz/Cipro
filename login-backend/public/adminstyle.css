@@ -1,0 +1,345 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f4f8fb 0%, #e9f1fa 100%);
+    color: #222;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 40px 18px 40px;
+    background: #fff;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+.logo {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.08);
+}
+
+h1 {
+    font-size: 2.1rem;
+    font-weight: 700;
+    margin: 0 0 18px 0;
+    color: #003366;
+    letter-spacing: 1px;
+}
+
+main {
+    margin-top: 18px;
+}
+
+input[type="text"], input[type="email"], input[type="password"], input[type="date"], select {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 7px;
+    border: 1px solid #b0c4de;
+    font-size: 1rem;
+    margin-bottom: 8px;
+    background: #f8fbff;
+    transition: border 0.2s;
+}
+input:focus, select:focus {
+    border-color: #0074d9;
+    outline: none;
+    background: #fff;
+}
+
+button, .btn-registrar-personal {
+    background: linear-gradient(90deg, #005fa3 0%, #0074d9 100%);
+    color: #fff;
+    padding: 12px 26px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.18s, box-shadow 0.18s, transform 0.12s;
+    box-shadow: 0 2px 8px rgba(0,123,255,0.07);
+    outline: none;
+}
+button:hover, .btn-registrar-personal:hover {
+    background: linear-gradient(90deg, #0074d9 0%, #005fa3 100%);
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 4px 16px rgba(0,123,255,0.13);
+}
+
+/* Botón cerrar sesión */
+#cerrarSesion {
+    background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%);
+    color: #fff;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: background 0.18s, box-shadow 0.18s;
+    box-shadow: 0 2px 8px rgba(231,76,60,0.07);
+}
+
+#cerrarSesion:hover {
+    background: linear-gradient(90deg, #c0392b 0%, #e74c3c 100%);
+    box-shadow: 0 4px 16px rgba(231,76,60,0.13);
+}
+
+.tabla-responsive {
+    max-height: 500px; /* Ajusta la altura máxima visible de la tabla */
+    overflow-y: auto;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+    margin-top: 18px;
+    padding: 0 8px;
+}
+
+.tabla-responsive table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    background: #fff;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: none;
+}
+
+.tabla-responsive th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    table-layout: auto;
+}
+th, td {
+    padding: 14px 16px;
+    text-align: left;
+    vertical-align: middle;
+    font-size: 1.05rem;
+    word-break: break-word;
+}
+th {
+    background: #eaf2fb;
+    color: #003366;
+    font-weight: 700;
+    border-bottom: 2px solid #dde6f3;
+}
+tr {
+    transition: background 0.18s;
+}
+tr:nth-child(even) {
+    background: #f7fafd;
+}
+tr:hover {
+    background: #e3efff;
+}
+.pacientes-inactivos, .medicos-inactivos {
+    background-color: #f5f5f5 !important;
+    color: #aaa !important;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.18);
+    overflow: auto;
+}
+.modal-content {
+    background: #fff;
+    margin: 60px auto;
+    padding: 32px 28px 22px 28px;
+    border-radius: 14px;
+    max-width: 420px;
+    width: 95%;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.13);
+    position: relative;
+    animation: modalFadeIn 0.3s;
+}
+@keyframes modalFadeIn {
+    from { transform: translateY(-40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+.close {
+    position: absolute;
+    top: 18px;
+    right: 22px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #888;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.close:hover {
+    color: #e74c3c;
+}
+
+.modal-body h2 {
+    margin-bottom: 18px;
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.modal-body input, .modal-body select {
+    margin-bottom: 10px;
+}
+
+.autocomplete-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+}
+
+#inputCorreo {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #b0c4de;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.sugerencias-box {
+    position: absolute;
+    left: 0;
+    top: 100%;
+    width: 100%;
+    background: #fff;
+    border: 1px solid #b0c4de;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    z-index: 200;
+    max-height: 180px;
+    overflow-y: auto;
+    margin-top: 2px;
+    display: none;
+}
+
+.sugerencia {
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-size: 1rem;
+}
+.sugerencia:hover {
+    background: #e6f0ff;
+}
+
+#opcionCrearUsuario {
+    margin-top: 8px;
+    display: none;
+    text-align: left;
+}
+#opcionCrearUsuario button {
+    background: #0074d9;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+#opcionCrearUsuario button:hover {
+    background: #005fa3;
+}
+
+#nuevoUsuarioCampos {
+    display: none;
+    margin-top: 10px;
+    background: #f7fbff;
+    border: 1px solid #b0c4de;
+    border-radius: 8px;
+    padding: 14px 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+#nuevoUsuarioCampos input {
+    border-radius: 6px;
+    border: 1px solid #b0c4de;
+    padding: 8px;
+    font-size: 1rem;
+}
+
+.mensaje-sistema {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #d4edda;
+    color: #155724;
+    padding: 15px 25px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px #aaa;
+    font-weight: 600;
+    display: none;
+    z-index: 9999;
+    animation: fadeInOut 3s ease-in-out;
+}
+@keyframes fadeInOut {
+    0% { opacity: 0; bottom: 20px; }
+    10% { opacity: 1; bottom: 30px; }
+    90% { opacity: 1; bottom: 30px; }
+    100% { opacity: 0; bottom: 20px; }
+}
+
+#tablaPacientes td:nth-child(10), #tablaPacientes th:nth-child(10) {
+    max-width: 220px;
+    word-break: break-all;
+    white-space: normal;
+}
+
+#tablaPacientes td:last-child, #tablaPacientes th:last-child {
+    min-width: 120px;
+    max-width: 150px;
+    white-space: nowrap;
+}
+
+#tablaPacientes td {
+    vertical-align: middle;
+}
+#tablaPacientes button {
+    margin: 2px 2px;
+    padding: 6px 12px;
+    font-size: 0.95em;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+
+/* Responsive */
+@media (max-width: 900px) {
+    .tabla-responsive { max-height: 320px; }
+    table { font-size: 0.97rem; }
+    .header-content { gap: 16px; }
+}
+@media (max-width: 600px) {
+    header { flex-direction: column; gap: 10px; padding: 16px 8px 10px 8px; }
+    .header-content { flex-direction: column; gap: 8px; }
+    h1 { font-size: 1.2rem; }
+    .modal-content { padding: 16px 6px; }
+}

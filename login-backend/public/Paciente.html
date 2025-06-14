@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paciente</title>
+    <link rel="stylesheet" href="pacienteStyle.css">
+</head>
+
+<body>
+    <header>
+        <button id="cerrarSesion">
+            Cerrar sesión
+        </button>
+    </header>
+    <div class="container">
+        <aside class="sidebar">
+            <h2 id="nombreUsuario">👤 Cargando...</h2>
+            <h3>Gestión Paciente</h3>
+            <a href="#">Datos Personales</a>
+            <a href="#">Agenda</a>
+            <a href="#">Datos Consulta</a>
+            <a href="#">Visualizar Resultados</a>
+            <a href="#">Historial Médico</a>
+        </aside>
+    </div>
+</body>
+<script>
+    document.getElementById("cerrarSesion").addEventListener("click", () => {
+        sessionStorage.clear();
+        localStorage.clear();
+        window.location.href = "/Clinica.html";
+    });
+
+     // Obtener idUsuario de sessionStorage
+    const idUsuario = sessionStorage.getItem("idUsuario");
+
+    if (!idUsuario) {
+        document.getElementById("contenido").innerHTML = "<p>No hay usuario logueado.</p>";
+    } else {
+        // Mostrar nombre de usuario en sidebar
+        fetch(`/nombre-usuario-p/${idUsuario}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.ok) {
+                    document.getElementById("nombreUsuario").textContent = `👤 ${data.nombreUsuario}`;
+                } else {
+                    document.getElementById("nombreUsuario").textContent = "Usuario no encontrado";
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                document.getElementById("nombreUsuario").textContent = "Error al cargar usuario";
+            });
+        }
+
+</script>
+
+</html>
