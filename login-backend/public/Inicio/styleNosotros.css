@@ -1,9 +1,16 @@
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
-  background: #f9fcff;
+  background: #f9fcff; /* Color de fondo base */
   color: #333;
+
+  /* --- INICIO: FONDO CON PATRÓN SUTIL --- */
+  background-color: #f9fcff;
+  background-image: url("data:image/svg+xml,%3Csvg width='50' height='50' viewBox='0 0 50 50' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23d8e3f3' fill-opacity='1'%3E%3Ccircle cx='25' cy='25' r='2'/%3E%3C/g%3E%3C/svg%3E");
+  /* --- FIN: FONDO CON PATRÓN SUTIL --- */
 }
+
+
 
 /* NAVBAR */
 .navbar {
@@ -133,91 +140,382 @@ body {
 
 /* HERO */
 .hero-nosotros {
-  height: 50vh;
-  background: url('https://www.clarin.com/2022/05/17/9Y-zuZRjQ_2000x1500__1.jpg') center/cover no-repeat;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  color: white;
-  text-align: center;
+    height: 55vh;
+    /* Un poco más alto para mayor impacto */
+    background: url('https://media.licdn.com/dms/image/v2/C4D1BAQGu6jTt3QBKKA/company-background_10000/company-background_10000/0/1596033967817/medical_expert_group_cover?e=2147483647&v=beta&t=yN3p2ioXK4tFQkfdT6nKuzt_f6HGloeU72dxe5aeEFo') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    color: white;
+    text-align: center;
+    padding: 0 20px;
 }
+
 .hero-nosotros::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(0, 63, 116, 0.6), rgba(0, 123, 255, 0.4));
+    /* Degradado sutil */
 }
+
 .hero-text {
-  position: relative;
-  z-index: 2;
-  max-width: 600px;
+    position: relative;
+    z-index: 2;
+    max-width: 750px;
+    animation: fadeInUp 1s ease-out;
 }
+
 .hero-text h1 {
-  font-size: 2.5rem;
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 15px;
 }
+
 .hero-text p {
-  font-size: 1.1rem;
-  margin-top: 10px;
+    font-size: 1.2rem;
+    font-weight: 300;
 }
 
-/* HISTORIA */
-.historia {
-  max-width: 800px;
-  margin: 60px auto;
-  padding: 0 20px;
-  text-align: center;
-}
-.historia h2 {
-  color: #007BFF;
-  margin-bottom: 15px;
-}
-.historia p {
-  font-size: 1.1em;
-  line-height: 1.6;
+/* SECCIÓN HISTORIA Y MISIÓN/VISIÓN */
+.about-section {
+    max-width: 1100px;
+    margin: 60px auto;
+    padding: 0 20px;
 }
 
-/* EQUIPO */
+.about-container {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.about-column {
+    flex: 1;
+    min-width: 300px;
+}
+
+.about-column h2 {
+    color: #0056b3;
+    /* Un azul un poco más oscuro */
+    border-left: 4px solid #007BFF;
+    padding-left: 15px;
+    margin-bottom: 20px;
+}
+
+.about-column p {
+    font-size: 1.05em;
+    line-height: 1.7;
+    text-align: justify;
+}
+
+/* SECCIÓN VALORES */
+.valores-section {
+    /* Se reemplaza el color sólido por un degradado suave */
+    background: linear-gradient(to bottom, #f9fcff 0%, #eaf2ff 100%);
+    padding: 60px 20px;
+    text-align: center;
+    border-top: 1px solid #eef4ff; /* Línea sutil para marcar el inicio */
+    border-bottom: 1px solid #eef4ff; /* Línea sutil para marcar el final */
+}
+
+.valores-section h2 {
+    color: #0056b3;
+    margin-bottom: 40px;
+    font-size: 2rem;
+}
+
+.valores-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    max-width: 1100px;
+    margin: auto;
+}
+
+.valor-card {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    flex: 1;
+    min-width: 280px;
+    max-width: 320px;
+    box-shadow: 0 4px 20px rgba(0, 123, 255, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.valor-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 25px rgba(0, 123, 255, 0.15);
+}
+
+.valor-card i {
+    font-size: 2.5rem;
+    color: #007BFF;
+    margin-bottom: 15px;
+}
+
+.valor-card h3 {
+    color: #0056b3;
+    margin-bottom: 10px;
+}
+
+.valor-card p {
+    font-size: 0.95em;
+    line-height: 1.6;
+    color: #555;
+}
+
+
+/* EQUIPO (Rediseño de tarjetas) */
 .equipo {
-  padding: 40px 20px;
-  background: #f5faff;
-  text-align: center;
+    padding: 60px 20px;
+    background: #f9fcff;
+    text-align: center;
 }
+
 .equipo h2 {
-  color: #007BFF;
-  margin-bottom: 30px;
+    color: #0056b3;
+    margin-bottom: 40px;
+    font-size: 2rem;
 }
+
 .equipo-cards {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
 }
+
 .card {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 6px 16px rgba(0, 123, 255, 0.1);
-  padding: 20px;
-  width: 280px;
-  transition: transform 0.3s;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0, 123, 255, 0.1);
+    width: 320px;
+    overflow: hidden;
+    text-align: left;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
 }
+
 .card:hover {
-  transform: translateY(-5px);
+    transform: translateY(-10px);
+    box-shadow: 0 12px 40px rgba(0, 123, 255, 0.2);
 }
+
+.card-img-container {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+}
+
 .card img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 15px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
 }
+
+.card:hover img {
+    transform: scale(1.05);
+}
+
+.card-content {
+    padding: 25px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
 .card h3 {
-  margin-bottom: 5px;
-  color: #007BFF;
+    margin: 0 0 5px 0;
+    color: #0056b3;
+    font-size: 1.4em;
 }
+
+.card p.role {
+    font-size: 1em;
+    color: #007BFF;
+    font-weight: 500;
+    margin: 0 0 15px 0;
+}
+
 .card p {
-  font-size: 0.95em;
-  color: #555;
+    font-size: 0.95em;
+    color: #555;
+    line-height: 1.6;
+    flex-grow: 1;
+}
+
+/* SECCIÓN DE UBICACIÓN Y MAPA */
+.location-section {
+    max-width: 1100px;
+    margin: 60px auto;
+    padding: 0 20px;
+}
+
+.location-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.location-header h2 {
+    color: #0056b3;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.location-header p {
+    font-size: 1.1em;
+    color: #555;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.location-container {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 40px rgba(0, 123, 255, 0.1);
+}
+
+.location-info {
+    flex: 1;
+    min-width: 300px;
+}
+
+.location-info h3 {
+    color: #0056b3;
+    font-size: 1.5em;
+    margin-top: 0;
+    border-left: 4px solid #007BFF;
+    padding-left: 15px;
+}
+
+.location-info .address {
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.location-info i {
+    color: #007BFF;
+    font-size: 1.2em;
+}
+
+.contact-details p {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.05em;
+    margin: 10px 0;
+}
+
+.location-info h4 {
+    margin-top: 25px;
+    color: #0056b3;
+}
+
+.opening-hours {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+    font-size: 1.05em;
+    color: #333;
+}
+
+.opening-hours li {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.opening-hours li span {
+    font-weight: 500;
+}
+
+.map-button {
+    display: inline-block;
+    background-color: #007BFF;
+    color: #fff;
+    padding: 12px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.map-button:hover {
+    background-color: #0056b3;
+}
+
+.map-container {
+    flex: 1.5; /* El mapa ocupará un poco más de espacio */
+    min-width: 300px;
+    min-height: 400px;
+}
+
+.map-container iframe {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    border: none;
+}
+
+/* RESPONSIVE PARA LA SECCIÓN DE UBICACIÓN */
+@media (max-width: 900px) {
+    .location-container {
+        flex-direction: column;
+    }
+}
+
+/* ANIMACIONES */
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeIn 1s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .hero-text h1 {
+        font-size: 2.2rem;
+    }
+    .hero-text p {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .about-container {
+        flex-direction: column;
+        gap: 40px;
+    }
+    .valores-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .card {
+        width: 90%;
+        max-width: 350px;
+    }
 }
 
 /* Footer */
@@ -341,7 +639,7 @@ body {
 
 .modal-content {
   background: white;
-  padding: 18px 30px 30px 30px !important; 
+  padding: 18px 30px 30px 30px !important;
   border-radius: 12px;
   width: 90%;
   max-width: 450px;
@@ -360,15 +658,18 @@ body {
 
 /* Establece una altura mayor para registro */
 .modal-content.registro-size {
-  height: 90vh; /* o el tamaño justo para tu formulario de registro */
-  min-height: 500px;
-  max-width: 400px; /* Antes 600px */
-  overflow-y: auto;
+ /* height: auto; ya es el valor por defecto de modal-content */
+  min-height: 500px; /* Altura mínima para el registro */
+  max-width: 400px;
+  /* IMPORTANTE: Usamos max-height y overflow-y: auto aquí para que la barra aparezca SOLO si es necesario */
+  max-height: calc(100vh - 80px); /* Ajusta este valor: viewport height menos un margen de 80px arriba y abajo */
+  overflow-y: auto; /* La barra solo aparecerá si el contenido supera max-height */
 }
 
 
 .modal-content.expand {
-  max-width: auto; /* más ancho para que entren ambos formularios */
+  max-width: auto;
+  /* más ancho para que entren ambos formularios */
 }
 
 .close {
@@ -400,8 +701,10 @@ body {
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  width: 90%;         /* <-- Añade o ajusta esta línea */
-  margin: 0 auto;     /* Centra los campos si el contenedor es más pequeño */
+  width: 90%;
+  /* <-- Añade o ajusta esta línea */
+  margin: 0 auto;
+  /* Centra los campos si el contenedor es más pequeño */
 }
 
 .login-form button {
@@ -413,8 +716,10 @@ body {
   font-weight: 600;
   cursor: pointer;
   transition: background 0.3s ease;
-  width: 100%;         /* <-- Añade o ajusta esta línea */
-  margin: 0 auto;     /* Centra el botón si el contenedor es más pequeño */
+  width: 100%;
+  /* <-- Añade o ajusta esta línea */
+  margin: 0 auto;
+  /* Centra el botón si el contenedor es más pequeño */
 }
 
 .login-form button:hover {
@@ -423,12 +728,15 @@ body {
 
 .modal-logo {
   width: 70px;
-  margin: 0 auto 4px auto; /* menos espacio abajo */
+  margin: 0 auto 4px auto;
+  /* menos espacio abajo */
   display: block;
 }
 
-.login-form h2, .registro-form h2 {
-  margin-top: 4px;   /* menos espacio arriba */
+.login-form h2,
+.registro-form h2 {
+  margin-top: 4px;
+  /* menos espacio arriba */
   margin-bottom: 10px;
 }
 
@@ -441,7 +749,7 @@ body {
   padding-bottom: 0;
   opacity: 0;
   border-width: 0 1px;
-  
+
   /* Transición suave para la animación */
   transition: all 0.3s ease-out;
 
@@ -458,25 +766,32 @@ body {
 
 /* Clase que usaremos con JavaScript para mostrar el mensaje */
 .error-msg.visible {
- max-height: 200px;      /* Aumenta la altura máxima */
+  max-height: 200px;
+  /* Aumenta la altura máxima */
   margin-top: 15px;
   padding-top: 12px;
   padding-bottom: 12px;
   opacity: 1;
   border-width: 1px;
-  white-space: normal;    /* Permite saltos de línea */
-  word-break: break-word; /* Rompe palabras largas si es necesario */
+  white-space: normal;
+  /* Permite saltos de línea */
+  word-break: break-word;
+  /* Rompe palabras largas si es necesario */
 }
 
 .error-msg,
 .error-msg.visible {
-  width: 100%;           /* Ocupa todo el ancho del formulario */
+  width: 100%;
+  /* Ocupa todo el ancho del formulario */
   box-sizing: border-box;
   display: block;
-  white-space: normal;   /* Permite saltos de línea */
+  white-space: normal;
+  /* Permite saltos de línea */
   word-break: break-word;
-  max-width: 100%;       /* No limites el ancho */
-  overflow: visible;     /* Permite mostrar todo el texto */
+  max-width: 100%;
+  /* No limites el ancho */
+  overflow: visible;
+  /* Permite mostrar todo el texto */
 }
 
 .registro {
@@ -518,10 +833,13 @@ body {
   gap: 12px;
   align-items: center;
   padding: 0 10px 10px 10px;
-  height: 100%;           /* <-- Cambia flex: 1 por height: 100% */
-  min-height: unset;      /* <-- Elimina min-height para evitar conflictos */
+  height: 100%;
+  /* <-- Cambia flex: 1 por height: 100% */
+  min-height: unset;
+  /* <-- Elimina min-height para evitar conflictos */
   justify-content: flex-start;
-  overflow-y: auto;       /* <-- Permite scroll si el contenido es muy grande */
+  overflow-y: auto;
+  /* <-- Permite scroll si el contenido es muy grande */
 }
 
 .password-container {
@@ -535,7 +853,8 @@ body {
 .password-container input[type="password"],
 .password-container input[type="text"] {
   width: 100%;
-  padding-right: 40px; /* Espacio para el icono */
+  padding-right: 40px;
+  /* Espacio para el icono */
   box-sizing: border-box;
 }
 
@@ -551,36 +870,22 @@ body {
 }
 
 .modal-content.animate-in {
-  animation: scaleIn 0.4s cubic-bezier(0.4,0,0.2,1) both;
+  animation: scaleIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
+
 @media (max-width: 500px) {
   .modal-content {
     max-width: 98vw !important;
     padding: 10px 2vw !important;
   }
+
   .login-form {
     max-width: 98vw;
     padding: 0;
   }
 }
 
-/* ANIMACIONES */
-.fade-in {
-  animation: fadeInUp 0.8s ease both;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes scaleIn {
+@keyframes scaleIn { /* Mantener para el modal */
   from {
     transform: scale(0.9);
     opacity: 0;
@@ -590,6 +895,9 @@ body {
     opacity: 1;
   }
 }
+
+
+
 
 /* RESPONSIVE */
 @media (max-width: 768px) {

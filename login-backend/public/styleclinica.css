@@ -71,14 +71,14 @@ h1, h2, h3 {
   font-weight: 700;
 }
 
-h2 {
+h2:not(.modal-content h2) { /* Aplica a todos los h2 MENOS a los que están dentro de .modal-content */
   font-size: 2.2em;
   text-align: center;
   margin-bottom: 40px;
   position: relative;
   padding-bottom: 10px;
 }
-h2::after {
+h2:not(.modal-content h2)::after { /* Aplica la barra a los mismos h2 */
   content: '';
   display: block;
   width: 60px;
@@ -198,7 +198,7 @@ section {
   align-items: center;
   justify-content: center;
   background: linear-gradient(rgba(0, 64, 128, 0.7), rgba(78, 79, 80, 0.7)),
-              url('https://emirateshospitals.ae/wp-content/uploads/2024/07/best-health-check-up-packages.jpg') center/cover no-repeat; /* Usar la imagen de Pixabay aquí */
+              url('https://www.swissmedical.net/site/assets/files/334766/smn_header_check_up.1300x0.png') center/cover no-repeat; /* Usar la imagen de Pixabay aquí */
   color: var(--white-bg);
   text-align: center;
   overflow: hidden; /* Para asegurar que no se desborden elementos */
@@ -494,18 +494,6 @@ section {
   }
 }
 
-@keyframes scaleIn { /* Mantener para el modal */
-  from {
-    transform: scale(0.9);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-
 /* --- RESPONSIVE GENERAL (Ajustar según la nueva estructura) --- */
 @media (max-width: 992px) {
   .hero-new h1 {
@@ -546,32 +534,70 @@ section {
   .hero-new {
     height: 90vh; /* Mayor altura en móviles */
     padding: 20px;
+    clip-path: none; /* Elimina la forma inclinada en móviles para evitar problemas */
+    margin-bottom: 0;
   }
   .hero-new h1 {
-    font-size: 2.2em;
+    font-size: 2em; /* Reducir aún más para móviles */
+    word-wrap: break-word; /* Asegura que palabras largas se rompan */
+    white-space: normal; /* Asegura que el texto fluya normalmente */
+    margin-bottom: 5px;
   }
   .hero-new h2 {
-    font-size: 1.2em;
+    font-size: 1.1em; /* Reducir aún más */
+    word-wrap: break-word;
+    white-space: normal;
+    margin-bottom: 15px;
   }
   .hero-new p {
-    font-size: 1em;
+    font-size: 0.9em; /* Reducir el tamaño del párrafo */
+    word-wrap: break-word;
+    white-space: normal;
+    margin-bottom: 15px;
   }
   .hero-buttons {
     flex-direction: column; /* Botones apilados */
+    gap: 10px;
   }
+
+  .hero-content {
+    padding: 10px; /* Asegúrate de que no haya padding excesivo en el contenido interno del hero */
+  }
+
+  
   .btn-main, .btn-secondary {
-    width: 80%; /* Ancho completo para botones CTA */
+    width: 90%; /* Asegúrate de que los botones no sean más anchos que el 90% */
+    max-width: 300px; /* Un max-width para que no se hagan demasiado anchos en tablets */
     justify-content: center;
+    padding: 12px 20px; /* Ajusta el padding de los botones */
+    font-size: 0.95em;
   }
   .intro-section, .services-grid, .why-choose-us, .cta-hours {
     padding: 40px 15px; /* Menor padding */
   }
+
+  .decoration-circle-top-left,
+  .decoration-line-bottom-right {
+    display: none; /* Oculta estos elementos en móviles */
+  }
+
+  .intro-section, .services-grid, .why-choose-us, .cta-hours {
+    padding: 30px 15px; /* Menor padding lateral */
+  }
+
   .container {
-    padding: 40px 15px;
+    padding: 30px 15px;
   }
   .service-card {
-    padding: 25px 20px;
+    width: 100%; /* Las tarjetas deben tomar todo el ancho disponible */
+    max-width: 350px; /* Pero con un máximo para no ser enormes en tablets */
+    margin: 0 auto;
   }
+
+  .cards-grid {
+    grid-template-columns: 1fr; /* Forzar una sola columna */
+  }
+
   .icon-circle {
     width: 60px;
     height: 60px;
@@ -579,6 +605,18 @@ section {
   }
   .icon-large {
     font-size: 3em;
+  }
+
+  .hero-text h2 {
+    font-size: 1.5rem;
+  }
+  .cards {
+    flex-direction: column;
+    align-items: center;
+  }
+  header {
+    flex-direction: column;
+    gap: 15px;
   }
 }
 
@@ -619,12 +657,12 @@ section {
 
 /* Establece una altura mayor para registro */
 .modal-content.registro-size {
-  height: 90vh;
-  /* o el tamaño justo para tu formulario de registro */
-  min-height: 500px;
+  height: auto;
+  min-height: 500px; /* Altura mínima para el registro */
   max-width: 400px;
-  /* Antes 600px */
-  overflow-y: auto;
+  /* IMPORTANTE: Usamos max-height y overflow-y: auto aquí para que la barra aparezca SOLO si es necesario */
+  max-height: calc(100vh - 80px); /* Ajusta este valor: viewport height menos un margen de 80px arriba y abajo */
+  overflow-y: auto; /* La barra solo aparecerá si el contenido supera max-height */
 }
 
 
@@ -833,6 +871,25 @@ section {
 .modal-content.animate-in {
   animation: scaleIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn { /* Mantener para el modal */
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 
 @media (max-width: 500px) {
   .modal-content {
@@ -981,7 +1038,8 @@ section {
   padding: 40px 20px 20px;
   margin-top: 60px;
   font-size: 0.95em;
-  z-index: 10;
+  position: relative;
+  z-index: 5;
 }
 
 .footer-container {
@@ -991,6 +1049,7 @@ section {
   flex-wrap: wrap;
   gap: 40px;
   justify-content: space-between;
+  position: relative;
   z-index: 5
 }
 
