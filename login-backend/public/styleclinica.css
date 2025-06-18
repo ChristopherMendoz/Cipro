@@ -161,7 +161,7 @@ footer {
 
 .modal-content {
   background: white;
-  padding: 0px 30px 30px 30px !important;
+  padding: 18px 30px 30px 30px !important; 
   border-radius: 12px;
   width: 90%;
   max-width: 450px;
@@ -173,12 +173,17 @@ footer {
 
 /* Establece una altura mínima para login */
 .modal-content.login-size {
-  height: 500px; /* o el tamaño justo para tu formulario de login */
+  height: auto;
+  min-height: 340px;
+  max-width: 400px;
 }
 
 /* Establece una altura mayor para registro */
 .modal-content.registro-size {
-  height: 1000px; /* o el tamaño justo para tu formulario de registro */
+  height: 90vh; /* o el tamaño justo para tu formulario de registro */
+  min-height: 500px;
+  max-width: 400px; /* Antes 600px */
+  overflow-y: auto;
 }
 
 
@@ -199,6 +204,16 @@ footer {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  align-items: center;
+  max-width: 90%;
+  margin: 0 auto;
+}
+
+.login-form input,
+.login-form button,
+.password-container {
+  width: 90%;
+  margin: 0 0 0 0;
 }
 
 .login-form input {
@@ -215,10 +230,11 @@ footer {
   padding: 12px;
   border: none;
   border-radius: 8px;
-  width: 90%;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.3s ease;
+  width: 100%;         /* <-- Añade o ajusta esta línea */
+  margin: 0 auto;     /* Centra el botón si el contenedor es más pequeño */
 }
 
 .login-form button:hover {
@@ -227,27 +243,60 @@ footer {
 
 .modal-logo {
   width: 70px;
-  margin: auto;
+  margin: 0 auto 4px auto; /* menos espacio abajo */
   display: block;
-  margin-bottom: 8px; /* antes 15px, ahora menos */
 }
 
 .login-form h2, .registro-form h2 {
-  margin-top: 10px;
-  margin-bottom: 12px; /* antes podía ser más grande */
+  margin-top: 4px;   /* menos espacio arriba */
+  margin-bottom: 10px;
 }
 
 .error-msg {
-  display: none;
-  margin-top: 15px;
-  padding: 12px;
+  /* --- Propiedades para la animación --- */
+  max-height: 0;
+  overflow: hidden;
+  margin-top: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  opacity: 0;
+  border-width: 0 1px;
+  
+  /* Transición suave para la animación */
+  transition: all 0.3s ease-out;
+
+  /* --- Tus estilos de diseño que ya tenías --- */
   background-color: #ffe6e6;
-  border: 1px solid #ff4d4d;
+  border-color: #ff4d4d;
+  border-style: solid;
   color: #cc0000;
   border-radius: 8px;
   font-size: 14px;
   font-weight: 500;
-  animation: fadeIn 0.3s ease-in-out;
+  text-align: center;
+}
+
+/* Clase que usaremos con JavaScript para mostrar el mensaje */
+.error-msg.visible {
+ max-height: 200px;      /* Aumenta la altura máxima */
+  margin-top: 15px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  opacity: 1;
+  border-width: 1px;
+  white-space: normal;    /* Permite saltos de línea */
+  word-break: break-word; /* Rompe palabras largas si es necesario */
+}
+
+.error-msg,
+.error-msg.visible {
+  width: 100%;           /* Ocupa todo el ancho del formulario */
+  box-sizing: border-box;
+  display: block;
+  white-space: normal;   /* Permite saltos de línea */
+  word-break: break-word;
+  max-width: 100%;       /* No limites el ancho */
+  overflow: visible;     /* Permite mostrar todo el texto */
 }
 
 .registro {
@@ -325,12 +374,13 @@ footer {
   animation: scaleIn 0.4s cubic-bezier(0.4,0,0.2,1) both;
 }
 @media (max-width: 500px) {
-  .slide-container, .modal-content {
-    max-width: 98vw;
-    padding: 10px 0;
+  .modal-content {
+    max-width: 98vw !important;
+    padding: 10px 2vw !important;
   }
-  .form-panel {
-    padding: 0 2vw 10px 2vw;
+  .login-form {
+    max-width: 98vw;
+    padding: 0;
   }
 }
 
