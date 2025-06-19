@@ -8,15 +8,16 @@ router.get('/', async (req, res) => {
     try {
         await sql.connect(config);
 
+        //  CAMBIO PRINCIPAL AQUÍ 
         const result = await sql.query(`
             SELECT 
                 c.idConsulta,
                 CONVERT(varchar(10), c.fecha, 23) AS fecha,
                 CONVERT(varchar(5), c.hora, 108) AS hora,
                 c.estado,
-                c.tipoEstudio,
+                serv.nombreServicio, 
                 c.observaciones,
-                p.primerNombre +' '+segundoNombre +' '+ primerApellido +' '+ segundoApellido AS nombrePaciente,
+                p.primerNombre +' '+p.segundoNombre +' '+ p.primerApellido +' '+ p.segundoApellido AS nombrePaciente,
                 m.nombreCompleto AS nombreMedico,
                 s.nombre AS nombreSala,
                 r.nombreCompleto AS nombreRecepcionista
@@ -25,17 +26,12 @@ router.get('/', async (req, res) => {
             INNER JOIN Medico m ON c.idMedico = m.idMedico
             INNER JOIN Sala s ON c.idSala = s.idSala
             INNER JOIN Recepcionista r ON c.idRecepcionista = r.idRecepcionista
+            LEFT JOIN Servicios serv ON c.idServicio = serv.idServicio -- AÑADIR ESTE JOIN (LEFT JOIN por si alguna consulta vieja no tiene servicio)
             ORDER BY c.idConsulta DESC
         `);
 
-        // Convertir hora a solo HH:mm
-        const consultas = result.recordset.map(c => {
-    let hora = c.hora instanceof Date ? c.hora.toTimeString().substring(0, 5) : c.hora;
-    return { ...c, hora };
-});
-
-
-        res.json({ ok: true, consultas });
+        // ... (resto del código sin cambios)
+        res.json({ ok: true, consultas: result.recordset }); // El resto del código funciona igual
 
     } catch (error) {
         console.error('Error al obtener consultas:', error);
@@ -44,3 +40,4 @@ router.get('/', async (req, res) => {
 });
 
 module.exports = router;
+
