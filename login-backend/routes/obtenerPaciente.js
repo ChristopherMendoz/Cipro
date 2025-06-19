@@ -2,17 +2,7 @@ const express = require('express');
 const router = express.Router();
 const sql = require('mssql');
 const bcrypt = require('bcrypt'); // Agrega esto arriba
-
-const config = {
-    user: 'sa',
-    password: '123456',
-    server: 'DESKTOP-GMBSO0H',
-    database: 'Cipro',
-    options: {
-        trustServerCertificate: true,
-        encrypt: false
-    }
-};
+const config = require('../config.js');
 
 // Obtener todos los pacientes activos
 // Esta ruta obtiene todos los pacientes cuyo usuario asociado está activo (estado = 1)
