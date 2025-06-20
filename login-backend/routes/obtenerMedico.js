@@ -1,17 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const sql = require('mssql');
-
-const config = {
-    user: 'sa',
-    password: '123456',
-    server: 'DESKTOP-GMBSO0H',
-    database: 'Cipro',
-    options: {
-        trustServerCertificate: true,
-        encrypt: false
-    }
-};
+const config = require('../config.js');
 
 // Ruta: /obtener-medico/:idUsuario
 router.get('/:idUsuario', async (req, res) => {

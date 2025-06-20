@@ -2,21 +2,11 @@ const express = require('express');
 const router = express.Router();
 const sql = require('mssql');
 const bcrypt = require('bcrypt');
+const config = require('../config.js');
 
 let intentosFallidos = 0;
 let bloqueoHasta = null;
 
-// Configuración SQL Server
-const config = {
-  user: 'sa',
-  password: '123456',
-  server: 'DESKTOP-GMBSO0H',
-  database: 'Cipro',
-  options: {
-    trustServerCertificate: true,
-    encrypt: false,
-  }
-};
 
 router.post('/', async (req, res) => {
   const { Username, Contrasena } = req.body;

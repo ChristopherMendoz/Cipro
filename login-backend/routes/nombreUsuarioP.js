@@ -1,18 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const sql = require('mssql');
-
-// Configuración de conexión
-const config = {
-    user: 'sa',
-    password: '123456',
-    server: 'DESKTOP-GMBSO0H',
-    database: 'Cipro',
-    options: {
-        trustServerCertificate: true,
-        encrypt: false,
-    }
-};
+const config = require('../config.js');
 
 router.get('/:id', async (req, res) => {
     const idUsuario = req.params.id;

@@ -2,17 +2,8 @@ const express = require('express');
 const router = express.Router();
 const sql = require('mssql');
 const bcrypt = require('bcrypt');
+const config = require('../config.js');
 
-const config = {
-  user: 'sa',
-  password: '123456',
-  server: 'DESKTOP-GMBSO0H',
-  database: 'Cipro',
-  options: {
-    trustServerCertificate: true,
-    encrypt: false
-  }
-};
 
 // 🔢 Función para generar ID único (ej: PER001)
 async function generarIdUsuario(idRol) {

@@ -8,14 +8,14 @@ body {
 
 .hero-servicios {
   height: 50vh;
-  background: url('https://scontent.fmga7-2.fna.fbcdn.net/v/t39.30808-6/499828275_1203552668448979_6702401134202354048_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=QFqLGALvW00Q7kNvwGcLMEX&_nc_oc=AdnCtaNUqtrsFtuabOEHRsjeYAUUVUQXpiNl8OAf8PMmwpIP-dtB77wUhD4eRpxWAnY&_nc_zt=23&_nc_ht=scontent.fmga7-2.fna&_nc_gid=LFnNtlp0m_gOFIgrF7Rr4w&oh=00_AfOwf7yDoPGF32at-Hq-TQ1cQ5VsH3dFvOVtFLRz0RVxqQ&oe=684D7985') center/cover no-repeat;
+  background: url('https://scontent.fmga7-2.fna.fbcdn.net/v/t39.30808-6/499828275_1203552668448979_6702401134202354048_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=yndnLp1vBWwQ7kNvwFIonsc&_nc_oc=AdmAaoUjTiQ4-3cMLTvxNZFXZEm17XE7yAV7sKunDs7Vy6MLC0cTX8QwMnBMlGkUX74&_nc_zt=23&_nc_ht=scontent.fmga7-2.fna&_nc_gid=TuckaYpstlHpFgIAhih4vg&oh=00_AfMJrEjqHEa7fV55SDNBhMXRscWYUJl0R48vljnnc_XcFw&oe=6858E685') center/cover no-repeat;
   display: flex;
   align-items: flex-start; /* Cambia de center a flex-start */
   justify-content: center;
   text-align: center;
   color: white;
   position: relative;
-  padding-top: 40px; /* Espacio desde arriba para el texto */
+  padding-top: 55px; /*tamaño de imagen */
 }
 .hero-servicios::after {
   content: "";
@@ -27,7 +27,7 @@ body {
   position: relative;
   z-index: 2;
   max-width: 700px;
-  margin-top: 0; /* Elimina cualquier margen superior */
+  margin-top: -20px; /* Elimina cualquier margen superior */
 }
 .hero-text h1 {
   font-size: 2.5rem;
@@ -39,7 +39,7 @@ body {
   opacity: 0.95;
 }
 
-/* Cards */
+/* Cards
 .servicios-section {
   padding: 60px 0;
   text-align: center;
@@ -80,14 +80,14 @@ body {
   transform: translateY(-18px) scale(1.04);
   box-shadow: 0 24px 48px rgba(0,123,255,0.18), 0 2px 8px rgba(0,0,0,0.10);
   z-index: 10;
-}
+} */
 
 /* Swiper Servicios */
-.servicios-swiper {
+/* .servicios-swiper {
   width: 100%;
   max-width: 1100px;
   margin: 40px auto 0 auto;
-  padding-bottom: 50px; /* espacio para paginación */
+  padding-bottom: 50px; 
 }
 
 .swiper-wrapper {
@@ -133,10 +133,10 @@ body {
   transform: translateY(-10px) scale(1.03);
   box-shadow: 0 16px 32px rgba(0,123,255,0.13), 0 2px 8px rgba(0,0,0,0.10);
   z-index: 10;
-}
+} */
 
 /* Swiper navigation buttons - mejora tamaño y centrado */
-.swiper-button-next,
+/* .swiper-button-next,
 .swiper-button-prev {
   color: #007BFF;
   background: #fff;
@@ -160,10 +160,10 @@ body {
 .swiper-button-prev:hover {
   background: #007BFF;
   color: #fff;
-}
+} */
 
 /* Swiper pagination bullets - que no se oculten */
-.swiper-pagination {
+/* .swiper-pagination {
   position: static !important;
   margin-top: 18px;
   text-align: center;
@@ -178,7 +178,7 @@ body {
 }
 .swiper-pagination-bullet-active {
   opacity: 1;
-}
+} */
 
 /* Animaciones */
 @keyframes fadeInDown {
@@ -194,7 +194,7 @@ body {
 }
 
 /* Responsive */
-@media (max-width: 1200px) {
+/* @media (max-width: 1200px) {
   .servicios-cards {
     padding-left: 20px;
     padding-right: 20px;
@@ -230,7 +230,7 @@ body {
     width: 32px;
     height: 32px;
   }
-}
+} */
 
 
 /* NAVBAR */
@@ -359,29 +359,7 @@ body {
   color: #666;
 }
 
-/* Main container */
-.container {
-  padding:100px 20px 40px;
-  max-width:800px;
-  margin:auto;
-}
-h1 {
-  color:#00ffea; margin-bottom:20px;
-}
-.service-list {
-  list-style: none;
-  padding-left:20px;
-}
-.service-list li {
-  margin-bottom:12px;
-  padding-left:20px;
-  position: relative;
-}
-.service-list li::before {
-  content: '✔️';
-  position: absolute;
-  left:0; top:0;
-}
+
 
 /* Footer */
 footer {
@@ -429,10 +407,12 @@ footer {
 
 /* Establece una altura mayor para registro */
 .modal-content.registro-size {
-  height: 90vh; /* o el tamaño justo para tu formulario de registro */
-  min-height: 500px;
-  max-width: 400px; /* Antes 600px */
-  overflow-y: auto;
+  /* height: auto; ya es el valor por defecto de modal-content */
+  min-height: 500px; /* Altura mínima para el registro */
+  max-width: 400px;
+  /* IMPORTANTE: Usamos max-height y overflow-y: auto aquí para que la barra aparezca SOLO si es necesario */
+  max-height: calc(100vh - 80px); /* Ajusta este valor: viewport height menos un margen de 80px arriba y abajo */
+  overflow-y: auto; /* La barra solo aparecerá si el contenido supera max-height */
 }
 
 
@@ -587,10 +567,14 @@ footer {
   gap: 12px;
   align-items: center;
   padding: 0 10px 10px 10px;
-  height: 100%;           /* <-- Cambia flex: 1 por height: 100% */
-  min-height: unset;      /* <-- Elimina min-height para evitar conflictos */
+  /* Ya no necesitamos height: 100%; aquí */
+  min-height: unset; /* Asegura que no haya un mínimo que fuerce la barra */
   justify-content: flex-start;
-  overflow-y: auto;       /* <-- Permite scroll si el contenido es muy grande */
+  /* IMPORTANTE: max-height para controlar el scroll del panel */
+  max-height: calc(100% - 20px); /* Ejemplo: 100% de la altura del slider, menos un margen de 20px */
+  overflow-y: auto; /* El scroll SOLO en el panel si es necesario */
+  flex-shrink: 0; /* Evita que el panel se encoja */
+
 }
 
 .password-container {
@@ -622,6 +606,17 @@ footer {
 .modal-content.animate-in {
   animation: scaleIn 0.4s cubic-bezier(0.4,0,0.2,1) both;
 }
+@keyframes scaleIn { /* Mantener para el modal */
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 @media (max-width: 500px) {
   .modal-content {
     max-width: 98vw !important;
@@ -649,16 +644,7 @@ footer {
   }
 }
 
-@keyframes scaleIn {
-  from {
-    transform: scale(0.9);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
+
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
@@ -761,7 +747,144 @@ footer {
   }
 }
 
+/* ================================================== */
+/* ========= ESTILOS SECCIÓN SERVICIOS MEJORADA ========= */
+/* ================================================== */
 
+.servicios-section-mejorada {
+  width: 100%;
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.servicios-header h2 {
+  font-size: 2.2rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.servicios-header p {
+  font-size: 1.1rem;
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto 40px auto;
+}
+
+.filtros-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 40px;
+}
+
+.filtro-btn {
+  background-color: #fff;
+  color: #007BFF;
+  border: 1px solid #007BFF;
+  padding: 10px 25px;
+  border-radius: 50px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 1em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filtro-btn:hover {
+  background-color: #007BFF;
+  color: #fff;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+}
+
+.filtro-btn.active {
+  background-color: #007BFF;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+}
+
+.servicios-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.servicio-card {
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: left;
+}
+
+.servicio-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 123, 255, 0.15);
+}
+
+.servicio-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.card-content {
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Para que el contenido ocupe el espacio y el link quede abajo */
+}
+
+.card-icon {
+    font-size: 1.8rem;
+    color: #007BFF;
+    margin-bottom: 10px;
+}
+
+.card-content h3 {
+  font-size: 1.3rem;
+  color: #333;
+  margin: 0 0 10px 0;
+}
+
+.card-content p {
+  font-size: 1em;
+  color: #555;
+  line-height: 1.6;
+  flex-grow: 1; /* Empuja el link hacia abajo */
+  margin-bottom: 20px;
+}
+
+.cta-link {
+  color: #007BFF;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s;
+  display: inline-block; /* Para que no ocupe todo el ancho */
+}
+
+.cta-link:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+
+/* Animación para las tarjetas al filtrar */
+.servicio-card.hidden {
+    transform: scale(0.8);
+    opacity: 0;
+    transition: all 0.3s ease;
+    height: 0;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
 
 
 
