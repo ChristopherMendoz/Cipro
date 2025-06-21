@@ -133,7 +133,7 @@ router.post('/', async (req, res) => {
 
             // 2. Insertar el nuevo usuario en UsuarioSistema
             await sql.query`
-                INSERT INTO UsuarioSistema (idUsuario, correo, nombreUsuario, contrasena, idRol)
+                INSERT INTO UsuarioSistema (idUsuario, correo, nombreUsuario, contraseña, idRol)
                 VALUES (${idUsuario}, ${correo}, ${nombreUsuarioNuevo}, ${hash}, 1)
             `;
         }
