@@ -16,6 +16,7 @@ const config = {
 
 
 
+
 // Middleware para proteger la ruta y verificar si el médico está logueado
 router.use((req, res, next) => {
     // Verifica si hay un idMedico en la sesión

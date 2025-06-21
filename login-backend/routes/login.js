@@ -2,11 +2,14 @@ const express = require('express');
 const router = express.Router();
 const sql = require('mssql');
 const bcrypt = require('bcrypt');
+
 //const config = require('../config.js'); // Puedes volver a usar tu archivo config si quieres
+
 
 // --- NO MÁS VARIABLES GLOBALES PARA INTENTOS FALLIDOS ---
 // let intentosFallidos = 0;  // ELIMINADO
 // let bloqueoHasta = null;   // ELIMINADO
+
 
 const config = {
     user: 'sa',
@@ -18,6 +21,7 @@ const config = {
         encrypt: false,
     }
 };
+
 
 router.post('/', async (req, res) => {
     const { Username, Contrasena } = req.body;

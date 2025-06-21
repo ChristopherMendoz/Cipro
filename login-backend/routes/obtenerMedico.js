@@ -15,6 +15,7 @@ router.use((req, res, next) => {
 });
 
 
+
 // Ruta: /obtener-medico (ya no lleva :idUsuario en la URL)
 router.get('/', async (req, res) => {
     // Obtener el idUsuario directamente de la sesión

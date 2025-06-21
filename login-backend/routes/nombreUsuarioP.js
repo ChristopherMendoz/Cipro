@@ -14,6 +14,7 @@ const config = {
     }
 };
 
+
 // Middleware para verificar que haya un usuario logueado en la sesión
 router.use((req, res, next) => {
     if (!req.session || !req.session.idUsuario) {

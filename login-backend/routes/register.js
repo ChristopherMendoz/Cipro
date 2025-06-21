@@ -15,6 +15,7 @@ const config = {
   }
 };
 
+
 router.post('/', async (req, res) => {
   const {
     primerNombre,
