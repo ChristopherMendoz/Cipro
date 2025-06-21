@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contacto – Clínica Cipro</title>
+  <link rel="stylesheet" href="..\styleclinica.css" />
+  <link rel="stylesheet" href="styleContacto.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" href="favicon1.png" type="image/png" />
+</head>
+
+<body>
+
+  <div id="navbar-placeholder"></div>
+  <script>
+    // Cargar navbar
+    fetch('../componentes/navbar.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('navbar-placeholder').innerHTML = html;
+
+        // Marcar automáticamente la sección activa según <title>
+        const seccion = document.title.split('–')[0].trim();
+        document.querySelectorAll('.nav-links a').forEach(link => {
+          if (link.dataset.section === seccion) {
+            link.classList.add('active');
+          }
+        });
+        // Lógica para el botón de login en el navbar
+        const navLoginBtn = document.getElementById('navbar-placeholder').querySelector('.btn-login-nav');
+        if (navLoginBtn) {
+            navLoginBtn.addEventListener('click', () => {
+                document.getElementById('modalLogin').style.display = 'flex';
+            });
+        }
+      });
+  </script>
+
+  <div id="tsparticles-background"></div>
+
+  <main class="container contact-page">
+    <section class="contact-header">
+      <h2>Contáctanos</h2>
+      <p>Estamos aquí para responder tus preguntas y ayudarte a agendar tu cita. Elige la opción que prefieras:</p>
+    </section>
+
+    <section class="contact-options-grid">
+      <div class="contact-card general-contact fade-in">
+        <div class="icon-large"><i class="fas fa-question-circle"></i></div>
+        <h3>Consulta General</h3>
+        <p>¿Tienes dudas o necesitas información? Envíanos un mensaje o chatea con nosotros.</p>
+        <form id="generalContactForm" class="contact-form">
+          <input type="text" name="nombre" placeholder="Tu Nombre" required>
+          <input type="email" name="correo" placeholder="Tu Correo Electrónico" required>
+          <textarea name="mensaje" placeholder="Tu Mensaje o Consulta" rows="4" required></textarea>
+          <button type="submit" class="btn-primary">Enviar Mensaje</button>
+        </form>
+        <p class="whatsapp-option">O contáctanos directamente por WhatsApp:</p>
+        <a href="https://wa.me/50522663542" class="btn-whatsapp" target="_blank">
+          <i class="fab fa-whatsapp"></i> Chatear por WhatsApp
+        </a>
+      </div>
+
+      <div class="contact-card schedule-appointment fade-in">
+        <div class="icon-large"><i class="fas fa-calendar-alt"></i></div>
+        <h3>Agendar Cita</h3>
+        <p>Si ya eres paciente, puedes agendar tu cita directamente con tus datos.</p>
+        <div id="appointmentFormContainer">
+            <p class="info-text" id="loginPrompt">
+                Por favor, <a href="#" onclick="abrirLogin(event)">inicia sesión</a> para agendar tu cita.
+            </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="modalContainer"></div>
+  <script>
+    // Cargar modal.html
+    fetch("../Componentes/modal.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("modalContainer").innerHTML = html;
+        // Busca y ejecuta los scripts embebidos en el HTML cargado
+        const scripts = document.getElementById("modalContainer").querySelectorAll("script");
+        scripts.forEach(oldScript => {
+          const newScript = document.createElement("script");
+          if (oldScript.src) {
+            newScript.src = oldScript.src;
+          } else {
+            newScript.textContent = oldScript.textContent;
+          }
+          document.body.appendChild(newScript);
+        });
+        // IMPORTANTE: Los listeneres de login y registro deben re-conectarse si se cargan dinámicamente
+        // Esto depende de cómo tengas tus funciones JS definidas y si son globales
+        // Si ya están en el script de modal.html, esto debería funcionar
+      });
+  </script>
+
+  <div id="footer-placeholder"></div>
+  <script>
+    // Cargar el footer
+    fetch('../Componentes/footer.html')
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById('footer-placeholder').innerHTML = data;
+        // Cambia dinámicamente el nombre de la página
+        const actual = document.title.replace('– Clínica Cipro', '').trim();
+        document.getElementById('ubicacionFooter').textContent = actual;
+      });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+  <script>
+    // Si estás usando tsParticles en Clinica.html y quieres que esté en Contacto.html
+    // Asegúrate de copiar la configuración de tsParticles aquí
+    async function loadParticles() {
+      await tsParticles.load("tsparticles-background", {
+        fullScreen: {
+          enable: true,
+          zIndex: 0
+        },
+        interactivity: {
+          events: {
+            onHover: {
+              enable: true,
+              mode: "repulse",
+            },
+          },
+          modes: {
+            repulse: {
+              distance: 100,
+              duration: 0.4,
+            },
+          },
+        },
+        particles: {
+          number: {
+            value: 80,
+          },
+          color: {
+            value: ["#ffffff", "#add8e6", "#87ceeb"],
+          },
+          shape: {
+            type: ["circle", "triangle", "square"],
+          },
+          opacity: {
+            value: 0.4,
+            random: true,
+          },
+          size: {
+            value: { min: 5, max: 20 },
+            random: true,
+          },
+          links: {
+            enable: true,
+            distance: 150,
+            color: "#ffffff",
+            opacity: 0.2,
+            width: 1,
+          },
+          move: {
+            enable: true,
+            speed: 1,
+            direction: "none",
+            random: true,
+            straight: false,
+            outModes: {
+              default: "bounce",
+            },
+            attract: {
+              enable: false,
+              rotateX: 600,
+              rotateY: 1200,
+            },
+          },
+        },
+        background: {
+          color: {
+            value: "transparent",
+          },
+        },
+      });
+    }
+    // Solo carga las partículas si el contenedor existe
+    if (document.getElementById('tsparticles-background')) {
+        loadParticles();
+    }
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Lógica para verificar sesión y cargar formulario de cita
+      const idUsuario = sessionStorage.getItem('idUsuario'); // Obtener el idUsuario de la sesión
+
+      if (idUsuario) {
+        // Usuario logueado, cargar formulario de cita
+        await loadAppointmentForm(idUsuario);
+      } else {
+        // Usuario no logueado, mostrar mensaje para iniciar sesión
+        document.getElementById('loginPrompt').style.display = 'block';
+      }
+
+      // Lógica para enviar el formulario de contacto general
+      document.getElementById('generalContactForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        alert('Mensaje enviado (simulado)!'); // Aquí iría la lógica para enviar a un correo/backend
+        this.reset();
+      });
+    });
+
+    // Función para cargar el formulario de agendar cita (solo para usuarios logueados)
+    async function loadAppointmentForm(idUsuario) {
+        const container = document.getElementById('appointmentFormContainer');
+        container.innerHTML = `
+            <form id="appointmentForm" class="contact-form">
+                <input type="hidden" name="idPaciente" id="appointmentPacienteId">
+                <p class="info-text">Bienvenido, <strong id="patientNameDisplay"></strong>. Agenda tu cita:</p>
+
+                <label for="appointmentService">Tipo de Servicio:</label>
+                <select name="tipoEstudio" id="appointmentService" required>
+                    <option value="">Selecciona un servicio</option>
+                    </select>
+
+                <label for="appointmentDoctor">Médico Preferido (Opcional):</label>
+                <select name="idMedico" id="appointmentDoctor">
+                    <option value="">Cualquier médico</option>
+                    </select>
+
+                <label for="appointmentDate">Fecha Preferida:</label>
+                <input type="date" name="fecha" id="appointmentDate" required>
+
+                <label for="appointmentTime">Hora Preferida:</label>
+                <select name="hora" id="appointmentTime" required>
+                    <option value="">Selecciona una hora</option>
+                    </select>
+
+                <textarea name="observaciones" placeholder="Observaciones (ej. motivo de la consulta)" rows="3"></textarea>
+                <button type="submit" class="btn-primary">Confirmar Cita</button>
+                <p id="appointmentMessage" class="error-msg"></p>
+            </form>
+        `;
+
+        // 1. Obtener datos del paciente (para auto-rellenar o mostrar nombre)
+        try {
+            const patientRes = await fetch(`/api/pacientes/by-idusuario/${idUsuario}`); // Necesitas esta ruta en tu backend
+            const patientData = await patientRes.json();
+            if (patientData && patientData.idPaciente) {
+                document.getElementById('appointmentPacienteId').value = patientData.idPaciente;
+                document.getElementById('patientNameDisplay').textContent = `${patientData.primerNombre} ${patientData.primerApellido}`;
+            } else {
+                 throw new Error("Paciente no encontrado o no logueado como paciente.");
+            }
+        } catch (error) {
+            console.error("Error al obtener datos del paciente:", error);
+            container.innerHTML = `<p class="error-msg visible">Error: No se pudieron cargar los datos del paciente. Por favor, inicia sesión de nuevo.</p>`;
+            return;
+        }
+
+
+        // 2. Cargar tipos de estudio (servicios)
+        try {
+            const serviciosRes = await fetch('/api/servicios'); // Necesitas esta ruta en tu backend
+            const servicios = await serviciosRes.json();
+            const selectServicio = document.getElementById('appointmentService');
+            servicios.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.tipoEstudio || s.nombre; // Ajusta según el nombre de tu columna de servicio
+                opt.textContent = s.tipoEstudio || s.nombre;
+                selectServicio.appendChild(opt);
+            });
+        } catch (error) {
+            console.error("Error al cargar servicios:", error);
+        }
+
+        // 3. Cargar médicos
+        try {
+            const medicosRes = await fetch('/api/medicos'); // Necesitas esta ruta en tu backend
+            const medicos = await medicosRes.json();
+            const selectMedico = document.getElementById('appointmentDoctor');
+            medicos.forEach(m => {
+                const opt = document.createElement('option');
+                opt.value = m.idMedico;
+                opt.textContent = m.nombreCompleto + ' (' + (m.especializacion || '') + ')'; // Ajusta según tus datos
+                selectMedico.appendChild(opt);
+            });
+        } catch (error) {
+            console.error("Error al cargar médicos:", error);
+        }
+
+        // 4. Lógica de validación de fecha (no puede ser pasada)
+        const appointmentDateInput = document.getElementById('appointmentDate');
+        const today = new Date();
+        today.setDate(today.getDate() + 1); // Establecer la fecha mínima como mañana
+        appointmentDateInput.min = today.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+
+        // 5. Lógica para cargar horas disponibles (depende de fecha y médico)
+        const appointmentTimeSelect = document.getElementById('appointmentTime');
+        const selectMedico = document.getElementById('appointmentDoctor');
+
+        const loadAvailableTimes = async () => {
+            const selectedDate = appointmentDateInput.value;
+            const selectedMedicoId = selectMedico.value;
+            appointmentTimeSelect.innerHTML = '<option value="">Selecciona una hora</option>'; // Limpiar opciones
+
+            if (!selectedDate) return; // No cargar si no hay fecha
+
+            try {
+                // Aquí deberías llamar a tu API para obtener horarios disponibles
+                // CONSIDERACIÓN CLAVE: Tu BD no tiene una tabla 'HorarioDisponible' en AgendaMedico.
+                // Necesitarás una tabla o lógica para saber qué horas están libres.
+                // Por ahora, generaremos horarios fijos para demostración.
+                const clinicOpen = 8; // 8:00 AM
+                const clinicClose = 17; // 5:00 PM (17:00)
+                const lastAppointmentStart = clinicClose - 1; // Última cita empieza a las 4 PM
+
+                for (let h = clinicOpen; h <= lastAppointmentStart; h++) {
+                    ['00', '30'].forEach(m => { // Citas cada 30 minutos
+                        const time = `${h.toString().padStart(2, '0')}:${m}`;
+                        const opt = document.createElement('option');
+                        opt.value = time;
+                        opt.textContent = time;
+                        appointmentTimeSelect.appendChild(opt);
+                    });
+                }
+                // En un sistema real: Consulta a la DB (AgendaMedico) para ver si la hora ya está ocupada
+                // y filtra las que ya tienen cita para el médico y sala seleccionados.
+
+            } catch (error) {
+                console.error("Error al cargar horas disponibles:", error);
+            }
+        };
+
+        appointmentDateInput.addEventListener('change', loadAvailableTimes);
+        selectMedico.addEventListener('change', loadAvailableTimes); // Recargar horas si cambia el médico
+
+        // 6. Lógica para enviar el formulario de cita
+        document.getElementById('appointmentForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const form = event.target;
+            const messageEl = document.getElementById('appointmentMessage');
+
+            const idPaciente = form.idPaciente.value;
+            const tipoEstudio = form.tipoEstudio.value;
+            const idMedico = form.idMedico.value === "" ? null : form.idMedico.value; // Puede ser opcional
+            const fecha = form.fecha.value;
+            const hora = form.hora.value;
+            const observaciones = form.observaciones.value.trim();
+
+            if (!idPaciente || !tipoEstudio || !fecha || !hora) {
+                messageEl.textContent = "Por favor, completa todos los campos requeridos.";
+                messageEl.classList.add('visible');
+                messageEl.style.color = "#cc0000";
+                return;
+            }
+
+            try {
+                // Paso 1: Obtener idRecepcionista (temporalmente fijo o el primero disponible)
+                // En un sistema real, esto se manejaría en el backend o con un usuario de sesión de recepcionista
+                const recepcionistasRes = await fetch('/api/recepcionistas'); // Necesitas esta ruta
+                const recepcionistas = await recepcionistasRes.json();
+                const idRecepcionista = recepcionistas.length > 0 ? recepcionistas[0].idRecepcionista : 1; // Asumiendo ID 1 si no hay
+
+
+                // Paso 2: Obtener idSala (temporalmente fijo o el primero disponible para el tipo de estudio)
+                // Esto requeriría lógica para asignar sala según tipo de estudio o disponibilidad.
+                // Por ahora, asumiremos idSala = 1 (o la que consideres por defecto)
+                const idSala = 1; // Necesitarás una tabla de Salas y lógica para esto
+
+
+                // Datos de la cita para el backend
+                const appointmentData = {
+                    fecha: fecha,
+                    hora: hora,
+                    estado: 'pendiente', // Siempre pendiente al agendar por paciente
+                    tipoEstudio: tipoEstudio,
+                    observaciones: observaciones,
+                    idPaciente: idPaciente,
+                    idMedico: idMedico, // Puede ser null si eligen "Cualquier médico"
+                    idSala: idSala,
+                    idRecepcionista: idRecepcionista
+                };
+
+                const res = await fetch('/api/agendar-cita', { // Necesitas esta nueva ruta POST en tu backend
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(appointmentData)
+                });
+
+                const data = await res.json();
+
+                if (data.ok) {
+                    messageEl.textContent = '✅ Cita agendada con éxito. Recibirás una confirmación.';
+                    messageEl.classList.add('visible');
+                    messageEl.style.color = 'green';
+                    form.reset();
+                    // Opcional: Recargar horarios disponibles
+                    loadAvailableTimes();
+                } else {
+                    messageEl.textContent = data.mensaje || 'Error al agendar la cita.';
+                    messageEl.classList.add('visible');
+                    messageEl.style.color = '#cc0000';
+                }
+            } catch (error) {
+                console.error('Error al agendar cita:', error);
+                messageEl.textContent = 'Error del servidor al agendar cita.';
+                messageEl.classList.add('visible');
+                messageEl.style.color = '#cc0000';
+            }
+            setTimeout(() => messageEl.classList.remove('visible'), 5000);
+        });
+    }
+  </script>
+
+</body>
+
+</html>

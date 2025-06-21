@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const sql = require('mssql');
 const bcrypt = require('bcrypt');
-
+//const config = require('../config.js');
 
 const config = {
   user: 'sa',

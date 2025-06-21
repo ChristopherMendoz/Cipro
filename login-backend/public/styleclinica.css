@@ -1,149 +1,626 @@
-/* FUENTE BASE */
+:root {
+  --primary-color: #007BFF; /* Azul principal */
+  --secondary-color: #004080; /* Azul oscuro para texto */
+  --accent-color: #28a745; /* Verde para checks, etc. */
+  --text-color: #333;
+  --light-bg: #f9fcff; /* Fondo claro general */
+  --gray-bg: #f1f6fb; /* Fondo gris sutil */
+  --white-bg: #ffffff;
+
+  --shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 5px 15px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.1);
+
+  --border-radius-sm: 8px;
+  --border-radius-md: 12px;
+}
+
+/* --- FUENTE BASE Y RESET --- */
 body {
   margin: 0;
   padding: 0;
   font-family: 'Poppins', sans-serif;
-  background-color: #f9fcff;
-  color: #333;
+  background-color: var(--light-bg);
+  color: var(--text-color);
+  line-height: 1.6;
+  position: relative;
 }
 
-/* HERO */
-.hero {
-  margin-top: 80px;
+.decoration-circle-top-left {
+    position: absolute;
+    top: 80px;   /* Más cerca de la parte superior del body, ajustado por el navbar */
+    left: -100px; /* Desplazado más a la izquierda, parcialmente visible */
+    width: 250px; /* Quizás un poco más grande para que se note */
+    height: 250px;
+    border-radius: 50%;
+    background-color: rgba(0, 123, 255, 0.1); /* Baja la opacidad para que sea sutil */
+    z-index: 0; /* Asegúrate de que estén detrás del contenido principal */
+    pointer-events: none;
+    animation: fadeIn 1s ease-out forwards;
+}
+
+/* decoration-line-bottom-right */
+.decoration-line-bottom-right {
+    position: absolute;
+    bottom: 50px;  /* Más cerca de la parte inferior */
+    right: -150px; /* Desplazado más a la derecha */
+    width: 400px;  /* Puede ser más largo */
+    height: 70px;  /* Más alto */
+    background: linear-gradient(to right, transparent, rgba(0, 123, 255, 0.15)); /* Gradiente sutil */
+    transform: skewY(-8deg); /* Ligeramente más inclinado */
+    z-index: 0;
+    pointer-events: none;
+    animation: fadeIn 1s ease-out forwards;
+}
+
+#tsparticles-background {
+  position: fixed; /* Ocupa toda la ventana de vista */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0; /* Asegúrate de que esté en el fondo, detrás del contenido */
+  pointer-events: none; /* Crucial para que no bloquee los clics en el contenido */
+  background-color: transparent; /* Permite que se vea el fondo de tu hero-new */
+}
+
+
+h1, h2, h3 {
+  color: var(--secondary-color);
+  margin-top: 0;
+  font-weight: 700;
+}
+
+h2:not(.modal-content h2) { /* Aplica a todos los h2 MENOS a los que están dentro de .modal-content */
+  font-size: 2.2em;
+  text-align: center;
+  margin-bottom: 40px;
   position: relative;
-  height: 70vh;
-  background: #e9f3ff url('https://clinicadentalcachero.com/wp-content/uploads/2020/07/fondo-contacto-inicio-2-2.jpg') center/cover no-repeat;
+  padding-bottom: 10px;
+}
+h2:not(.modal-content h2)::after { /* Aplica la barra a los mismos h2 */
+  content: '';
+  display: block;
+  width: 60px;
+  height: 4px;
+  background-color: var(--primary-color);
+  margin: 10px auto 0;
+  border-radius: 2px;
+}
+
+p {
+    margin-bottom: 15px;
+}
+
+.container {
+  padding: 60px 20px; /* Mayor padding para más espacio */
+  max-width: 1200px; /* Ancho máximo para el contenido */
+  margin: auto;
+}
+
+section {
+    margin-bottom: 80px; /* Espacio entre secciones */
+    padding: 20px 0;
+}
+
+/* --- Nuevos Botones Generales --- */
+.btn-main, .btn-secondary, .btn-outline, .btn-text, .btn-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 25px;
+  border-radius: var(--border-radius-sm);
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+.btn-main {
+  background: var(--primary-color);
+  color: var(--white-bg);
+  border: none;
+  box-shadow: var(--shadow-md);
+}
+
+.btn-main:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 7px 20px rgba(0, 123, 255, 0.3);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  box-shadow: none;
+}
+
+.btn-secondary:hover {
+  background-color: var(--primary-color);
+  color: var(--white-bg);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: 500;
+}
+
+.btn-outline:hover {
+  background-color: var(--primary-color);
+  color: var(--white-bg);
+}
+
+.btn-text {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95em;
+    padding: 5px 0;
+    border-bottom: 2px solid transparent;
+}
+.btn-text:hover {
+    border-color: var(--primary-color);
+}
+
+.btn-cta {
+  background: var(--accent-color);
+  color: var(--white-bg);
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.1em;
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-md);
+}
+.btn-cta:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+  box-shadow: 0 7px 20px rgba(40, 167, 69, 0.3);
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* --- HERO / BANNER PRINCIPAL (hero-new) --- */
+.hero-new {
+  margin-top: 68px; /* Ajuste para el navbar fijo */
+  position: relative;
+  height: 85vh; /* Un poco más alto para mayor impacto */
   display: flex;
   align-items: center;
   justify-content: center;
+  background: linear-gradient(rgba(0, 64, 128, 0.7), rgba(78, 79, 80, 0.7)),
+              url('https://wallpapers.com/images/hd/healthcare-background-8u6l9oyzn67dtdas.jpg') center/cover no-repeat; /* Usar la imagen de Pixabay aquí */
+  color: var(--white-bg);
+  text-align: center;
+  overflow: hidden; /* Para asegurar que no se desborden elementos */
 }
 
-.hero-overlay {
-  background: rgba(255, 255, 255, 0.85);
-  padding: 40px;
-  width: 100%;
+.hero-content {
+  z-index: 1; /* Asegura que el contenido esté sobre el overlay */
+  max-width: 800px;
+  padding: 20px;
+  animation: fadeInDown 1s ease-out; /* Animación de entrada */
+}
+
+.hero-logo {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+  border: 3px solid var(--white-bg);
+  box-shadow: var(--shadow-lg);
+}
+
+.hero-new h1 {
+  font-size: 3.5em;
+  margin-bottom: 10px;
+  color: var(--white-bg);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.hero-new h2 {
+  font-size: 1.8em;
+  margin-bottom: 20px;
+  color: var(--white-bg);
+  font-weight: 500;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.hero-new p {
+  font-size: 1.1em;
+  max-width: 600px;
+  margin: 0 auto 30px auto;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* --- Sección de Introducción / Propósito (intro-section) --- */
+.intro-section {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 40px;
+  padding: 60px 20px;
+  background-color: var(--white-bg);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-md);
+  margin-top: -60px; /* Se superpone ligeramente al hero para un efecto visual */
+  position: relative;
+  z-index: 2;
+}
+
+.intro-text {
+  flex: 1;
+  min-width: 300px;
+  padding-right: 20px;
+}
+
+.intro-text h2 {
+  text-align: left;
+  margin-bottom: 20px;
+}
+.intro-text h2::after {
+    margin: 10px 0 0 0; /* Alinea la barra a la izquierda */
+}
+
+.intro-text p {
+  font-size: 1.05em;
+  line-height: 1.7;
+}
+
+.intro-image {
+  flex: 1;
+  min-width: 300px;
   text-align: center;
+}
+.intro-image img {
+  max-width: 100%;
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-md);
+}
+
+/* --- Sección de Servicios Destacados (services-grid) --- */
+.services-grid {
+    background-color: var(--gray-bg);
+    padding: 60px 20px;
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-md);
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.service-card {
+  background: var(--white-bg);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: 30px 25px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.hero-overlay header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    margin-bottom: 10px;
+.service-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
 }
 
-.hero-overlay .logo {
-    margin-bottom: 8px;
-}
-
-.hero-overlay h1 {
-    color: #007BFF;
-    font-size: 2.2rem;
-    margin: 0;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-align: center;
-}
-
-.hero-text h2 {
-  font-size: 1.8rem;
-  margin: 10px 0;
-  color: #004080;
-}
-
-.hero-text p {
-  font-size: 1rem;
-  color: #444;
-  max-width: 500px;
-}
-
-/* HEADER */
-header {
+.icon-circle {
+  background-color: var(--primary-color);
+  color: var(--white-bg);
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  width: 100%;
+  justify-content: center;
+  font-size: 2.2em;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
 }
 
-.logo {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
+.service-card h3 {
+  font-size: 1.4em;
+  margin-bottom: 10px;
+  color: var(--primary-color);
 }
 
-/* BOTÓN LOGIN */
-.btn-login {
-  background: #007BFF;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+.service-card p {
+  font-size: 0.95em;
+  color: #555;
 }
 
-.btn-login:hover {
-  background-color: #0056b3;
-}
-
-/* MAIN */
-.container {
-  padding: 40px 20px;
-  max-width: 1000px;
-  margin: auto;
-}
-
-h2 {
-  color: #007BFF;
-  margin-bottom: 15px;
-}
-
-ul {
-  padding-left: 20px;
-}
-
-.cards {
+/* --- Sección de Beneficios / Por Qué Elegirnos (why-choose-us) --- */
+.why-choose-us {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  align-items: center;
+  gap: 40px;
+  padding: 60px 20px;
+  background-color: var(--primary-color); /* Fondo azul para contraste */
+  color: var(--white-bg);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-md);
+}
+
+.why-choose-text {
+  flex: 1;
+  min-width: 300px;
+  padding-right: 20px;
+}
+
+.why-choose-text h2 {
+  text-align: left;
+  color: var(--white-bg); /* Título blanco */
+  margin-bottom: 25px;
+}
+.why-choose-text h2::after {
+    background-color: var(--accent-color); /* Barra verde de acento */
+    margin: 10px 0 0 0;
+}
+
+.why-choose-text ul {
+  list-style: none;
+  padding: 0;
+}
+
+.why-choose-text ul li {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 18px;
+  font-size: 1.1em;
+  line-height: 1.5;
+}
+
+.why-choose-text ul li i {
+  color: var(--accent-color); /* Íconos en color de acento */
+  font-size: 1.3em;
+  margin-right: 15px;
+  flex-shrink: 0; /* Evita que el ícono se encoja */
+}
+.why-choose-text ul li strong {
+    color: var(--white-bg); /* Texto en negrita en blanco */
+}
+
+.why-choose-image {
+  flex: 1;
+  min-width: 300px;
+  text-align: center;
+}
+.why-choose-image img {
+  max-width: 100%;
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-lg);
+}
+
+/* --- Sección de CTA / Horarios (cta-hours) --- */
+.cta-hours {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 40px;
+  padding: 60px 20px;
+  background-color: var(--white-bg);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-md);
+  text-align: center;
+}
+
+.cta-item {
+  background-color: var(--light-bg);
+  padding: 30px;
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
 }
 
-.card {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  padding: 20px;
-  flex: 1 1 280px;
-  max-width: 300px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  text-align: center;
+.icon-large {
+  color: var(--primary-color);
+  font-size: 3.5em;
+  margin-bottom: 20px;
 }
 
-.card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 8px 16px rgba(0, 123, 255, 0.2);
+.cta-item h3 {
+  font-size: 1.6em;
+  margin-bottom: 15px;
+  color: var(--primary-color);
 }
 
-.card .icon {
-  font-size: 40px;
-  margin-bottom: 10px;
+.cta-item p {
+  font-size: 1.0em;
+  color: #555;
+  margin-bottom: 20px;
 }
 
-footer {
-  text-align: center;
-  padding: 30px;
-  font-size: 0.9em;
-  background: #f1f6fb;
-  margin-top: 40px;
-  border-top: 1px solid #ddd;
+.cta-item .contact-info {
+    font-size: 1.1em;
+    font-weight: 500;
+    color: var(--secondary-color);
 }
+.cta-item .contact-info i {
+    margin-right: 8px;
+    color: var(--primary-color);
+}
+
+
+/* --- ANIMACIONES (mantener) --- */
+.fade-in {
+  animation: fadeInUp 0.8s ease both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px); /* Ligeramente más arriba */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- RESPONSIVE GENERAL (Ajustar según la nueva estructura) --- */
+@media (max-width: 992px) {
+  .hero-new h1 {
+    font-size: 2.8em;
+  }
+  .hero-new h2 {
+    font-size: 1.5em;
+  }
+  .intro-section, .why-choose-us {
+    flex-direction: column; /* Apila las columnas en pantallas medianas */
+    text-align: center;
+  }
+  .intro-text, .why-choose-text {
+    padding-right: 0;
+    text-align: center;
+  }
+  .intro-text h2::after, .why-choose-text h2::after {
+    margin: 10px auto 0; /* Centra las barras */
+  }
+  .why-choose-text ul {
+    align-items: center; /* Centra los elementos de la lista */
+  }
+  .why-choose-text ul li {
+    flex-direction: column; /* Apila ícono y texto en la lista */
+    align-items: center;
+    text-align: center;
+  }
+  .why-choose-text ul li i {
+    margin-right: 0;
+    margin-bottom: 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  h2 {
+    font-size: 1.8em;
+  }
+  .hero-new {
+    height: 90vh; /* Mayor altura en móviles */
+    padding: 20px;
+    clip-path: none; /* Elimina la forma inclinada en móviles para evitar problemas */
+    margin-bottom: 0;
+  }
+  .hero-new h1 {
+    font-size: 2em; /* Reducir aún más para móviles */
+    word-wrap: break-word; /* Asegura que palabras largas se rompan */
+    white-space: normal; /* Asegura que el texto fluya normalmente */
+    margin-bottom: 5px;
+  }
+  .hero-new h2 {
+    font-size: 1.1em; /* Reducir aún más */
+    word-wrap: break-word;
+    white-space: normal;
+    margin-bottom: 15px;
+  }
+  .hero-new p {
+    font-size: 0.9em; /* Reducir el tamaño del párrafo */
+    word-wrap: break-word;
+    white-space: normal;
+    margin-bottom: 15px;
+  }
+  .hero-buttons {
+    flex-direction: column; /* Botones apilados */
+    gap: 10px;
+  }
+
+  .hero-content {
+    padding: 10px; /* Asegúrate de que no haya padding excesivo en el contenido interno del hero */
+  }
+
+  
+  .btn-main, .btn-secondary {
+    width: 90%; /* Asegúrate de que los botones no sean más anchos que el 90% */
+    max-width: 300px; /* Un max-width para que no se hagan demasiado anchos en tablets */
+    justify-content: center;
+    padding: 12px 20px; /* Ajusta el padding de los botones */
+    font-size: 0.95em;
+  }
+  .intro-section, .services-grid, .why-choose-us, .cta-hours {
+    padding: 40px 15px; /* Menor padding */
+  }
+
+  .decoration-circle-top-left,
+  .decoration-line-bottom-right {
+    display: none; /* Oculta estos elementos en móviles */
+  }
+
+  .intro-section, .services-grid, .why-choose-us, .cta-hours {
+    padding: 30px 15px; /* Menor padding lateral */
+  }
+
+  .container {
+    padding: 30px 15px;
+  }
+  .service-card {
+    width: 100%; /* Las tarjetas deben tomar todo el ancho disponible */
+    max-width: 350px; /* Pero con un máximo para no ser enormes en tablets */
+    margin: 0 auto;
+  }
+
+  .cards-grid {
+    grid-template-columns: 1fr; /* Forzar una sola columna */
+  }
+
+  .icon-circle {
+    width: 60px;
+    height: 60px;
+    font-size: 2em;
+  }
+  .icon-large {
+    font-size: 3em;
+  }
+
+  .hero-text h2 {
+    font-size: 1.5rem;
+  }
+  .cards {
+    flex-direction: column;
+    align-items: center;
+  }
+  header {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+
+
 
 /* MODAL LOGIN */
 .modal {
@@ -161,7 +638,7 @@ footer {
 
 .modal-content {
   background: white;
-  padding: 0px 30px 30px 30px !important;
+  padding: 18px 30px 30px 30px !important;
   border-radius: 12px;
   width: 90%;
   max-width: 450px;
@@ -173,17 +650,25 @@ footer {
 
 /* Establece una altura mínima para login */
 .modal-content.login-size {
-  height: 500px; /* o el tamaño justo para tu formulario de login */
+  height: auto;
+  min-height: 340px;
+  max-width: 400px;
 }
 
 /* Establece una altura mayor para registro */
 .modal-content.registro-size {
-  height: 1000px; /* o el tamaño justo para tu formulario de registro */
+  height: auto;
+  min-height: 500px; /* Altura mínima para el registro */
+  max-width: 400px;
+  /* IMPORTANTE: Usamos max-height y overflow-y: auto aquí para que la barra aparezca SOLO si es necesario */
+  max-height: calc(100vh - 80px); /* Ajusta este valor: viewport height menos un margen de 80px arriba y abajo */
+  overflow-y: auto; /* La barra solo aparecerá si el contenido supera max-height */
 }
 
 
 .modal-content.expand {
-  max-width: auto; /* más ancho para que entren ambos formularios */
+  max-width: auto;
+  /* más ancho para que entren ambos formularios */
 }
 
 .close {
@@ -199,14 +684,26 @@ footer {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  align-items: center;
+  max-width: 90%;
+  margin: 0 auto;
+}
+
+.login-form input,
+.login-form button,
+.password-container {
+  width: 90%;
+  margin: 0 0 0 0;
 }
 
 .login-form input {
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  width: 90%;         /* <-- Añade o ajusta esta línea */
-  margin: 0 auto;     /* Centra los campos si el contenedor es más pequeño */
+  width: 90%;
+  /* <-- Añade o ajusta esta línea */
+  margin: 0 auto;
+  /* Centra los campos si el contenedor es más pequeño */
 }
 
 .login-form button {
@@ -215,10 +712,13 @@ footer {
   padding: 12px;
   border: none;
   border-radius: 8px;
-  width: 90%;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.3s ease;
+  width: 100%;
+  /* <-- Añade o ajusta esta línea */
+  margin: 0 auto;
+  /* Centra el botón si el contenedor es más pequeño */
 }
 
 .login-form button:hover {
@@ -227,27 +727,70 @@ footer {
 
 .modal-logo {
   width: 70px;
-  margin: auto;
+  margin: 0 auto 4px auto;
+  /* menos espacio abajo */
   display: block;
-  margin-bottom: 8px; /* antes 15px, ahora menos */
 }
 
-.login-form h2, .registro-form h2 {
-  margin-top: 10px;
-  margin-bottom: 12px; /* antes podía ser más grande */
+.login-form h2,
+.registro-form h2 {
+  margin-top: 4px;
+  /* menos espacio arriba */
+  margin-bottom: 10px;
 }
 
 .error-msg {
-  display: none;
-  margin-top: 15px;
-  padding: 12px;
+  /* --- Propiedades para la animación --- */
+  max-height: 0;
+  overflow: hidden;
+  margin-top: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  opacity: 0;
+  border-width: 0 1px;
+
+  /* Transición suave para la animación */
+  transition: all 0.3s ease-out;
+
+  /* --- Tus estilos de diseño que ya tenías --- */
   background-color: #ffe6e6;
-  border: 1px solid #ff4d4d;
+  border-color: #ff4d4d;
+  border-style: solid;
   color: #cc0000;
   border-radius: 8px;
   font-size: 14px;
   font-weight: 500;
-  animation: fadeIn 0.3s ease-in-out;
+  text-align: center;
+}
+
+/* Clase que usaremos con JavaScript para mostrar el mensaje */
+.error-msg.visible {
+  max-height: 200px;
+  /* Aumenta la altura máxima */
+  margin-top: 15px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  opacity: 1;
+  border-width: 1px;
+  white-space: normal;
+  /* Permite saltos de línea */
+  word-break: break-word;
+  /* Rompe palabras largas si es necesario */
+}
+
+.error-msg,
+.error-msg.visible {
+  width: 100%;
+  /* Ocupa todo el ancho del formulario */
+  box-sizing: border-box;
+  display: block;
+  white-space: normal;
+  /* Permite saltos de línea */
+  word-break: break-word;
+  max-width: 100%;
+  /* No limites el ancho */
+  overflow: visible;
+  /* Permite mostrar todo el texto */
 }
 
 .registro {
@@ -289,10 +832,13 @@ footer {
   gap: 12px;
   align-items: center;
   padding: 0 10px 10px 10px;
-  height: 100%;           /* <-- Cambia flex: 1 por height: 100% */
-  min-height: unset;      /* <-- Elimina min-height para evitar conflictos */
+  height: 100%;
+  /* <-- Cambia flex: 1 por height: 100% */
+  min-height: unset;
+  /* <-- Elimina min-height para evitar conflictos */
   justify-content: flex-start;
-  overflow-y: auto;       /* <-- Permite scroll si el contenido es muy grande */
+  overflow-y: auto;
+  /* <-- Permite scroll si el contenido es muy grande */
 }
 
 .password-container {
@@ -306,7 +852,8 @@ footer {
 .password-container input[type="password"],
 .password-container input[type="text"] {
   width: 100%;
-  padding-right: 40px; /* Espacio para el icono */
+  padding-right: 40px;
+  /* Espacio para el icono */
   box-sizing: border-box;
 }
 
@@ -322,35 +869,18 @@ footer {
 }
 
 .modal-content.animate-in {
-  animation: scaleIn 0.4s cubic-bezier(0.4,0,0.2,1) both;
+  animation: scaleIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
-@media (max-width: 500px) {
-  .slide-container, .modal-content {
-    max-width: 98vw;
-    padding: 10px 0;
-  }
-  .form-panel {
-    padding: 0 2vw 10px 2vw;
-  }
-}
-
-/* ANIMACIONES */
-.fade-in {
-  animation: fadeInUp 0.8s ease both;
-}
-
-@keyframes fadeInUp {
+@keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
-@keyframes scaleIn {
+@keyframes scaleIn { /* Mantener para el modal */
   from {
     transform: scale(0.9);
     opacity: 0;
@@ -360,6 +890,20 @@ footer {
     opacity: 1;
   }
 }
+
+@media (max-width: 500px) {
+  .modal-content {
+    max-width: 98vw !important;
+    padding: 10px 2vw !important;
+  }
+
+  .login-form {
+    max-width: 98vw;
+    padding: 0;
+  }
+}
+
+
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
@@ -385,7 +929,7 @@ footer {
   left: 0;
   width: 100%;
   background: #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   z-index: 1000;
   height: 68px;
   display: flex;
@@ -471,12 +1015,15 @@ footer {
     padding: 0 10px;
     gap: 0;
   }
+
   .nav-links {
     gap: 16px;
   }
+
   .logo-text {
     font-size: 1em;
   }
+
   .btn-login-nav {
     padding: 8px 14px;
     font-size: 0.95em;
@@ -491,7 +1038,10 @@ footer {
   padding: 40px 20px 20px;
   margin-top: 60px;
   font-size: 0.95em;
+  position: relative;
+  z-index: 5;
 }
+
 .footer-container {
   max-width: 1100px;
   margin: auto;
@@ -499,37 +1049,49 @@ footer {
   flex-wrap: wrap;
   gap: 40px;
   justify-content: space-between;
+  position: relative;
+  z-index: 5
 }
+
 .footer-col {
   flex: 1 1 250px;
 }
-.footer-col h3, .footer-col h4 {
+
+.footer-col h3,
+.footer-col h4 {
   color: #fff;
   margin-bottom: 15px;
 }
-.footer-col p, .footer-col li {
+
+.footer-col p,
+.footer-col li {
   margin-bottom: 10px;
   color: #e0e0e0;
 }
+
 .footer-col a {
   color: #aad8ff;
   text-decoration: none;
   display: block;
 }
+
 .footer-col a:hover {
   text-decoration: underline;
 }
+
 .footer-social a {
   display: inline-block;
   margin-right: 10px;
   margin-top: 8px;
 }
+
 .footer-social {
   margin-top: 12px;
   display: flex;
   gap: 12px;
   justify-content: center;
 }
+
 .footer-social .social-icon {
   width: 40px;
   height: 40px;
@@ -542,17 +1104,20 @@ footer {
   font-size: 1.2em;
   transition: transform 0.3s, background 0.3s;
 }
+
 .footer-social .social-icon:hover {
   transform: scale(1.1);
   background: #0056b3;
 }
+
 .footer-bottom {
-  border-top: 1px solid rgba(255,255,255,0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   text-align: center;
   padding-top: 20px;
   margin-top: 30px;
   color: #ccc;
 }
+
 .ubicacion-actual {
   margin-top: 8px;
   font-size: 0.85em;
@@ -564,8 +1129,8 @@ footer {
     flex-direction: column;
     gap: 20px;
   }
+
   .footer-col {
     flex: 1 1 100%;
   }
 }
-

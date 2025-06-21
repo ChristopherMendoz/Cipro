@@ -8,7 +8,7 @@ const sql = require('mssql');
 const config = {
   user: 'sa',
   password: '123456',
-  server: 'DESKTOP-GMBSO0H',
+  server: 'pc',
   database: 'Cipro',
   options: {
     trustServerCertificate: true,

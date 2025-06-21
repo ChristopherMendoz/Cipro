@@ -1,29 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const sql = require('mssql');
-
-const config = {
-    user: 'sa',
-    password: '123456',
-    server: 'pc',
-    database: 'Cipro',
-    options: {
-        trustServerCertificate: true,
-        encrypt: false
-    }
-};
+const config = require('../config.js');
 
 router.post('/', async (req, res) => {
-    const { fecha, hora, estado, tipoEstudio, observaciones, idPaciente, idMedico, idSala, idRecepcionista } = req.body;
+    const { fecha, hora, estado, observaciones, idPaciente, idMedico, idSala, idRecepcionista, idServicio } = req.body;
 
     try {
         await sql.connect(config);
 
         const result = await sql.query`
             INSERT INTO Consulta 
-            (fecha, hora, estado, tipoEstudio, observaciones, idPaciente, idMedico, idSala, idRecepcionista)
+            (fecha, hora, estado, observaciones, idPaciente, idMedico, idSala, idRecepcionista, idServicio)
             VALUES
-            (${fecha}, ${hora}, ${estado}, ${tipoEstudio}, ${observaciones}, ${idPaciente}, ${idMedico}, ${idSala}, ${idRecepcionista})
+            (${fecha}, ${hora}, ${estado}, ${observaciones}, ${idPaciente}, ${idMedico}, ${idSala}, ${idRecepcionista},  ${idServicio})
         `;
 
         res.json({ ok: true, mensaje: 'Consulta agregada correctamente' });

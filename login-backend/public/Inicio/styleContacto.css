@@ -1,0 +1,195 @@
+/* --- Estilos específicos para la página de contacto --- */
+
+.contact-page {
+    margin-top: 68px; /* Espacio para el navbar fijo */
+}
+
+.contact-header {
+    text-align: center;
+    margin-bottom: 50px;
+    padding-top: 20px;
+}
+.contact-header h2 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+.contact-header p {
+    font-size: 1.1em;
+    color: #555;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.contact-options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+    margin-bottom: 80px;
+}
+
+.contact-card {
+    background: var(--white-bg);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-md);
+    padding: 35px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Alinea el contenido hacia arriba */
+}
+
+.contact-card .icon-large {
+    font-size: 4em;
+    color: var(--primary-color);
+    margin-bottom: 25px;
+}
+
+.contact-card h3 {
+    font-size: 1.8em;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.contact-card p {
+    font-size: 1em;
+    color: #555;
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 400px; /* Limita el ancho del formulario dentro de la tarjeta */
+    margin: 0 auto;
+}
+
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form input[type="date"],
+.contact-form textarea,
+.contact-form select {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius-sm);
+    font-family: 'Poppins', sans-serif;
+    font-size: 1em;
+    color: var(--text-color);
+    width: 100%; /* Asegura que tomen el ancho completo disponible */
+    box-sizing: border-box; /* Incluye padding y border en el ancho */
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus,
+.contact-form select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+}
+
+.contact-form label {
+    align-self: flex-start; /* Alinea las etiquetas a la izquierda */
+    margin-top: 5px;
+    margin-bottom: -5px; /* Espacio negativo para acercar a los campos */
+    font-size: 0.9em;
+    color: #666;
+    font-weight: 500;
+}
+
+
+.btn-primary {
+    /* Usamos el estilo ya definido en styleclinica.css */
+    width: 100%; /* Para que el botón ocupe todo el ancho del formulario */
+    padding: 14px;
+    margin-top: 10px;
+}
+
+.btn-whatsapp {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: #25D366; /* Color de WhatsApp */
+    color: white;
+    padding: 14px 25px;
+    border-radius: var(--border-radius-sm);
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    width: 100%;
+    max-width: 300px; /* Limita el ancho del botón */
+}
+.btn-whatsapp:hover {
+    background-color: #1DA851;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(37, 211, 102, 0.4);
+}
+
+.whatsapp-option {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 25px;
+    margin-bottom: 0;
+}
+
+.info-text {
+    font-size: 0.95em;
+    color: #666;
+    margin-bottom: 15px;
+}
+.info-text a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+}
+.info-text a:hover {
+    text-decoration: underline;
+}
+
+/* Estilos para el mensaje de error/éxito del formulario */
+.contact-card .error-msg {
+    margin-top: 10px;
+    padding: 8px 12px;
+    font-size: 0.85em;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: var(--border-radius-sm);
+    text-align: center;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 0.3s ease-out;
+}
+.contact-card .error-msg.visible {
+    max-height: 200px;
+    opacity: 1;
+    padding: 8px 12px;
+    margin-top: 15px;
+}
+
+
+/* Responsive para la página de contacto */
+@media (max-width: 768px) {
+    .contact-header h2 {
+        font-size: 2em;
+    }
+    .contact-header p {
+        font-size: 1em;
+        padding: 0 10px; /* Pequeño padding para móviles */
+    }
+    .contact-options-grid {
+        grid-template-columns: 1fr; /* Apila las tarjetas en una sola columna */
+        gap: 30px;
+        padding: 0 15px; /* Reduce el padding lateral del grid */
+    }
+    .contact-card {
+        padding: 25px; /* Reduce el padding interno de las tarjetas */
+    }
+    .contact-form {
+        padding: 0 10px; /* Reduce el padding del formulario si es necesario */
+    }
+}

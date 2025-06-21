@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nosotros – Clínica Cipro</title>
     <link rel="stylesheet" href="styleNosotros.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="icon" href="../favicon1.png" type="image/png" />
 </head>
@@ -14,23 +14,6 @@
 <body>
 
     <div id="navbar-placeholder"></div>
-    <script>
-        // Cargar navbar
-        fetch('../componentes/navbar.html')
-            .then(res => res.text())
-            .then(html => {
-                document.getElementById('navbar-placeholder').innerHTML = html;
-
-                // Marcar automáticamente la sección activa según <title>
-                const seccion = document.title.split('–')[0].trim();
-                document.querySelectorAll('.nav-links a').forEach(link => {
-                    if (link.dataset.section === seccion) {
-                        link.classList.add('active');
-                    }
-                });
-            });
-    </script>
-
 
     <div class="breadcrumb">
         <a href="../Clinica.html">Inicio</a> <span>›</span> <span>Nosotros</span>
@@ -39,71 +22,152 @@
     <main>
         <section class="hero-nosotros">
             <div class="hero-text">
-                <h1>Sobre Clínica Cipro</h1>
-                <p>Más de 10 años de experiencia en diagnóstico por imagen de alta calidad.</p>
+                <h1>Comprometidos con tu Bienestar</h1>
+                <p>Descubre nuestra historia, equipo y los valores que nos guían para ofrecerte el mejor diagnóstico por imagen.</p>
             </div>
         </section>
 
-        <section class="historia fade-in">
-            <h2>Nuestra Historia</h2>
-            <p>
-                Clínica Cipro nació con el objetivo de brindar servicios diagnósticos precisos y humanos. Desde nuestros
-                inicios hemos crecido tecnológicamente, incorporando equipos de última generación y un equipo médico
-                especializado.
-            </p>
+        <section class="about-section fade-in">
+            <div class="about-container">
+                <div class="about-column">
+                    <h2>Nuestra Historia</h2>
+                    <p>Clínica Cipro nació hace más de una década con el objetivo de brindar servicios diagnósticos precisos y, sobre todo, humanos. Desde nuestros inicios, hemos crecido tecnológicamente, incorporando equipos de última generación que nos permiten ofrecer estudios de alta fidelidad.</p>
+                </div>
+                <div class="about-column">
+                    <h2>Misión y Visión</h2>
+                    <p><strong>Misión:</strong> Proporcionar un diagnóstico por imagen de alta calidad, accesible y con un trato humano excepcional, contribuyendo a la salud y tranquilidad de nuestros pacientes.</p>
+                    <p><strong>Visión:</strong> Ser la clínica de diagnóstico por imagen líder y de mayor confianza en la región, reconocida por nuestra innovación tecnológica y la excelencia de nuestro equipo médico.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="valores-section fade-in">
+            <h2>Nuestros Valores</h2>
+            <div class="valores-container">
+                <div class="valor-card">
+                    <i class="fas fa-heart-pulse"></i>
+                    <h3>Calidad Humana</h3>
+                    <p>Cada paciente es nuestra prioridad. Ofrecemos un trato cercano, empático y respetuoso.</p>
+                </div>
+                <div class="valor-card">
+                    <i class="fas fa-microscope"></i>
+                    <h3>Precisión Diagnóstica</h3>
+                    <p>Invertimos en tecnología y formación para garantizar resultados fiables y precisos.</p>
+                </div>
+                <div class="valor-card">
+                    <i class="fas fa-hand-holding-medical"></i>
+                    <h3>Compromiso</h3>
+                    <p>Estamos comprometidos con la salud de la comunidad, trabajando con ética y profesionalismo.</p>
+                </div>
+            </div>
         </section>
 
         <section class="equipo fade-in">
-            <h2>Nuestro Equipo</h2>
+            <h2>Un Equipo Excepcional a tu Servicio</h2>
             <div class="equipo-cards">
-
                 <div class="card">
-                    <img src="https://cdn.pixabay.com/photo/2016/11/14/03/16/doctor-1822565_960_720.jpg"
-                        alt="Radiólogo">
-                    <h3>Dr. Manuel Herrera</h3>
-                    <p>Radiólogo Jefe – 15 años de experiencia en TAC y RM.</p>
+                    <div class="card-img-container">
+                        <img src="https://images.pexels.com/photos/5452293/pexels-photo-5452293.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Radiólogo Jefe Dr. Manuel Herrera">
+                    </div>
+                    <div class="card-content">
+                        <h3>Dr. Manuel Herrera</h3>
+                        <p class="role">Radiólogo Jefe</p>
+                        <p>15 años de experiencia en la interpretación de Tomografías (TAC) y Resonancias Magnéticas (RM).</p>
+                    </div>
                 </div>
-
                 <div class="card">
-                    <img src="https://cdn.pixabay.com/photo/2017/08/06/11/24/woman-2593366_960_720.jpg" alt="Técnica">
-                    <h3>Dra. Karla Gómez</h3>
-                    <p>Especialista en ultrasonografía obstétrica y vascular.</p>
+                    <div class="card-img-container">
+                        <img src="https://images.pexels.com/photos/5215024/pexels-photo-5215024.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Especialista en Ultrasonografía Dra. Karla Gómez">
+                    </div>
+                    <div class="card-content">
+                        <h3>Dra. Karla Gómez</h3>
+                        <p class="role">Especialista en Ultrasonografía</p>
+                        <p>Experta en ultrasonografía obstétrica y doppler vascular, dedicada al cuidado de la salud femenina.</p>
+                    </div>
                 </div>
-
                 <div class="card">
-                    <img src="https://cdn.pixabay.com/photo/2021/04/05/07/25/nurse-6152412_960_720.jpg"
-                        alt="Recepcionista">
-                    <h3>Sra. Miriam Álvarez</h3>
-                    <p>Recepción y atención al paciente con calidez y eficiencia.</p>
+                    <div class="card-img-container">
+                        <img src="https://www.ceac.es/sites/default/files/2024-04/que-hay-que-estudiar-para-ser-recepcionista-de-hospital.jpg.webp" alt="Recepción y Atención al Paciente Sra. Miriam Álvarez">
+                    </div>
+                    <div class="card-content">
+                        <h3>Sra. Miriam Álvarez</h3>
+                        <p class="role">Atención al Paciente</p>
+                        <p>Responsable de que tu visita sea una experiencia cálida, ágil y eficiente desde el primer contacto.</p>
+                    </div>
                 </div>
-
             </div>
         </section>
+
+        <section class="location-section fade-in">
+            <div class="location-header">
+                <h2>¿Dónde Encontrarnos?</h2>
+                <p>Visítanos. Estamos listos para atenderte en un ambiente cómodo y profesional.</p>
+            </div>
+            <div class="location-container">
+                <div class="location-info">
+                    <h3>Clínica Cipro</h3>
+                    <p class="address">
+                        <i class="fas fa-location-dot"></i>
+                        <strong>Dirección:</strong> Rotonda El Güegüense 2c abajo 1/2 al sur, Managua.
+                    </p>
+                    <div class="contact-details">
+                        <p><i class="fas fa-phone"></i> <strong>Teléfono:</strong> +505 2266-3542</p>
+                        <p><i class="fas fa-envelope"></i> <strong>Email:</strong> clinicacipro@gmail.com</p>
+                    </div>
+
+                    <h4>Horarios de Atención</h4>
+                    <ul class="opening-hours">
+                        <li><span>Lunes a Viernes:</span> 8:00 AM - 6:00 PM</li>
+                        <li><span>Sábados:</span> 9:00 AM - 1:00 PM</li>
+                        <li><span>Domingos:</span> Cerrado</li>
+                    </ul>
+                    <a href="https://maps.app.goo.gl/Zwupi7zLffy4REXYA" target="_blank" class="map-button">
+                        Abrir en Google Maps
+                    </a>
+                </div>
+
+                <div class="map-container">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4480.698004534849!2d-86.28432153057031!3d12.134429465651554!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f7155f2828eda71%3A0x401ee5160434d2c2!2sClinica%20de%20Imagenes%20y%20Procedimientos%20CIPRO!5e0!3m2!1ses-419!2sni!4v1750278847198!5m2!1ses-419!2sni"
+                        width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <div id="footer-placeholder"></div>
+    <div id="modalContainer"></div>
+
     <script>
+        // Cargar navbar
+        fetch('../componentes/navbar.html')
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById('navbar-placeholder').innerHTML = html;
+                const seccion = document.title.split('–')[0].trim();
+                document.querySelectorAll('.nav-links a').forEach(link => {
+                    if (link.dataset.section === seccion) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+
         // Cargar el footer
         fetch('../Componentes/footer.html')
             .then(res => res.text())
             .then(data => {
                 document.getElementById('footer-placeholder').innerHTML = data;
-                // Cambia dinámicamente el nombre de la página
                 const actual = document.title.replace('– Clínica Cipro', '').trim();
                 document.getElementById('ubicacionFooter').textContent = actual;
             });
-    </script>
 
-    <!-- Modal Login -->
-    <div id="modalContainer"></div>
-
-    <script>
+        // Cargar el modal
         fetch("../Componentes/modal.html")
             .then(res => res.text())
             .then(html => {
                 document.getElementById("modalContainer").innerHTML = html;
-
-                // Busca y ejecuta los scripts embebidos en el HTML cargado
                 const scripts = document.getElementById("modalContainer").querySelectorAll("script");
                 scripts.forEach(oldScript => {
                     const newScript = document.createElement("script");
@@ -116,7 +180,6 @@
                 });
             });
     </script>
-
 </body>
 
 </html>

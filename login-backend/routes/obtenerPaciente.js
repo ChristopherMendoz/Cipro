@@ -2,17 +2,7 @@ const express = require('express');
 const router = express.Router();
 const sql = require('mssql');
 const bcrypt = require('bcrypt'); // Agrega esto arriba
-
-const config = {
-    user: 'sa',
-    password: '123456',
-    server: 'pc',
-    database: 'Cipro',
-    options: {
-        trustServerCertificate: true,
-        encrypt: false
-    }
-};
+const config = require('../config.js');
 
 // Obtener todos los pacientes activos
 // Esta ruta obtiene todos los pacientes cuyo usuario asociado está activo (estado = 1)
@@ -143,7 +133,7 @@ router.post('/', async (req, res) => {
 
             // 2. Insertar el nuevo usuario en UsuarioSistema
             await sql.query`
-                INSERT INTO UsuarioSistema (idUsuario, correo, nombreUsuario, contrasena, idRol)
+                INSERT INTO UsuarioSistema (idUsuario, correo, nombreUsuario, contraseña, idRol)
                 VALUES (${idUsuario}, ${correo}, ${nombreUsuarioNuevo}, ${hash}, 1)
             `;
         }
