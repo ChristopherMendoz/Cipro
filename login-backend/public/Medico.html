@@ -22,10 +22,21 @@
             <a href="#" id="btnDatosConsulta">Datos Consultas</a>
             <a href="#" id="btnResultados">Cargar Resultados</a>
         </aside>
-        <section class="contenido" id="contenido">
-            <!-- Aquí se cargan los datos personales -->
+        <section id="inicioPanelMedico" class="contenido">
+            <img src="logosinfondo.png" alt="Logo de Clínica Cipro" class="logo-panel-inicio">
+            <p>Bienvenido al Panel de Médico. Seleccione una opción del menú.</p>
         </section>
-        <section id="formConsulta">
+        <section class="contenido hidden" id="seccionDatosPersonalesMedico">
+            <h2>Bienvenido</h2>
+            <p>Seleccione una opción del menú lateral para comenzar.</p>
+        </section>
+
+        <section id="seccionAgenda" class="contenido hidden">
+            <h2>Agenda</h2>
+            <p>Aquí ira la agenda.</p>
+        </section>
+
+        <section id="formConsulta" class="contenido hidden">
             <h2>Agregar Nueva Consulta</h2>
             <form id="formAgregarConsulta">
                 <label>Fecha: <input type="date" name="fecha" required></label><br><br>
@@ -37,7 +48,6 @@
                         <option value="cancelada">Cancelada</option>
                     </select>
                 </label><br><br>
-                <label>Servicio:
                     <select id="selectServicio" name="idServicio" required>
                         <option value="">Cargando…</option>
                     </select>
@@ -68,8 +78,7 @@
             <div id="mensajeConsulta" style="margin-top:10px; color: green;"></div>
         </section>
 
-
-        <section id="listaConsultas" class="consultas-container">
+        <section id="listaConsultas" class="contenido consultas-container hidden">
             <h2>Lista de Consultas</h2>
             <div class="filtros">
                 <label for="filtroEstado">Filtrar por estado:</label>
@@ -80,8 +89,9 @@
                     <option value="cancelada">Cancelada</option>
                 </select>
 
-                <label for="busquedaPaciente">Buscar paciente:</label>
-                <input type="text" id="busquedaPaciente" placeholder="Nombre del paciente...">
+                <!-- CORRECCIÓN: El placeholder ahora coincide con el ID del input -->
+                <label for="busquedaServicio">Buscar por servicio:</label>
+                <input type="text" id="busquedaServicio" placeholder="Nombre del servicio...">
             </div>
             <table id="tablaConsultas" border="1" cellpadding="8" cellspacing="0">
                 <thead>
@@ -90,12 +100,12 @@
                         <th>Fecha</th>
                         <th>Hora</th>
                         <th>Estado</th>
-                        <th>Servicios</th>
                         <th>Paciente</th>
                         <th>Médico</th>
                         <th>Sala</th>
                         <th>Recepcionista</th>
                         <th>Observaciones</th>
+                        <th>Tipo de Servicio</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -103,341 +113,269 @@
                 </tbody>
             </table>
         </section>
+        
+        <!-- Sección de Cargar Resultados (no se ha tocado) -->
+        <section id="seccionCargarResultados" class="contenido hidden">
+            <h2>Cargar Resultados</h2>
+            <p>Aquí irá el formulario para subir resultados.</p>
+        </section>
     </div>
 
 </body>
+
+<!-- CORRECCIÓN 1: Se ha combinado todo el JavaScript en un solo bloque <script> para evitar errores de funciones duplicadas -->
 <script>
+    document.addEventListener('DOMContentLoaded', () => {
 
-    // Cargar catálogos de pacientes, médicos, salas y recepcionistas
-    async function cargarCatalogos() {
-        try {
-            // Añade la nueva petición para los servicios
-            const [pacientesRes, medicosRes, salasRes, recepcionistasRes, serviciosRes] = await Promise.all([
-                fetch('/catalogos/pacientes'),
-                fetch('/catalogos/medicos'),
-                fetch('/catalogos/salas'),
-                fetch('/catalogos/recepcionistas'),
-                fetch('/api/servicios')
-            ]);
-            1
-            const pacientes = await pacientesRes.json();
-            const medicos = await medicosRes.json();
-            const salas = await salasRes.json();
-            const recepcionistas = await recepcionistasRes.json();
-            const servicios = await serviciosRes.json();
+        // --- REFERENCIAS A ELEMENTOS (SIN CAMBIOS) ---
+        const nombreUsuarioEl = document.getElementById("nombreUsuario");
+        const inicioPanelMedicoEl = document.getElementById("inicioPanelMedico");
+        const seccionDatosPersonalesMedicoEl = document.getElementById("seccionDatosPersonalesMedico");
+        const seccionAgendaEl = document.getElementById("seccionAgenda");
+        const formConsultaEl = document.getElementById("formConsulta");
+        const listaConsultasEl = document.getElementById("listaConsultas");
+        const seccionCargarResultadosEl = document.getElementById("seccionCargarResultados");
+        const btnDatosPersonales = document.getElementById("btnDatosPersonales");
+        const btnAgenda = document.getElementById("btnAgenda");
+        const btnResultados = document.getElementById("btnResultados");
+        const btnDatosConsulta = document.getElementById("btnDatosConsulta");
 
-            const selectPaciente = document.getElementById('selectPaciente');
-            const selectMedico = document.getElementById('selectMedico');
-            const selectSala = document.getElementById('selectSala');
-            const selectRecepcionista = document.getElementById('selectRecepcionista');
-            const selectServicio = document.getElementById('selectServicio');
-            selectServicio.innerHTML = '<option value="">Seleccione un servicio</option>'; // Limpiar
+        document.getElementById("cerrarSesion").addEventListener("click", () => {
+            sessionStorage.clear();
+            localStorage.clear();
+            window.location.href = "/Clinica.html";
+        });
 
-            pacientes.forEach(p => {
-                const opt = document.createElement('option');
-                opt.value = p.idPaciente;
-                opt.textContent = p.nombreCompleto;
-                selectPaciente.appendChild(opt);
-            });
-
-            medicos.forEach(m => {
-                const opt = document.createElement('option');
-                opt.value = m.idMedico;
-                opt.textContent = m.nombreCompleto;
-                selectMedico.appendChild(opt);
-            });
-
-            salas.forEach(s => {
-                const opt = document.createElement('option');
-                opt.value = s.idSala;
-                opt.textContent = s.nombre;
-                selectSala.appendChild(opt);
-            });
-
-            recepcionistas.forEach(r => {
-                const opt = document.createElement('option');
-                opt.value = r.idRecepcionista;
-                opt.textContent = r.nombreCompleto;
-                selectRecepcionista.appendChild(opt);
-            });
-
-            servicios.forEach(s => {
-                const opt = document.createElement('option');
-                opt.value = s.idServicio;
-                opt.textContent = s.nombreServicio;
-                selectServicio.appendChild(opt);
-            });
-
-        } catch (error) {
-            console.error("Error al cargar los catálogos:", error);
-        }
-    }
-
-    
-</script>
-<script>
-
-    // Función para llenar un select con datos de un endpoint
-    async function llenarSelect(url, selectId, valueField, textField) {
-        try {
-            const res = await fetch(url);
-            const datos = await res.json();
-
-            const sel = document.getElementById(selectId);
-            sel.innerHTML = '<option value="">Seleccione…</option>';
-            datos.forEach(item => {
-                const opt = document.createElement('option');
-                opt.value = item[valueField];
-                opt.textContent = item[textField];
-                sel.appendChild(opt);
-            });
-        } catch (err) {
-            console.error(`Error cargando ${selectId}:`, err);
-        }
-    }
-</script>
-<script>
-
-    // Función para mostrar u ocultar secciones
-    function mostrarSecciones(idsMostrar) {
-    // Si idsMostrar es null o undefined, lo convertimos en un array vacío.
-    const idsParaMostrar = idsMostrar || []; 
-    
-    const secciones = ["contenido", "formConsulta", "listaConsultas"];
-    
-    secciones.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-            // Ahora usamos la variable segura 'idsParaMostrar'
-            el.style.display = idsParaMostrar.includes(id) ? "block" : "none";
-        }
-    });
-}
-
-    // Mostrar sección de contenido al cargar
-    document.addEventListener("DOMContentLoaded", () => {
-        mostrarSecciones(["contenido"]);
-    });
-    document.addEventListener("DOMContentLoaded", () => {
-        mostrarSecciones(null); // Ocultar todo al inicio
-        cargarCatalogos();
-        cargarConsultas();
-    });
-
-    // Funciones para mostrar secciones específicas
-    function mostrarDatosPersonales() {
-        mostrarSecciones(["contenido"]);
-    }
-
-    function mostrarConsulta() {
-        mostrarSecciones(["formConsulta", "listaConsultas"]);
-    }
-
-
-    // Manejar botón cerrar sesión
-    document.getElementById("cerrarSesion").addEventListener("click", () => {
-        sessionStorage.clear();
-        localStorage.clear();
-        window.location.href = "/Clinica.html";
-    });
-
-    // Obtener idUsuario de sessionStorage
-    const idUsuario = sessionStorage.getItem("idUsuario");
-
-    // Verificar si hay usuario logueado
-    if (!idUsuario) {
-        document.getElementById("contenido").innerHTML = "<p>No hay usuario logueado.</p>";
-    } else {
-        // Mostrar nombre de usuario en sidebar
-        fetch(`/nombre-usuario/${idUsuario}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.ok) {
-                    document.getElementById("nombreUsuario").textContent = `👨‍⚕️ ${data.nombreUsuario}`;
-                } else {
-                    document.getElementById("nombreUsuario").textContent = "Usuario no encontrado";
-                }
-            })
-            .catch(err => {
-                console.error(err);
-                document.getElementById("nombreUsuario").textContent = "Error al cargar usuario";
-            });
-
-        // Función para cargar datos personales y mostrar en div #contenido
-        function mostrarDatosPersonales() {
-            fetch(`/obtener-medico/${idUsuario}`)
-                .then(res => res.json())
-                .then(data => {
-                    console.log("Respuesta recibida:", data);
-                    if (data.ok) {
-                        const info = data.datos;
-                        const html = `
-            <h2>Datos Personales</h2>
-            <p><strong>Nombre Completo:</strong> ${info.nombreCompleto}</p>
-            <p><strong>Cédula Profesional:</strong> ${info.cedulaProfesional}</p>
-            <p><strong>Teléfono:</strong> ${info.telefono}</p>
-            <p><strong>Especialización:</strong> ${info.nombreEspecializacion}</p>
-            <p><strong>Nombre de Usuario:</strong> ${info.nombreUsuario}</p>
-        `;
-                        console.log("HTML generado:", html);
-                        document.getElementById("contenido").innerHTML = html;
-                    } else {
-                        document.getElementById("contenido").innerHTML =
-                            "<p>No se encontraron datos del médico.</p>";
-                    }
-                })
-                .catch(err => {
-                    console.error("Error al obtener datos personales:", err);
-                    document.getElementById("contenido").innerHTML =
-                        "<p>Error al obtener los datos personales.</p>";
-                });
-        }
-    }
-</script>
-<script>
-
-    // Función para agregar una nueva consulta
-    async function agregarConsulta(datos) {
-        try {
-            const res = await fetch('/agregar-consulta', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(datos)
-            });
-
-            return await res.json(); // Retorna la respuesta JSON
-        } catch (err) {
-            console.error(err);
-            return { ok: false, mensaje: 'Error al conectar con el servidor' };
-        }
-    }
-    // Manejar el envío del formulario de agregar consulta
-    document.getElementById('formAgregarConsulta').addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const form = e.target;
-        const datos = {
-            fecha: form.fecha.value,
-            hora: form.hora.value,
-            estado: form.estado.value,
-            idServicio: parseInt(form.idServicio.value),
-            observaciones: form.observaciones.value,
-            idPaciente: parseInt(form.idPaciente.value),
-            idMedico: parseInt(form.idMedico.value),
-            idSala: parseInt(form.idSala.value),
-            idRecepcionista: parseInt(form.idRecepcionista.value),
-        };
-
-        const data = await agregarConsulta(datos); // esta función debe enviar los datos al backend
-
-        const mensajeDiv = document.getElementById('mensajeConsulta');
-        if (data.ok) {
-            mensajeDiv.style.color = 'green';
-            mensajeDiv.textContent = data.mensaje;
-            form.reset();
-            cargarConsultas(); // refrescar tabla
-        } else {
-            mensajeDiv.style.color = 'red';
-            mensajeDiv.textContent = data.mensaje || 'Error al agregar consulta';
-        }
-    });
-</script>
-
-<script>
-
-    let consultasGlobales = []; // para guardar todas las consultas
-
-    // Función para cargar las consultas y aplicar filtros
-    async function cargarConsultas() {
-        try {
-            const res = await fetch('/consultas');
-            const data = await res.json();
-
-            if (data.ok) {
-                consultasGlobales = data.consultas;
-                aplicarFiltros();
-                const tbody = document.querySelector('#tablaConsultas tbody');
-                tbody.innerHTML = ''; // Limpiar tabla
-
-                data.consultas.forEach(c => {
-                    const fila = document.createElement('tr');
-
-                    fila.innerHTML = `
-            <td>${c.idConsulta}</td>
-            <td>${c.fecha.split('T')[0]}</td>
-            <td>${c.hora}</td>
-            <td>${c.estado}</td>
-            <td>${c.nombreServicio}</td>
-            <td>${c.nombrePaciente}</td>
-            <td>${c.nombreMedico}</td>
-            <td>${c.nombreSala}</td>
-            <td>${c.nombreRecepcionista}</td>
-            <td>${c.observaciones || ''}</td>
-        `;
-
-                    tbody.appendChild(fila);
-                });
-            } else {
-                alert('Error al cargar consultas');
+        // --- FUNCIÓN PARA MOSTRAR SECCIONES (SIN CAMBIOS) ---
+        function mostrarSeccion(seccionesIdsAMostrar) {
+            if (!Array.isArray(seccionesIdsAMostrar)) {
+                seccionesIdsAMostrar = [seccionesIdsAMostrar];
             }
-        } catch (err) {
-            alert('Error al conectar con el servidor');
+            const todasLasSeccionesDeContenido = [
+                inicioPanelMedicoEl, seccionDatosPersonalesMedicoEl, seccionAgendaEl,
+                formConsultaEl, listaConsultasEl, seccionCargarResultadosEl
+            ];
+            todasLasSeccionesDeContenido.forEach(seccion => {
+                if (seccion) {
+                    seccion.classList.toggle('hidden', !seccionesIdsAMostrar.includes(seccion.id));
+                }
+            });
         }
-    }
-    function aplicarFiltros() {
-        const filtroEstado = document.querySelector('#filtroEstado').value.toLowerCase();
-        const busquedaPaciente = document.querySelector('#busquedaPaciente').value.toLowerCase();
 
-        const tbody = document.querySelector('#tablaConsultas tbody');
-        tbody.innerHTML = '';
+        // CORRECCIÓN 2: Se añade `{ credentials: 'include' }` a CADA `fetch` para enviar la cookie de sesión.
+        
+        async function cargarNombreUsuarioYMostrarInicio() {
+            try {
+                const resNombre = await fetch('/nombre-usuario', { credentials: 'include' });
+                if (resNombre.status === 401) {
+                    window.location.href = '/Clinica.html';
+                    return;
+                }
+                const dataNombre = await resNombre.json();
+                if (dataNombre.ok) {
+                    nombreUsuarioEl.textContent = `👨‍⚕️ ${dataNombre.nombreUsuario}`;
+                    mostrarSeccion('inicioPanelMedico');
+                } else {
+                    nombreUsuarioEl.textContent = "Usuario no encontrado";
+                }
+            } catch (err) {
+                console.error("Error al verificar sesión o cargar nombre:", err);
+                nombreUsuarioEl.textContent = "Error de conexión";
+            }
+        }
+        
+        async function cargarDatosPersonalesMedico() {
+            mostrarSeccion("seccionDatosPersonalesMedico");
+            const targetEl = document.getElementById("seccionDatosPersonalesMedico");
+            targetEl.innerHTML = "<h2>Cargando Datos Personales...</h2>";
+            try {
+                const res = await fetch('/obtener-medico', { credentials: 'include' });
+                if (res.status === 401) {
+                    targetEl.innerHTML = "<p>No autorizado. Inicie sesión como médico.</p>";
+                    return;
+                }
+                const data = await res.json();
+                if (data.ok) {
+                    const info = data.datos;
+                    targetEl.innerHTML = `
+                        <h2>Datos Personales</h2>
+                        <p><strong>Nombre Completo:</strong> ${info.nombreCompleto}</p>
+                        <p><strong>Cédula Profesional:</strong> ${info.cedulaProfesional}</p>
+                        <p><strong>Teléfono:</strong> ${info.telefono}</p>
+                        <p><strong>Especialización:</strong> ${info.nombreEspecializacion}</p>
+                        <p><strong>Nombre de Usuario:</strong> ${info.nombreUsuario}</p>`;
+                } else {
+                    targetEl.innerHTML = `<p>No se encontraron datos: ${data.mensaje || 'Error'}</p>`;
+                }
+            } catch (err) {
+                console.error("Error al obtener datos personales:", err);
+                targetEl.innerHTML = "<p>Error al obtener los datos personales.</p>";
+            }
+        }
 
-        // Filtrar y mostrar
-        const filtradas = consultasGlobales.filter(c => {
-            const estadoMatch = filtroEstado === '' || c.estado.toLowerCase() === filtroEstado;
-            const pacienteMatch = c.nombrePaciente.toLowerCase().includes(busquedaPaciente);
-            return estadoMatch && pacienteMatch;
+        // --- CÓDIGO DE MANEJO DE CONSULTAS (CON CORRECCIONES) ---
+
+        let consultasGlobales = []; // Declarada una sola vez
+
+        async function cargarConsultas() {
+            try {
+                const res = await fetch('/consultas', { credentials: 'include' });
+                const data = await res.json();
+                if (data.ok) {
+                    consultasGlobales = data.consultas;
+                    aplicarFiltros(); // Llama a la función que renderiza la tabla
+                } else {
+                    alert('Error al cargar consultas: ' + (data.mensaje || 'Respuesta no válida'));
+                }
+            } catch (err) {
+                alert('Error de conexión al cargar consultas.');
+                console.error(err);
+            }
+        }
+
+        function aplicarFiltros() {
+            const filtroEstado = document.querySelector('#filtroEstado').value.toLowerCase();
+            const busquedaServicio = document.querySelector('#busquedaServicio').value.toLowerCase();
+            const tbody = document.querySelector('#tablaConsultas tbody');
+            tbody.innerHTML = '';
+            
+            if (!Array.isArray(consultasGlobales)) {
+                console.error("consultasGlobales no es un array");
+                return;
+            }
+
+            const filtradas = consultasGlobales.filter(c => {
+                const estadoMatch = filtroEstado === '' || (c.estado?.toLowerCase() || '') === filtroEstado;
+                const servicioMatch = c.nombreServicio?.toLowerCase().includes(busquedaServicio);
+                return estadoMatch && servicioMatch;
+            });
+            
+            if (filtradas.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="10" style="text-align: center;">No se encontraron consultas.</td></tr>`;
+                return;
+            }
+
+            filtradas.forEach(c => {
+                const fila = document.createElement('tr');
+                const fechaFormateada = c.fecha ? c.fecha.split('T')[0] : 'Sin fecha';
+                // CORRECCIÓN 3: Se ha eliminado la columna duplicada de 'nombreServicio'
+                fila.innerHTML = `
+                    <td>${c.idConsulta || ''}</td>
+                    <td>${fechaFormateada}</td>
+                    <td>${c.hora || ''}</td>
+                    <td>${c.estado || ''}</td>
+                    <td>${c.nombrePaciente || ''}</td>
+                    <td>${c.nombreMedico || ''}</td>
+                    <td>${c.nombreSala || ''}</td>
+                    <td>${c.nombreRecepcionista || ''}</td>
+                    <td>${c.observaciones || ''}</td>
+                    <td>${c.nombreServicio || ''}</td>`;
+                tbody.appendChild(fila);
+            });
+        }
+        
+        document.querySelector('#filtroEstado').addEventListener('change', aplicarFiltros);
+        document.querySelector('#busquedaServicio').addEventListener('input', aplicarFiltros);
+
+        // --- CÓDIGO DE FORMULARIO (CON CORRECCIONES) ---
+
+        async function cargarCatalogos() {
+            try {
+                const [pacientesRes, medicosRes, salasRes, recepcionistasRes, serviciosRes] = await Promise.all([
+                    fetch('/catalogos/pacientes', { credentials: 'include' }),
+                    fetch('/catalogos/medicos', { credentials: 'include' }),
+                    fetch('/catalogos/salas', { credentials: 'include' }),
+                    fetch('/catalogos/recepcionistas', { credentials: 'include' }),
+                    fetch('/catalogos/servicios', { credentials: 'include' })
+                ]);
+                
+                // CORRECCIÓN 4: Se ha eliminado el '1' suelto que causaba un error de sintaxis.
+                
+                llenarSelect(document.getElementById('selectPaciente'), await pacientesRes.json(), 'idPaciente', 'nombreCompleto');
+                llenarSelect(document.getElementById('selectMedico'), await medicosRes.json(), 'idMedico', 'nombreCompleto');
+                llenarSelect(document.getElementById('selectSala'), await salasRes.json(), 'idSala', 'nombre');
+                llenarSelect(document.getElementById('selectRecepcionista'), await recepcionistasRes.json(), 'idRecepcionista', 'nombreCompleto');
+                llenarSelect(document.getElementById('selectServicio'), await serviciosRes.json(), 'idServicio', 'nombreServicio');
+                
+            } catch (error) {
+                console.error("Error al cargar los catálogos:", error);
+            }
+        }
+        
+        function llenarSelect(selectEl, datos, valueField, textField) {
+             if (!selectEl) return;
+             selectEl.innerHTML = '<option value="">Seleccione…</option>';
+             if(Array.isArray(datos)) {
+                datos.forEach(item => {
+                    const opt = document.createElement('option');
+                    opt.value = item[valueField];
+                    opt.textContent = item[textField];
+                    selectEl.appendChild(opt);
+                });
+             }
+        }
+
+        document.getElementById('formAgregarConsulta').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const datos = {
+                fecha: form.fecha.value,
+                hora: form.hora.value,
+                estado: form.estado.value,
+                observaciones: form.observaciones.value,
+                idPaciente: parseInt(form.idPaciente.value),
+                idMedico: parseInt(form.idMedico.value),
+                idSala: parseInt(form.idSala.value),
+                idRecepcionista: parseInt(form.idRecepcionista.value),
+                idServicio: parseInt(form.idServicio.value)
+            };
+
+            const mensajeDiv = document.getElementById('mensajeConsulta');
+            try {
+                const res = await fetch('/agregar-consulta', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(datos),
+                    credentials: 'include' // No olvidar las credenciales!
+                });
+                const data = await res.json();
+                mensajeDiv.style.color = data.ok ? 'green' : 'red';
+                mensajeDiv.textContent = data.mensaje;
+                if (data.ok) {
+                    form.reset();
+                    cargarConsultas(); // refrescar tabla
+                }
+            } catch(err) {
+                 mensajeDiv.style.color = 'red';
+                 mensajeDiv.textContent = 'Error de conexión al agregar consulta.';
+            }
+        });
+        
+        // --- EVENT LISTENERS DE NAVEGACIÓN (SIN CAMBIOS) ---
+        btnDatosPersonales.addEventListener('click', (e) => {
+            e.preventDefault();
+            cargarDatosPersonalesMedico();
         });
 
-        filtradas.forEach(c => {
-            const fila = document.createElement('tr');
-            fila.innerHTML = `
-        <td>${c.idConsulta}</td>
-        <td>${new Date(c.fecha).toLocaleDateString()}</td>
-        <td>${c.hora}</td>
-        <td>${c.estado}</td>
-        <td>${c.tipoEstudio}</td>
-        <td>${c.nombrePaciente}</td>
-        <td>${c.nombreMedico}</td>
-        <td>${c.nombreSala}</td>
-        <td>${c.nombreRecepcionista}</td>
-        <td>${c.observaciones || ''}</td>
-    `;
-            tbody.appendChild(fila);
+        btnAgenda.addEventListener('click', (e) => {
+            e.preventDefault();
+            mostrarSeccion("seccionAgenda");
         });
-    }
 
-    // Eventos para los filtros
-    document.querySelector('#filtroEstado').addEventListener('change', aplicarFiltros);
-    document.querySelector('#busquedaPaciente').addEventListener('input', aplicarFiltros);
+        btnResultados.addEventListener('click', (e) => {
+            e.preventDefault();
+            mostrarSeccion("seccionCargarResultados");
+        });
 
-
-    // Llamar la función para cargar las consultas cuando la página esté lista
-    //document.addEventListener('DOMContentLoaded', cargarConsultas);
-    window.addEventListener("DOMContentLoaded", () => {
-        cargarConsultas();
-    });
-
-
-    // Manejar los clics en los enlaces de la sidebar
-    document.getElementById("btnDatosPersonales").addEventListener("click", (e) => {
-        e.preventDefault();
-        mostrarSecciones(["contenido"]);
-        mostrarDatosPersonales();
-    });
-
-    document.getElementById("btnDatosConsulta").addEventListener("click", (e) => {
-        e.preventDefault();
-        mostrarConsulta();
+        btnDatosConsulta.addEventListener("click", (e) => {
+            e.preventDefault();
+            mostrarSeccion(["formConsulta", "listaConsultas"]);
+            // No es necesario cargar las consultas de nuevo, ya se cargan al inicio
+        });
+        
+        // --- INICIALIZACIÓN DE LA PÁGINA ---
+        cargarNombreUsuarioYMostrarInicio();
+        cargarCatalogos();
         cargarConsultas();
     });
 </script>

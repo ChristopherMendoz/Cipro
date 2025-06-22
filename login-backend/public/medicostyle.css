@@ -4,24 +4,33 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #c6f1ff, #dbefff, #ffffff);
     display: flex;
+    /* ¡Fundamental! Hace que el body sea un contenedor flex, permitiendo que sus hijos directos (aside, .container) se coloquen uno al lado del otro. */
     min-height: 100vh;
+    /* Asegura que el body ocupe al menos el 100% de la altura de la ventana. */
 }
 
-/* Sidebar como aside */
+/* Sidebar (aside) */
 aside.sidebar {
     width: 240px;
+    /* Ancho fijo de tu barra lateral. */
     background-color: #a2d8e7;
     padding: 30px 20px;
     height: 100vh;
+    /* Hace que la barra lateral ocupe toda la altura visible de la ventana. */
     box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
     position: fixed;
+    /* ¡Lo fija a la izquierda de la pantalla, para que no se desplace al hacer scroll! */
     top: 0;
     left: 0;
     overflow-y: auto;
+    /* Agrega una barra de desplazamiento vertical si el contenido del sidebar excede su altura. */
     box-sizing: border-box;
+    /* Incluye el padding en el cálculo del ancho/alto total del elemento. */
     display: flex;
     flex-direction: column;
+    /* Organiza los elementos internos del sidebar en una columna. */
     gap: 20px;
+    /* Espacio entre los elementos internos del sidebar. */
 }
 
 aside.sidebar h2 {
@@ -36,11 +45,11 @@ aside.sidebar h3 {
     margin-top: 0;
     font-weight: 500;
     text-align: center;
-
 }
 
 aside.sidebar a {
     display: block;
+    /* Hace que los enlaces ocupen todo el ancho disponible. */
     padding: 12px 18px;
     margin-bottom: 12px;
     color: #00334d;
@@ -59,12 +68,13 @@ aside.sidebar a:hover {
     color: white;
     border-color: #010f14;
     transform: translateX(6px);
+    /* Pequeña animación al pasar el ratón. */
 }
 
-
-
+/* Botón de cerrar sesión (Definición unificada y corregida) */
 #cerrarSesion {
     position: absolute;
+    /* Posiciona el botón de forma absoluta respecto al body/viewport. */
     top: 20px;
     right: 20px;
     padding: 10px 18px;
@@ -76,6 +86,7 @@ aside.sidebar a:hover {
     border-radius: 8px;
     cursor: pointer;
     z-index: 1000;
+    /* Asegura que el botón esté por encima de otros elementos. */
     box-shadow: 0 4px 8px rgba(220, 20, 60, 0.3);
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
@@ -86,10 +97,9 @@ aside.sidebar a:hover {
     box-shadow: 0 6px 12px rgba(220, 20, 60, 0.4);
 }
 
-
 /* Contenedor principal que va a la derecha del sidebar fijo */
 .container {
-    margin-left: 250px; /* igual al ancho del aside.sidebar */
+    margin-left: 250px;
     padding: 40px;
     flex: 1;
     display: flex;
@@ -98,8 +108,47 @@ aside.sidebar a:hover {
     box-sizing: border-box;
 }
 
-/* Contenedor de contenido personal */
-#contenido {
+/* Clase de utilidad para ocultar secciones (¡fundamental para JavaScript!) */
+.hidden {
+    display: none !important;
+    /* ¡Important asegura que esta regla tenga prioridad! */
+}
+
+/* Estilos generales base para TODAS las secciones de contenido principales */
+/* Esto se aplica a #inicioPanelMedico, #seccionDatosPersonalesMedico, #seccionAgenda, #formConsulta, #listaConsultas, #seccionCargarResultados */
+.container>section {
+    font-size: 18px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+    border-radius: 10px;
+    padding: 30px 40px;
+    margin-bottom: 40px;
+    background-color: #e7f9ff;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* Estilos específicos para la sección de inicio con el logo */
+#inicioPanelMedico {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 550px;
+    background: linear-gradient(135deg, #c6f1ff, #dbefff, #ffffff);
+}
+
+.logo-panel-inicio {
+    max-width: 300px;
+    height: auto;
+    margin-bottom: 20px;
+    opacity: 0.8;
+}
+
+/* Estilos para la sección de Datos Personales del Médico (si necesitas algo diferente al base) */
+#seccionDatosPersonalesMedico {
     font-size: 18px;
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
     border-radius: 10px;
@@ -109,70 +158,56 @@ aside.sidebar a:hover {
     flex-direction: column;
     align-items: center;
     text-align: left;
+    background: linear-gradient(135deg, #c6f1ff, #dbefff, #ffffff);
 }
 
-#contenido h2 {
+#seccionDatosPersonalesMedico h2 {
     font-size: 28px;
     margin-bottom: 20px;
     color: #004a66;
     text-align: center;
 }
 
-#contenido p {
+#seccionDatosPersonalesMedico p {
     font-size: 20px;
     margin: 10px 0;
     width: 100%;
     max-width: 600px;
-    background-color: #f0faff;
+    background: linear-gradient(135deg, #84cfe9, #94c6e2, #ffffff);
     padding: 10px 15px;
-    border-left: 5px solid #9951db;
+    border-left: 5px solid #94c6e2;
     border-radius: 15px;
     border: bisque 5px solid transparent;
 }
 
-/* Contenedor para el formulario y tabla de consultas */
-.consultas-container {
-    display: none;
-    gap: 20px;
-    background-color: #e7f9ff;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
-    margin-bottom: 40px;
-    flex-wrap: wrap;
-}
-/* Formulario de consulta */
+/* Estilos para el formulario de Agregar Consulta */
 #formConsulta {
-    flex: 1 1 300px;
-    font-size: 18px;
-    background-color: transparent;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
-    border-radius: 16px;
-    padding: 30px 40px;
-    display: none;
-    flex-direction: column;
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto 40px auto;
     text-align: left;
+    background: transparent;
 }
 
-/* Título del formulario */
 #formConsulta h2 {
     margin-bottom: 25px;
     font-size: 26px;
-    text-align: center;
     color: #004a66;
     font-weight: 700;
+    text-align: center;
 }
 
-/* Estilos para etiquetas */
+/* Estilos para etiquetas dentro del formulario */
 #formAgregarConsulta label {
     display: block;
     margin-bottom: 16px;
     font-weight: 600;
     color: #333;
+    text-align: left;
     font-size: 16px;
 }
 
-/* Inputs, selects y textarea */
+/* Inputs, selects y textarea dentro del formulario */
 #formAgregarConsulta input[type="date"],
 #formAgregarConsulta input[type="time"],
 #formAgregarConsulta input[type="text"],
@@ -182,7 +217,7 @@ aside.sidebar a:hover {
     padding: 10px 12px;
     margin-top: 6px;
     border: 2px solid #bfa083;
-    border-left: 5px solid #2761ad;
+    border-left: 5px solid #4bc0c4;
     border-radius: 10px;
     font-size: 15px;
     font-family: 'Poppins', sans-serif;
@@ -193,10 +228,11 @@ aside.sidebar a:hover {
 
 #formAgregarConsulta textarea {
     resize: vertical;
+    /* Permite redimensionar verticalmente. */
     min-height: 80px;
 }
 
-/* Botón de enviar */
+/* Botón de enviar formulario */
 #formAgregarConsulta button[type="submit"] {
     width: 100%;
     padding: 12px;
@@ -215,9 +251,10 @@ aside.sidebar a:hover {
 #formAgregarConsulta button[type="submit"]:hover {
     background: linear-gradient(90deg, #50a3db, #143d8a);
     transform: translateY(-2px);
+    /* Pequeño efecto al pasar el ratón. */
 }
 
-/* Mensaje de resultado */
+/* Mensaje de resultado del formulario */
 #mensajeConsulta {
     text-align: center;
     font-weight: 600;
@@ -225,30 +262,48 @@ aside.sidebar a:hover {
     color: #00695c;
     margin-top: 16px;
 }
-/* Contenedor para filtros */
+
+/* Contenedor para la lista de consultas y sus filtros */
+/* Aquí anulamos algunos estilos base de '.container > section' para adaptar el layout */
+#listaConsultas.consultas-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto 40px auto;
+    background:transparent;
+}
+
+#listaConsultas.consultas-container h2 {
+    font-size: 26px;
+    color: #004a66;
+    margin-bottom: 20px;
+    text-align: center;
+    /* Centra el título de la tabla. */
+}
+
 .filtros {
-    max-width: 900px;  /* ancho máximo */
-    margin: 0 auto 20px auto; /* centrado horizontal con margen inferior */
+    max-width: 900px;
+    margin: 0 auto 20px auto;
     display: flex;
     align-items: center;
     gap: 12px;
     flex-wrap: wrap;
-    padding: 0 10px; /* un poco de espacio lateral */
+    padding: 0 10px;
 }
 
 /* Tabla de consultas */
 #tablaConsultas {
-    max-width: 900px; /* mismo ancho que filtros */
-    margin: 0 auto;
+    max-width: 900px;
     border-collapse: separate;
     border-spacing: 0 6px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     border-radius: 12px;
     overflow: hidden;
 }
 
-/* Cabecera */
 #tablaConsultas thead {
     background: linear-gradient(90deg, #4c9cca, #264cb6);
     color: #fff;
@@ -256,31 +311,28 @@ aside.sidebar a:hover {
     font-size: 16px;
 }
 
-/* Celdas */
 #tablaConsultas th,
 #tablaConsultas td {
-    padding: 12px 14px; /* menos padding para que sea menos ancho */
+    padding: 12px 14px;
     border: none;
     vertical-align: middle;
 }
 
-/* Filas alternas */
 #tablaConsultas tbody tr:nth-child(even) {
     background-color: #f7faff;
     border-radius: 12px;
 }
 
-/* Hover en filas */
 #tablaConsultas tbody tr:hover {
-    background-color: #d6e4ff;
+    background-color: #c0d9ff;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    box-shadow: inset 4px 0 0 #3663c4;
+    box-shadow: inset 4px 0 0 #3657c4;
 }
 
-/* Filtros inputs */
+/* Filtros inputs y selects */
 #filtroEstado,
-#busquedaPaciente {
+#busquedaServicio {
     max-width: 220px;
     margin: 0 10px 20px 0;
     padding: 6px 10px;
@@ -294,14 +346,13 @@ aside.sidebar a:hover {
 }
 
 #filtroEstado:focus,
-#busquedaPaciente:focus {
+#busquedaServicio:focus {
     border-color: #33333d;
     box-shadow: 0 0 6px rgba(132, 116, 158, 0.5);
 }
 
-/* Placeholder input */
-#busquedaPaciente::placeholder {
+/* Placeholder para input de búsqueda */
+#busquedaServicio::placeholder {
     color: #aaa;
     font-style: italic;
 }
-

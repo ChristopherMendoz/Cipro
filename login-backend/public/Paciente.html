@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paciente</title>
+    <title>Panel de Paciente</title>
     <link rel="stylesheet" href="pacienteStyle.css">
 </head>
 
@@ -18,43 +18,277 @@
         <aside class="sidebar">
             <h2 id="nombreUsuario">👤 Cargando...</h2>
             <h3>Gestión Paciente</h3>
-            <a href="#">Datos Personales</a>
-            <a href="#">Agenda</a>
-            <a href="#">Datos Consulta</a>
-            <a href="#">Visualizar Resultados</a>
-            <a href="#">Historial Médico</a>
+            <a href="#" id="btnDatosPersonales">Datos Personales</a>
+            <a href="#" id="btnAgenda">Agenda</a>
+            <a href="#" id="btnVisualizarResultados">Visualizar Resultados</a>
+            <a href="#" id="btnMisConsultas">Historial Médico</a>
         </aside>
+
+        <section id="inicioPanel" class="contenido">
+            <img src="logosinfondo.png" alt="Logo de Clínica Cipro" class="logo-panel-inicio">
+            <p>Bienvenido al Panel de Paciente. Seleccione una opción del menú.</p>
+        </section>
+
+        <section class="contenido hidden" id="seccionDatosPersonalesPaciente">
+            <h2>Mis Datos Personales</h2>
+            <p>Cargando datos...</p>
+        </section>
+
+        <section class="contenido hidden" id="misConsultas">
+            <h2>Mis Consultas</h2>
+            <div class="filtros">
+                <label for="filtroEstadoPaciente">Filtrar por estado:</label>
+                <select id="filtroEstadoPaciente">
+                    <option value="">Todos</option>
+                    <option value="pendiente">Pendiente</option>
+                    <option value="realizada">Realizada</option>
+                    <option value="cancelada">Cancelada</option>
+                </select>
+            </div>
+            <table id="tablaConsultasPaciente">
+                <thead>
+                    <tr>
+                        <th>ID Consulta</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Estado</th>
+                        <th>Médico</th>
+                        <th>Sala</th>
+                        <th>Recepcionista</th>
+                        <th>Observaciones</th>
+                        <th>Servicio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="seccionAgendaPaciente" class="contenido hidden">
+            <h2>Mi Agenda</h2>
+            <p>Contenido de la agenda del paciente.</p>
+        </section>
+
+        <section id="seccionResultadosPaciente" class="contenido hidden">
+            <h2>Resultados de Estudios</h2>
+            <p>Aquí se visualizarán los resultados del paciente.</p>
+        </section>
     </div>
-</body>
-<script>
-    document.getElementById("cerrarSesion").addEventListener("click", () => {
-        sessionStorage.clear();
-        localStorage.clear();
-        window.location.href = "/Clinica.html";
-    });
 
-     // Obtener idUsuario de sessionStorage
-    const idUsuario = sessionStorage.getItem("idUsuario");
+    <script>
+        document.getElementById("cerrarSesion").addEventListener("click", () => {
+            sessionStorage.clear();
+            localStorage.clear();
+            window.location.href = "/Clinica.html";
+        });
 
-    if (!idUsuario) {
-        document.getElementById("contenido").innerHTML = "<p>No hay usuario logueado.</p>";
-    } else {
-        // Mostrar nombre de usuario en sidebar
-        fetch(`/nombre-usuario-p/${idUsuario}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.ok) {
-                    document.getElementById("nombreUsuario").textContent = `👤 ${data.nombreUsuario}`;
-                } else {
-                    document.getElementById("nombreUsuario").textContent = "Usuario no encontrado";
+        let consultasPacienteGlobales = []; // Para los filtros locales del paciente
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Referencias a los elementos HTML
+            const nombreUsuarioEl = document.getElementById('nombreUsuario');
+            const inicioPanelEl = document.getElementById('inicioPanel');
+            const seccionDatosPersonalesPacienteEl = document.getElementById('seccionDatosPersonalesPaciente'); // Nueva sección para datos personales
+            const misConsultasEl = document.getElementById('misConsultas'); // Lista de consultas
+            const seccionAgendaPacienteEl = document.getElementById('seccionAgendaPaciente');
+            const seccionResultadosPacienteEl = document.getElementById('seccionResultadosPaciente');
+
+            const btnDatosPersonales = document.getElementById('btnDatosPersonales');
+            const btnAgenda = document.getElementById('btnAgenda');
+            const btnVisualizarResultados = document.getElementById('btnVisualizarResultados');
+            const btnMisConsultas = document.getElementById('btnMisConsultas');
+            const btnCerrarSesion = document.getElementById('cerrarSesion');
+
+            const tablaConsultasPacienteBody = document.querySelector('#tablaConsultasPaciente tbody');
+            const filtroEstadoPaciente = document.getElementById('filtroEstadoPaciente');
+
+
+            // --- Función centralizada para mostrar/ocultar secciones ---
+            function mostrarSeccion(seccionIdAMostrar) {
+                // Ocultar *todas* las secciones de contenido principales
+                const todasLasSeccionesDeContenido = [
+                    inicioPanelEl,
+                    seccionDatosPersonalesPacienteEl, // Datos Personales
+                    misConsultasEl, // Lista de Consultas
+                    seccionAgendaPacienteEl,
+                    seccionResultadosPacienteEl
+                ];
+
+                todasLasSeccionesDeContenido.forEach(seccion => {
+                    if (seccion) { // Asegurarse de que el elemento exista
+                        seccion.classList.add('hidden');
+                    }
+                });
+
+                // Mostrar la sección específica deseada
+                const seccionAMostrar = document.getElementById(seccionIdAMostrar);
+                if (seccionAMostrar) {
+                    seccionAMostrar.classList.remove('hidden');
                 }
-            })
-            .catch(err => {
-                console.error(err);
-                document.getElementById("nombreUsuario").textContent = "Error al cargar usuario";
-            });
-        }
+            }
 
-</script>
+            // --- Cargar nombre del usuario al inicio y mostrar el panel de inicio ---
+            async function cargarNombreUsuarioYMostrarInicio() {
+                try {
+                    const resNombre = await fetch('/nombre-usuario-p');
+                    if (resNombre.status === 401) {
+                        nombreUsuarioEl.textContent = "Iniciar sesión";
+                        inicioPanelEl.innerHTML = "<p>Por favor, inicie sesión para ver sus datos.</p>"; // Mensaje en panel de inicio
+                        window.location.href = '/Clinica.html'; // Redirigir si no está autorizado
+                        return;
+                    }
+                    const dataNombre = await resNombre.json();
+
+                    if (dataNombre.ok) {
+                        nombreUsuarioEl.textContent = `👤 ${dataNombre.nombreUsuario}`;
+                        mostrarSeccion('inicioPanel'); // Muestra el logo y mensaje de bienvenida por defecto
+                    } else {
+                        nombreUsuarioEl.textContent = "Usuario no encontrado";
+                        inicioPanelEl.innerHTML = "<p>No se pudieron cargar los datos del usuario.</p>";
+                    }
+                } catch (err) {
+                    console.error("Error al verificar sesión o cargar nombre:", err);
+                    nombreUsuarioEl.textContent = "Error de conexión";
+                    inicioPanelEl.innerHTML = "<p>Error al conectar con el servidor.</p>";
+                }
+            }
+
+            // --- Funciones de Carga de Datos y Visualización de Contenido ---
+
+            // Función para cargar y mostrar los datos personales del paciente
+            async function cargarDatosPersonalesPaciente() {
+                mostrarSeccion('seccionDatosPersonalesPaciente');
+                const seccionDatosPersonalesEl = document.getElementById('seccionDatosPersonalesPaciente');
+                seccionDatosPersonalesEl.innerHTML = "<h2>Cargando Datos Personales...</h2>"; // Mensaje de carga
+
+                try {
+                    const res = await fetch('/obtener-paciente'); // La ruta para obtener datos del paciente logueado
+                    if (res.status === 401) {
+                        seccionDatosPersonalesEl.innerHTML = "<p>No autorizado para ver sus datos personales. Inicie sesión como paciente.</p>";
+                        throw new Error('No autorizado');
+                    }
+                    const data = await res.json();
+
+                    if (data.ok) {
+                        const info = data.datos;
+                        const html = `
+                            <h2>Mis Datos Personales</h2>
+                            <p><strong>Primer Nombre:</strong> ${info.primerNombre}</p>
+                            <p><strong>Segundo Nombre:</strong> ${info.segundoNombre || ''}</p>
+                            <p><strong>Primer Apellido:</strong> ${info.primerApellido}</p>
+                            <p><strong>Segundo Apellido:</strong> ${info.segundoApellido || ''}</p>
+                            <p><strong>Fecha de Nacimiento:</strong> ${new Date(info.fechaNacimiento).toLocaleDateString()}</p>
+                            <p><strong>Sexo:</strong> ${info.sexo}</p>
+                            <p><strong>Dirección:</strong> ${info.direccion}</p>
+                            <p><strong>Teléfono:</strong> ${info.telefono}</p>
+                            <p><strong>Tipo de Sangre:</strong> ${info.tipoSangre || 'No especificado'}</p>
+                            <p><strong>Correo:</strong> ${info.correo}</p>
+                            <p><strong>Nombre de Usuario:</strong> ${info.nombreUsuario}</p>
+                        `;
+                        seccionDatosPersonalesEl.innerHTML = html;
+                    } else {
+                        seccionDatosPersonalesEl.innerHTML = `<p>No se encontraron sus datos personales: ${data.mensaje || 'Error desconocido'}</p>`;
+                    }
+                } catch (err) {
+                    console.error("Error al obtener datos personales del paciente:", err);
+                    seccionDatosPersonalesEl.innerHTML = "<p>Error al obtener sus datos personales.</p>";
+                }
+            }
+
+            // Función para cargar y mostrar la tabla de consultas del paciente
+            async function cargarMisConsultas() {
+                mostrarSeccion('misConsultas'); // Muestra la sección de la tabla de consultas
+                const tbody = document.querySelector('#tablaConsultasPaciente tbody');
+                tbody.innerHTML = '<tr><td colspan="10">Cargando consultas...</td></tr>'; // Mensaje de carga
+
+                try {
+                    const res = await fetch('/consultas-pacientes'); // Tu ruta de backend para consultas de paciente
+                    if (res.status === 401) {
+                        alert('No autorizado. Por favor, inicie sesión como paciente.');
+                        window.location.href = '/Clinica.html';
+                        return;
+                    }
+                    const data = await res.json();
+
+                    if (data.ok) {
+                        consultasPacienteGlobales = data.consultas;
+                        aplicarFiltrosPaciente(); // Aplica cualquier filtro local
+                    } else {
+                        alert('Error al cargar sus consultas: ' + (data.mensaje || 'Error desconocido'));
+                    }
+                } catch (err) {
+                    alert('Error al conectar con el servidor para cargar sus consultas.');
+                    console.error('Error al cargar mis consultas:', err);
+                }
+            }
+
+            // Función para aplicar filtros locales a la tabla de consultas
+            function aplicarFiltrosPaciente() {
+                const estadoFiltro = filtroEstadoPaciente.value.toLowerCase();
+                const tbody = document.querySelector('#tablaConsultasPaciente tbody');
+                tbody.innerHTML = ''; // Limpiar tabla
+
+                const filtradas = consultasPacienteGlobales.filter(c => {
+                    return estadoFiltro === '' || c.estado.toLowerCase() === estadoFiltro;
+                });
+
+                if (filtradas.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="10">No hay consultas que coincidan con el filtro.</td></tr>';
+                    return;
+                }
+
+                filtradas.forEach(c => {
+                    const fila = document.createElement('tr');
+                    fila.innerHTML = `
+                        <td>${c.idConsulta}</td>
+                        <td>${new Date(c.fecha).toLocaleDateString()}</td>
+                        <td>${c.hora}</td>
+                        <td>${c.estado}</td>
+                        <td>${c.nombreMedico}</td>
+                        <td>${c.nombreSala}</td>
+                        <td>${c.nombreRecepcionista}</td>
+                        <td>${c.observaciones || ''}</td>
+                        <td>${c.nombreServicio}</td>
+                    `;
+                    tbody.appendChild(fila);
+                });
+            }
+
+            // --- Event Listeners para los botones del Sidebar ---
+            btnDatosPersonales.addEventListener('click', (e) => {
+                e.preventDefault();
+                cargarDatosPersonalesPaciente();
+            });
+
+            btnAgenda.addEventListener('click', (e) => {
+                e.preventDefault();
+                mostrarSeccion('seccionAgendaPaciente');
+                // Aquí podrías inicializar el calendario del paciente si lo implementas
+                // initPacienteCalendar();
+                document.getElementById('seccionAgendaPaciente').innerHTML = "<h2>Agenda del Paciente</h2><p>Contenido del calendario del paciente.</p>"; // Placeholder
+            });
+
+            btnVisualizarResultados.addEventListener('click', (e) => {
+                e.preventDefault();
+                mostrarSeccion('seccionResultadosPaciente');
+                // Aquí cargarías la lógica para visualizar resultados
+                // cargarResultadosPaciente();
+                document.getElementById('seccionResultadosPaciente').innerHTML = "<h2>Resultados de Estudios</h2><p>Aquí se visualizarán los resultados del paciente.</p>"; // Placeholder
+            });
+
+            btnMisConsultas.addEventListener('click', (e) => {
+                e.preventDefault();
+                cargarMisConsultas();
+            });
+
+            // --- Event Listener para el filtro de estado de consultas ---
+            filtroEstadoPaciente.addEventListener('change', aplicarFiltrosPaciente);
+
+            // --- Llamadas iniciales al cargar la página ---
+            cargarNombreUsuarioYMostrarInicio(); // Carga nombre y muestra panel de inicio al principio
+        });
+
+    </script>
+</body>
 
 </html>

@@ -1,0 +1,17 @@
+# Directorio de módulos de Node
+node_modules/
+
+# Archivo de variables de entorno
+.env
+
+# Archivos de logs
+*.log
+
+# Archivos de depuración de VS Code (opcional)
+.vscode/
+
+# Archivos de cache de npm (opcional)
+.npm/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

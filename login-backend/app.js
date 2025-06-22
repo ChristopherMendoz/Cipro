@@ -2,6 +2,7 @@
 //revisar el configuration manager y desbloquear el puerto 1433 y el TCP/IP
 //revisar en el firewall y liberar el puerto 1433 agregando una accion mas
 //revisar si la bd esta dando ping con un ping en cmd 
+require('dotenv').config();
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -10,6 +11,10 @@ const obtenerPacienteByIdUsuarioRouter = require('./routes/Contacto/obtenerPacie
 const obtenerMedicosRouter = require('./routes/Contacto/obtenerMedicos');
 const obtenerRecepcionistasRouter = require('./routes/Contacto/obtenerRecepcionistas');
 const agendarCitaRouter = require('./routes/Contacto/agendarCita');
+const session = require('express-session');
+
+
+
 const loginRoutes = require('./routes/login');
 const registerRoutes = require('./routes/register');
 const registrarPersonal = require('./routes/registrarPersonal');
@@ -27,6 +32,8 @@ const consultasRoutes = require('./routes/consultasM');
 const catalogosRoutes = require('./routes/catalogos');
 const nombreUsuarioP = require('./routes/nombreUsuarioP');
 const serviciosRouter = require('./routes/servicios');
+const consultasPacientesRoutes = require('./routes/consultasP');
+const obtenerDatosMedRoutes = require('./routes/obtenerDpaciente')
 
 
 
@@ -40,6 +47,18 @@ const PORT = 5500;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+
+// --- Configuración de express-session ---
+// ¡ES CRUCIAL QUE ESTO ESTÉ ANTES DE DEFINIR TUS RUTAS!
+app.use(session({
+    secret: process.env.SESSION_SECRET, // <-- ¡AHORA USA LA VARIABLE DE ENTORNO!
+    resave: false, // No guarda la sesión si no ha cambiado
+    saveUninitialized: false, // No crea sesión para usuarios no autenticados
+    cookie: {
+        secure: false, // Pon 'true' si usas HTTPS en producción (muy recomendado)
+        maxAge: 1000 * 60 * 60 * 24 // 1 día de duración de la cookie de sesión
+    }
+}));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public/Inicio'))); 
@@ -65,6 +84,8 @@ app.use('/agregar-consulta', agregarConsultaRoutes);
 app.use('/consultas', consultasRoutes);
 app.use('/catalogos', catalogosRoutes);
 app.use('/nombre-usuario-p', nombreUsuarioP);
+app.use('/consultas-pacientes', consultasPacientesRoutes);
+app.use('/obtener-paciente', obtenerDatosMedRoutes);
 
 
 
