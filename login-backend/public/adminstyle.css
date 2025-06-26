@@ -1,345 +1,639 @@
+/* ================================================== */
+/* ADMINSTYLE-MINIMAL.CSS (NUEVO)            */
+/* ================================================== */
+
+/* --- Variables y Estilos Globales --- */
+:root {
+    --primary-color: #4A90E2; /* Un azul más moderno y suave */
+    --primary-light: #eaf2fb;
+    --text-dark: #2d3748;
+    --text-light: #718096;
+    --background-light: #f8f9fa;
+    --background-white: #ffffff;
+    --border-color: #e2e8f0;
+    --danger-color: #e53e3e;
+    --success-color: #38a169;
+    --sidebar-bg: #1a2533; /* Un fondo oscuro y elegante para el sidebar */
+    --sidebar-text: #d0d2d6;
+    --sidebar-text-hover: #ffffff;
+
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -1px rgba(0, 0, 0, 0.05);
+}
+
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #f4f8fb 0%, #e9f1fa 100%);
-    color: #222;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: var(--background-light);
+    color: var(--text-dark);
+    font-size: 16px;
 }
 
+/* --- Layout Principal con Sidebar --- */
+.admin-container {
+    position: relative;
+}
+
+.main-wrapper {
+    margin-left: 260px; /* ¡LA CLAVE! Empuja el contenido principal a la derecha */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+main {
+    padding: 24px 40px;
+    flex-grow: 1;
+}
+
+/* --- Barra Lateral (Sidebar) --- */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%; /* Ocupa el 100% de la altura de la pantalla */
+    width: 260px;
+    z-index: 100;
+    
+    background-color: var(--sidebar-bg);
+    color: var(--sidebar-text);
+
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    box-sizing: border-box; /* Evita que el padding aumente el ancho total */
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #3a4b60;
+}
+
+.sidebar .logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.sidebar-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--background-white);
+}
+
+/* ======================================================= */
+/* --- ESTILOS MEJORADOS PARA NAVEGACIÓN DEL SIDEBAR --- */
+/* ======================================================= */
+
+.sidebar-nav {
+    flex-grow: 1; 
+    overflow-y: auto; 
+    margin: 24px -24px 0 -24px; /* Usa margen negativo para que los enlaces ocupen todo el ancho */
+}
+
+.sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Estilo general para cada enlace del menú */
+.sidebar-nav a {
+    display: flex; /* Permite alinear el ícono y el texto */
+    align-items: center; /* Centra verticalmente el ícono y el texto */
+    gap: 16px; /* Espacio entre el ícono y el texto */
+    
+    padding: 14px 24px; /* Padding para que el contenido no toque los bordes */
+    text-decoration: none;
+    color: var(--sidebar-text);
+    font-weight: 500;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    border-left: 4px solid transparent; /* Borde izquierdo para el estado activo */
+}
+
+/* Estilo para el icono SVG */
+.sidebar-nav svg {
+    width: 22px;
+    height: 22px;
+    fill: currentColor; /* El SVG tomará el color del texto del enlace (color:) */
+    flex-shrink: 0; /* Evita que el ícono se encoja */
+}
+
+/* Efecto al pasar el mouse sobre un enlace */
+.sidebar-nav a:hover {
+    background-color: #2c3a4a; /* Un poco más oscuro */
+    color: var(--sidebar-text-hover);
+    border-left-color: var(--primary-color);
+}
+
+/* Estilo para el enlace ACTIVO */
+.sidebar-nav li.active a {
+    background-color: var(--primary-color);
+    color: var(--background-white);
+    font-weight: 600;
+    border-left-color: #ffffff; /* Borde blanco para el activo */
+}
+
+/* --- Header Superior --- */
 header {
+    background: var(--background-white);
+    padding: 20px 40px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.page-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--text-dark);
+}
+
+/* --- Paneles y Secciones de Contenido --- */
+.panel-section {
+    background: var(--background-white);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 40px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+}
+
+.panel-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 22px 40px 18px 40px;
-    background: #fff;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    margin-bottom: 24px;
 }
 
-.header-content {
+.panel-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--text-dark);
+}
+
+/* --- Botones --- */
+button, .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+.btn-primary:hover {
+    background-color: #357ABD; /* Un poco más oscuro */
+}
+
+#cerrarSesion {
+    width: 100%;
+    background-color: transparent;
+    border: 1px solid #5a6b80;
+    color: var(--sidebar-text);
+}
+#cerrarSesion:hover {
+    background-color: var(--danger-color);
+    border-color: var(--danger-color);
+    color: white;
+}
+
+/* --- Formularios y Entradas --- */
+.action-bar {
     display: flex;
     align-items: center;
-    gap: 32px;
-}
-.logo {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    object-fit: cover;
-    box-shadow: 0 0 6px rgba(0, 123, 255, 0.08);
+    gap: 16px;
+    margin-bottom: 24px;
 }
 
-h1 {
-    font-size: 2.1rem;
-    font-weight: 700;
-    margin: 0 0 18px 0;
-    color: #003366;
-    letter-spacing: 1px;
-}
-
-main {
-    margin-top: 18px;
-}
-
-input[type="text"], input[type="email"], input[type="password"], input[type="date"], select {
-    width: 100%;
-    padding: 10px 12px;
-    border-radius: 7px;
-    border: 1px solid #b0c4de;
-    font-size: 1rem;
-    margin-bottom: 8px;
-    background: #f8fbff;
-    transition: border 0.2s;
-}
-input:focus, select:focus {
-    border-color: #0074d9;
-    outline: none;
-    background: #fff;
-}
-
-button, .btn-registrar-personal {
-    background: linear-gradient(90deg, #005fa3 0%, #0074d9 100%);
-    color: #fff;
-    padding: 12px 26px;
-    border: none;
+.action-bar input[type="text"] {
+    flex-grow: 1;
+    max-width: 350px;
+    padding: 10px 14px;
+    border: 1px solid var(--border-color);
     border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.18s, box-shadow 0.18s, transform 0.12s;
-    box-shadow: 0 2px 8px rgba(0,123,255,0.07);
+    font-size: 15px;
+    background-color: var(--background-light);
+}
+.action-bar input[type="text"]:focus {
+    background-color: var(--background-white);
+    border-color: var(--primary-color);
     outline: none;
+    box-shadow: 0 0 0 2px var(--primary-light);
 }
-button:hover, .btn-registrar-personal:hover {
-    background: linear-gradient(90deg, #0074d9 0%, #005fa3 100%);
-    transform: translateY(-2px) scale(1.03);
-    box-shadow: 0 4px 16px rgba(0,123,255,0.13);
+.checkbox-group {
+    display: flex;
+    gap: 20px;
 }
-
-/* Botón cerrar sesión */
-#cerrarSesion {
-    background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%);
-    color: #fff;
-    padding: 10px 22px;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 500;
-    border: none;
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     cursor: pointer;
-    transition: background 0.18s, box-shadow 0.18s;
-    box-shadow: 0 2px 8px rgba(231,76,60,0.07);
 }
 
-#cerrarSesion:hover {
-    background: linear-gradient(90deg, #c0392b 0%, #e74c3c 100%);
-    box-shadow: 0 4px 16px rgba(231,76,60,0.13);
+
+/* --- Tablas --- */
+.tabla-container {
+    max-height: 500px; /* Altura máxima antes de que aparezca el scroll */
+    overflow-y: auto;  /* Habilita el scroll vertical */
+    position: relative; /* Necesario para el encabezado pegajoso */
 }
 
-.tabla-responsive {
-    max-height: 500px; /* Ajusta la altura máxima visible de la tabla */
-    overflow-y: auto;
-    background: #fff;
-    border-radius: 18px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
-    margin-top: 18px;
-    padding: 0 8px;
-}
-
-.tabla-responsive table {
-    border-collapse: separate;
-    border-spacing: 0;
-    width: 100%;
-    background: #fff;
-    border-radius: 18px;
-    overflow: hidden;
-    box-shadow: none;
-}
-
-.tabla-responsive th {
-    position: sticky;
+/* Encabezado de la tabla (thead) */
+.tabla-container thead th {
+    position: sticky; /* Fija el encabezado en la parte superior */
     top: 0;
-    z-index: 2;
+    z-index: 10; /* Se asegura de que esté por encima del contenido del cuerpo */
+    background-color: var(--background-light); /* Mismo fondo que antes para consistencia */
 }
+
 
 table {
     width: 100%;
     border-collapse: collapse;
-    background: #fff;
-    table-layout: auto;
-}
-th, td {
-    padding: 14px 16px;
     text-align: left;
-    vertical-align: middle;
-    font-size: 1.05rem;
-    word-break: break-word;
-}
-th {
-    background: #eaf2fb;
-    color: #003366;
-    font-weight: 700;
-    border-bottom: 2px solid #dde6f3;
-}
-tr {
-    transition: background 0.18s;
-}
-tr:nth-child(even) {
-    background: #f7fafd;
-}
-tr:hover {
-    background: #e3efff;
-}
-.pacientes-inactivos, .medicos-inactivos {
-    background-color: #f5f5f5 !important;
-    color: #aaa !important;
+    font-size: 15px;
 }
 
+th, td {
+    padding: 16px; /* Más espacio */
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+}
+
+thead th {
+    background-color: var(--background-light);
+    font-weight: 600;
+    color: var(--text-light);
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+tbody tr:hover {
+    background-color: var(--primary-light);
+}
+
+.pacientes-inactivos, .medicos-inactivos {
+    background-color: #f7f7f7;
+    color: #a0a0a0;
+}
+.pacientes-inactivos:hover, .medicos-inactivos:hover {
+    background-color: #efefef;
+}
+
+/* Botones de acción en tablas */
+td .btn-accion {
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-right: 6px;
+    border: 1px solid transparent;
+    background-color: transparent;
+}
+
+.btn-editar {
+    color: #3182ce;
+}
+.btn-editar:hover { background-color: #ebf8ff; }
+
+.btn-baja {
+    color: #c53030;
+}
+.btn-baja:hover { background-color: #fff5f5; }
+
+.btn-reactivar {
+    color: #2f855a;
+}
+.btn-reactivar:hover { background-color: #f0fff4; }
+
+/* --- Modales (Ajustes menores para consistencia) --- */
 .modal {
+    /* Estilos de modal existentes... */
     display: none;
     position: fixed;
     z-index: 1000;
     left: 0; top: 0;
     width: 100%; height: 100%;
-    background: rgba(0,0,0,0.18);
+    background: rgba(45, 55, 72, 0.6);
     overflow: auto;
+    backdrop-filter: blur(4px);
 }
 .modal-content {
+    /* Estilos de modal existentes... */
     background: #fff;
-    margin: 60px auto;
-    padding: 32px 28px 22px 28px;
-    border-radius: 14px;
-    max-width: 420px;
+    margin: 80px auto;
+    padding: 32px;
+    border-radius: 12px;
+    max-width: 500px;
     width: 95%;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.13);
+    box-shadow: var(--shadow-md);
     position: relative;
     animation: modalFadeIn 0.3s;
 }
-@keyframes modalFadeIn {
-    from { transform: translateY(-40px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+
+/* --- Adaptabilidad (Responsive Design) --- */
+@media (max-width: 1024px) {
+    .sidebar {
+        display: none; /* Oculta la sidebar en pantallas pequeñas */
+    }
+
+    /* ¡LA CLAVE! Reseteamos el margen cuando el sidebar ya no está */
+    .main-wrapper {
+        margin-left: 0; 
+    }
+    
+    main {
+        padding: 24px;
+    }
+    header {
+        padding: 20px 24px;
+    }
 }
-.close {
-    position: absolute;
-    top: 18px;
-    right: 22px;
-    font-size: 28px;
-    font-weight: bold;
-    color: #888;
-    cursor: pointer;
-    transition: color 0.2s;
+
+@media (max-width: 600px) {
+    main {
+        padding: 16px;
+    }
+    .action-bar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .panel-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
 }
-.close:hover {
-    color: #e74c3c;
-}
+
+/* ================================================== */
+/* --- ESTILOS PARA FORMULARIOS EN MODALES ---        */
+/* ================================================== */
 
 .modal-body h2 {
-    margin-bottom: 18px;
-    color: #003366;
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     font-weight: 600;
-    letter-spacing: 0.5px;
+    margin: 0 0 24px 0;
+    color: var(--text-dark);
+    text-align: center;
 }
 
-.modal-body input, .modal-body select {
-    margin-bottom: 10px;
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 20px; /* Espacio vertical y horizontal */
+    margin-bottom: 20px;
 }
 
-.autocomplete-container {
-    position: relative;
-    width: 100%;
+.form-group {
     display: flex;
     flex-direction: column;
-    align-items: stretch;
-    gap: 6px;
+    gap: 8px; /* Espacio entre label e input */
 }
 
-#inputCorreo {
+.form-group.full-width {
+    grid-column: 1 / -1; /* Ocupa todo el ancho en el grid */
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-light);
+}
+
+/* Estilos unificados para todos los inputs y selects dentro del modal */
+.modal-body input[type="text"],
+.modal-body input[type="email"],
+.modal-body input[type="password"],
+.modal-body input[type="date"],
+.modal-body input[type="tel"],
+.modal-body input[type="time"], 
+.modal-body select,
+.modal-body textarea {          
     width: 100%;
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #b0c4de;
-    font-size: 1rem;
-    box-sizing: border-box;
-}
-
-.sugerencias-box {
-    position: absolute;
-    left: 0;
-    top: 100%;
-    width: 100%;
-    background: #fff;
-    border: 1px solid #b0c4de;
-    border-radius: 0 0 8px 8px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-    z-index: 200;
-    max-height: 180px;
-    overflow-y: auto;
-    margin-top: 2px;
-    display: none;
-}
-
-.sugerencia {
     padding: 10px 14px;
-    cursor: pointer;
-    transition: background 0.2s;
-    font-size: 1rem;
-}
-.sugerencia:hover {
-    background: #e6f0ff;
-}
-
-#opcionCrearUsuario {
-    margin-top: 8px;
-    display: none;
-    text-align: left;
-}
-#opcionCrearUsuario button {
-    background: #0074d9;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    padding: 8px 16px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-#opcionCrearUsuario button:hover {
-    background: #005fa3;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    font-size: 15px;
+    background-color: var(--background-light);
+    transition: all 0.2s ease;
+    box-sizing: border-box; 
 }
 
+.modal-body input:focus,
+.modal-body select:focus {
+    background-color: var(--background-white);
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+/* Botón de submit en el modal */
+.modal-body form button[type="submit"] {
+    width: 100%;
+    margin-top: 24px;
+    padding: 12px;
+    font-size: 16px;
+}
+
+/* Campos para crear nuevo usuario */
 #nuevoUsuarioCampos {
-    display: none;
-    margin-top: 10px;
-    background: #f7fbff;
-    border: 1px solid #b0c4de;
+    display: none; /* Se mantiene oculto por JS */
+    margin-top: 16px;
+    padding: 20px;
+    background-color: var(--primary-light);
     border-radius: 8px;
-    padding: 14px 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border: 1px dashed var(--primary-color);
+}
+
+/* Botones del modal de confirmación */
+.confirmation-buttons {
     display: flex;
-    flex-direction: column;
-    gap: 8px;
+    gap: 16px;
+    justify-content: center;
 }
-#nuevoUsuarioCampos input {
-    border-radius: 6px;
-    border: 1px solid #b0c4de;
-    padding: 8px;
-    font-size: 1rem;
+.btn-secondary {
+    background-color: var(--border-color);
+    color: var(--text-dark);
+}
+.btn-secondary:hover {
+    background-color: #d8dee4;
 }
 
-.mensaje-sistema {
-    position: fixed;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #d4edda;
-    color: #155724;
-    padding: 15px 25px;
+/* ================================================== */
+/* --- ESTILOS PARA AUTOCOMPLETAR/SUGERENCIAS ---     */
+/* ================================================== */
+
+/* Contenedor del campo de autocompletado */
+.autocomplete-container {
+    position: relative; /* Clave para posicionar la caja de sugerencias */
+}
+
+/* La caja que contiene las sugerencias */
+.sugerencias-box {
+    display: none; /* Visibilidad controlada por JavaScript */
+    position: absolute;
+    top: 100%; /* Justo debajo del input */
+    left: 0;
+    right: 0;
+    background-color: var(--background-white);
+    border: 1px solid var(--border-color);
+    border-top: none; /* Evita doble borde con el input */
+    border-radius: 0 0 8px 8px; /* Redondea las esquinas inferiores */
+    box-shadow: var(--shadow-md);
+    max-height: 180px; /* Evita que la lista sea demasiado larga */
+    overflow-y: auto; /* Añade scroll si hay muchas sugerencias */
+    z-index: 1010; /* Asegura que esté por encima de otros elementos del modal */
+}
+
+/* Cada item individual en la lista de sugerencias */
+.sugerencia {
+    padding: 12px 16px;
+    font-size: 15px;
+    color: var(--text-dark);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+/* Efecto al pasar el mouse sobre una sugerencia */
+.sugerencia:hover {
+    background-color: var(--primary-light);
+}
+
+/* ================================================== */
+/* --- ESTILOS PARA MENSAJES DE FORMULARIO (MODAL) ---*/
+/* ================================================== */
+
+.form-message {
+    padding: 12px 16px;
+    margin-top: 20px;
     border-radius: 8px;
-    box-shadow: 0 0 10px #aaa;
-    font-weight: 600;
-    display: none;
-    z-index: 9999;
-    animation: fadeInOut 3s ease-in-out;
-}
-@keyframes fadeInOut {
-    0% { opacity: 0; bottom: 20px; }
-    10% { opacity: 1; bottom: 30px; }
-    90% { opacity: 1; bottom: 30px; }
-    100% { opacity: 0; bottom: 20px; }
+    font-size: 15px;
+    font-weight: 500;
+    text-align: center;
+    border: 1px solid transparent;
+    display: none; /* Oculto por defecto, se mostrará con JS */
 }
 
-#tablaPacientes td:nth-child(10), #tablaPacientes th:nth-child(10) {
-    max-width: 220px;
-    word-break: break-all;
-    white-space: normal;
+.form-message.success {
+    background-color: #e6f7f0; /* Verde muy claro */
+    color: #1e6a49;
+    border-color: #9fdbc6;
+    display: block; /* Lo hacemos visible */
 }
 
-#tablaPacientes td:last-child, #tablaPacientes th:last-child {
-    min-width: 120px;
-    max-width: 150px;
-    white-space: nowrap;
+.form-message.error {
+    background-color: #fdeeee; /* Rojo muy claro */
+    color: #c53030;
+    border-color: #fccfcf;
+    display: block; /* Lo hacemos visible */
 }
 
-#tablaPacientes td {
-    vertical-align: middle;
+/* ================================================== */
+/* --- ESTILOS PARA MENSAJE GLOBAL DEL SISTEMA ---    */
+/* ================================================== */
+
+#mensajeSistema {
+    /* LA PROPIEDAD CLAVE: Fija el elemento a la ventana del navegador */
+    position: fixed;
+    
+    /* Posición en la esquina inferior derecha */
+    bottom: 24px;
+    right: 24px;
+    
+    /* Estilos visuales */
+    padding: 14px 22px;
+    border-radius: 8px;
+    color: #155724; /* Color de texto para éxito */
+    background-color: #d4edda; /* Fondo para éxito */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    
+    /* Animación sutil */
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    
+    z-index: 9999; /* Asegura que esté por encima de todo */
 }
-#tablaPacientes button {
-    margin: 2px 2px;
+
+/* Estilos para cuando el mensaje está activo/visible */
+#mensajeSistema.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ================================================== */
+/* --- ESTILOS PARA CONTROLES DE PAGINACIÓN ---       */
+/* ================================================== */
+
+.pagination-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    font-size: 14px;
+    color: var(--text-light);
+}
+
+.pagination-controls select.rows-per-page {
+    padding: 6px 8px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    margin-right: 8px;
+}
+
+.pagination-controls .page-nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.pagination-controls .page-nav button {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-dark);
     padding: 6px 12px;
-    font-size: 0.95em;
-    display: inline-block;
-    white-space: nowrap;
+    border-radius: 6px;
+    cursor: pointer;
 }
 
-
-/* Responsive */
-@media (max-width: 900px) {
-    .tabla-responsive { max-height: 320px; }
-    table { font-size: 0.97rem; }
-    .header-content { gap: 16px; }
+.pagination-controls .page-nav button:hover:not(:disabled) {
+    background-color: var(--primary-light);
+    border-color: var(--primary-color);
 }
-@media (max-width: 600px) {
-    header { flex-direction: column; gap: 10px; padding: 16px 8px 10px 8px; }
-    .header-content { flex-direction: column; gap: 8px; }
-    h1 { font-size: 1.2rem; }
-    .modal-content { padding: 16px 6px; }
+
+.pagination-controls .page-nav button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* Seleccionamos la última celda (td) de cada fila (tr) en ambas tablas.
+  Esto corresponde a la columna "Acciones".
+*/
+#tablaPacientes td:last-child,
+#tablaMedicos td:last-child {
+    /* Usamos Flexbox para alinear los elementos hijos (los botones) */
+    display: flex;
+
+    /* Añadimos un espacio consistente entre los botones */
+    gap: 8px; 
+
+    /* Opcional: Centra los botones verticalmente si tuvieran alturas diferentes */
+    align-items: center; 
 }

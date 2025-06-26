@@ -1,358 +1,779 @@
+/* ======================================================= */
+/* ---        NUEVO DISEÑO: MODERNO Y PROFESIONAL      --- */
+/* ======================================================= */
+
+/* --- 1. VARIABLES Y PALETA DE COLORES --- */
+:root {
+    --primary-color: #4a69bd; /* Un azul corporativo sereno */
+    --primary-light: #f0f4ff; /* Un fondo muy claro para estados activos/hover */
+    --primary-dark: #3c569a;  /* Una versión más oscura para hover en botones */
+    
+    --sidebar-bg: #1e2a3a;      /* Un azul oscuro y profundo para el sidebar */
+    --sidebar-text: #c0d0e0;   /* Texto claro y legible para el sidebar */
+    --sidebar-text-hover: #ffffff; /* Texto blanco puro para hover */
+    --sidebar-active-bg: rgba(74, 105, 189, 0.2); /* Fondo para el enlace activo */
+
+    --background-body: #f8f9fa; /* Fondo general gris muy claro */
+    
+    --text-dark: #2c3e50;       /* Texto principal (casi negro, pero más suave) */
+    --text-normal: #576574;     /* Texto secundario */
+    --text-light: #a0aec0;      /* Texto muy claro para etiquetas o placeholders */
+
+    --border-color: #e2e8f0;    /* Color de borde estándar */
+    --danger-color: #e53e3e;    /* Rojo para acciones de peligro (ej. logout) */
+
+    --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.07), 0 1px 2px -1px rgb(0 0 0 / 0.07);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+/* --- 2. ESTILOS GLOBALES Y LAYOUT --- */
 body {
     margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #c6f1ff, #dbefff, #ffffff);
-    display: flex;
-    /* ¡Fundamental! Hace que el body sea un contenedor flex, permitiendo que sus hijos directos (aside, .container) se coloquen uno al lado del otro. */
-    min-height: 100vh;
-    /* Asegura que el body ocupe al menos el 100% de la altura de la ventana. */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: var(--background-body);
+    color: var(--text-normal);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-/* Sidebar (aside) */
-aside.sidebar {
-    width: 240px;
-    /* Ancho fijo de tu barra lateral. */
-    background-color: #a2d8e7;
-    padding: 30px 20px;
-    height: 100vh;
-    /* Hace que la barra lateral ocupe toda la altura visible de la ventana. */
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+.container {
+    display: flex;
+}
+
+/* --- 3. SIDEBAR: ELEGANTE Y PROFESIONAL --- */
+.sidebar {
     position: fixed;
-    /* ¡Lo fija a la izquierda de la pantalla, para que no se desplace al hacer scroll! */
     top: 0;
     left: 0;
-    overflow-y: auto;
-    /* Agrega una barra de desplazamiento vertical si el contenido del sidebar excede su altura. */
+    height: 100vh;
+    width: 280px;
+    background-color: var(--sidebar-bg);
+    border-right: 1px solid var(--border-color);
     box-sizing: border-box;
-    /* Incluye el padding en el cálculo del ancho/alto total del elemento. */
     display: flex;
     flex-direction: column;
-    /* Organiza los elementos internos del sidebar en una columna. */
-    gap: 20px;
-    /* Espacio entre los elementos internos del sidebar. */
+    padding: 24px;
+    transition: width 0.3s ease;
 }
 
-aside.sidebar h2 {
-    color: #003366;
-    font-size: 20px;
-    margin-bottom: 5px;
+.sidebar-header {
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-aside.sidebar h3 {
-    color: #005577;
-    font-size: 16px;
-    margin-top: 0;
+.sidebar-header h2 {
+    font-size: 1.2rem;
+    color: #ffffff;
+    margin: 0;
+    font-weight: 600;
+}
+
+.sidebar-header h3 {
+    font-size: 0.85rem;
+    color: var(--sidebar-text);
     font-weight: 500;
-    text-align: center;
+    margin: 4px 0 0 0;
 }
 
-aside.sidebar a {
-    display: block;
-    /* Hace que los enlaces ocupen todo el ancho disponible. */
-    padding: 12px 18px;
-    margin-bottom: 12px;
-    color: #00334d;
-    background-color: transparent;
+.sidebar-nav {
+    flex-grow: 1;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-nav a {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    border-radius: 8px;
     text-decoration: none;
-    font-weight: 600;
-    font-size: 15px;
-    border: 2px solid #5b5f61;
-    border-radius: 10px;
-    transition: background-color 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--sidebar-text);
+    margin-bottom: 6px;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
 }
 
-aside.sidebar a:hover {
-    background-color: #264f5c;
+.sidebar-nav a:hover {
+    background-color: var(--sidebar-active-bg);
+    color: var(--sidebar-text-hover);
+    transform: translateX(5px);
+}
+
+.sidebar-nav li.active a { /* Define una clase 'active' para el elemento actual */
+    background-color: var(--primary-color);
     color: white;
-    border-color: #010f14;
-    transform: translateX(6px);
-    /* Pequeña animación al pasar el ratón. */
+    font-weight: 600;
+    box-shadow: 0 4px 14px -4px var(--primary-color);
 }
 
-/* Botón de cerrar sesión (Definición unificada y corregida) */
+.sidebar-footer {
+    margin-top: auto; /* Empuja este contenedor al fondo */
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
 #cerrarSesion {
-    position: absolute;
-    /* Posiciona el botón de forma absoluta respecto al body/viewport. */
-    top: 20px;
-    right: 20px;
-    padding: 10px 18px;
-    background-color: crimson;
-    color: white;
-    font-weight: 600;
-    font-size: 14px;
-    border: 2px solid transparent;
+    width: 100%;
+    display: flex; /* Alinea el ícono y el texto */
+    align-items: center;
+    gap: 10px; /* Espacio entre ícono y texto */
+    
+    padding: 12px;
+    background-color: transparent;
+    color: var(--sidebar-text);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 8px;
     cursor: pointer;
-    z-index: 1000;
-    /* Asegura que el botón esté por encima de otros elementos. */
-    box-shadow: 0 4px 8px rgba(220, 20, 60, 0.3);
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
 }
 
 #cerrarSesion:hover {
-    background-color: #a6002f;
-    transform: scale(1.05);
-    box-shadow: 0 6px 12px rgba(220, 20, 60, 0.4);
+    background-color: var(--danger-color);
+    border-color: var(--danger-color);
+    color: white;
 }
 
-/* Contenedor principal que va a la derecha del sidebar fijo */
-.container {
-    margin-left: 250px;
+
+
+
+/* --- 4. CONTENIDO PRINCIPAL --- */
+.contenido {
+    margin-left: 280px; /* Ancho del sidebar */
+    width: calc(100% - 280px);
     padding: 40px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
     box-sizing: border-box;
+    animation: fadeInUp 0.5s ease-out;
 }
 
-/* Clase de utilidad para ocultar secciones (¡fundamental para JavaScript!) */
-.hidden {
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.contenido.hidden {
     display: none !important;
-    /* ¡Important asegura que esta regla tenga prioridad! */
 }
 
-/* Estilos generales base para TODAS las secciones de contenido principales */
-/* Esto se aplica a #inicioPanelMedico, #seccionDatosPersonalesMedico, #seccionAgenda, #formConsulta, #listaConsultas, #seccionCargarResultados */
-.container>section {
-    font-size: 18px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
-    border-radius: 10px;
-    padding: 30px 40px;
-    margin-bottom: 40px;
-    background-color: #e7f9ff;
-    box-sizing: border-box;
+.contenido h2 {
+    font-size: 1.8rem;
+    color: var(--text-dark);
+    margin-top: 0;
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* --- 5. TABLA DE CONSULTAS REDISEÑADA --- */
+#seccionDatosConsulta {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+    gap: 30px; /* Espacio entre el formulario y la tabla */
+    align-items: flex-start; /* Alinea los items al inicio */
 }
 
-/* Estilos específicos para la sección de inicio con el logo */
-#inicioPanelMedico {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 550px;
-    background: linear-gradient(135deg, #c6f1ff, #dbefff, #ffffff);
+/* Columna Izquierda: Formulario */
+#contenedorFormularioConsulta {
+    flex: 0 0 420px; /* Ancho fijo para el formulario: no crece, no se encoge, base de 420px */
+    background-color: #ffffff;
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
 }
 
-.logo-panel-inicio {
-    max-width: 300px;
-    height: auto;
-    margin-bottom: 20px;
-    opacity: 0.8;
+/* Columna Derecha: Lista de Consultas */
+#contenedorListaConsultas {
+    flex: 1; /* La tabla ocupa todo el espacio restante */
+    background-color: #ffffff;
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
 }
 
-/* Estilos para la sección de Datos Personales del Médico (si necesitas algo diferente al base) */
-#seccionDatosPersonalesMedico {
-    font-size: 18px;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
-    border-radius: 10px;
-    padding: 40px;
-    margin-bottom: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: left;
-    background: linear-gradient(135deg, #c6f1ff, #dbefff, #ffffff);
+/* Ajustamos los títulos dentro de los nuevos contenedores */
+#contenedorFormularioConsulta h2,
+#contenedorListaConsultas h2 {
+    font-size: 1.5rem; /* Hacemos los títulos un poco más pequeños */
+    margin-top: 0;
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--border-color);
 }
 
-#seccionDatosPersonalesMedico h2 {
-    font-size: 28px;
-    margin-bottom: 20px;
-    color: #004a66;
-    text-align: center;
-}
 
-#seccionDatosPersonalesMedico p {
-    font-size: 20px;
-    margin: 10px 0;
-    width: 100%;
-    max-width: 600px;
-    background: linear-gradient(135deg, #84cfe9, #94c6e2, #ffffff);
-    padding: 10px 15px;
-    border-left: 5px solid #94c6e2;
-    border-radius: 15px;
-    border: bisque 5px solid transparent;
-}
-
-/* Estilos para el formulario de Agregar Consulta */
-#formConsulta {
-    width: 100%;
-    max-width: 700px;
-    margin: 0 auto 40px auto;
-    text-align: left;
-    background: transparent;
-}
-
-#formConsulta h2 {
-    margin-bottom: 25px;
-    font-size: 26px;
-    color: #004a66;
-    font-weight: 700;
-    text-align: center;
-}
-
-/* Estilos para etiquetas dentro del formulario */
-#formAgregarConsulta label {
-    display: block;
-    margin-bottom: 16px;
+/* --- ESTILOS PARA LOS BADGES DE ESTADO --- */
+.estado-badge {
+    padding: 5px 12px;
+    border-radius: 15px; /* Píldoras redondeadas */
     font-weight: 600;
-    color: #333;
-    text-align: left;
-    font-size: 16px;
+    font-size: 0.8rem;
+    text-transform: capitalize;
 }
 
-/* Inputs, selects y textarea dentro del formulario */
+.estado-pendiente {
+    background-color: #fffbeb; /* Amarillo claro */
+    color: #b45309;
+}
+
+.estado-realizada {
+    background-color: #f0fdf4; /* Verde claro */
+    color: #15803d;
+}
+
+.estado-cancelada {
+    background-color: #fee2e2; /* Rojo claro */
+    color: #b91c1c;
+}
+
+.btn-subir-img {
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-subir-img:hover {
+    background-color: var(--primary-dark);
+}
+
+/* --- 6. FILTROS DE LA TABLA --- */
+.filtros {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 16px;
+    border-radius: 8px;
+}
+
+.filtros label {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.filtros select,
+.filtros input[type="text"] {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    font-size: 14px;
+    background-color: #ffffff;
+    min-width: 200px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.filtros select:focus,
+.filtros input[type="text"]:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(74, 105, 189, 0.2);
+}
+
+
+/* --- 7. FORMULARIO DE AGREGAR CONSULTA --- */
+
+#formAgregarConsulta label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    display: block;
+    margin-bottom: 8px;
+}
+
 #formAgregarConsulta input[type="date"],
 #formAgregarConsulta input[type="time"],
-#formAgregarConsulta input[type="text"],
 #formAgregarConsulta select,
 #formAgregarConsulta textarea {
     width: 100%;
-    padding: 10px 12px;
-    margin-top: 6px;
-    border: 2px solid #bfa083;
-    border-left: 5px solid #4bc0c4;
-    border-radius: 10px;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 20px;
     font-size: 15px;
-    font-family: 'Poppins', sans-serif;
-    background-color: #f9faff;
+    background-color: #fdfdff;
+    transition: border-color 0.2s, box-shadow 0.2s;
     box-sizing: border-box;
-    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#formAgregarConsulta input:focus,
+#formAgregarConsulta select:focus,
+#formAgregarConsulta textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(74, 105, 189, 0.2);
 }
 
 #formAgregarConsulta textarea {
+    min-height: 100px;
     resize: vertical;
-    /* Permite redimensionar verticalmente. */
-    min-height: 80px;
 }
 
-/* Botón de enviar formulario */
 #formAgregarConsulta button[type="submit"] {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#formAgregarConsulta button[type="submit"]:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+/* --- 7. FORMULARIO DE AGREGAR CONSULTA (REDiseñado a 2 columnas) --- */
+#formAgregarConsulta {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Dos columnas de igual tamaño */
+    gap: 20px 25px; /* Espacio vertical y horizontal */
+    align-items: start;
+}
+
+.form-group {
+    width: 100%;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1; /* Hace que el campo ocupe las dos columnas */
+}
+
+#formAgregarConsulta label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    display: block;
+    margin-bottom: 8px;
+}
+
+#formAgregarConsulta input,
+#formAgregarConsulta select,
+#formAgregarConsulta textarea {
     width: 100%;
     padding: 12px;
-    background: linear-gradient(90deg, #3a4097, #4f46e5);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 15px;
+    background-color: #fdfdff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+    margin: 0; /* Reseteamos margen */
+}
+
+
+
+/* --- 8. MODAL PARA SUBIR IMÁGENES --- */
+.modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    animation: fadeInModal 0.3s ease;
+}
+
+@keyframes fadeInModal {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background-color: #ffffff;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 600px;
+    position: relative;
+    animation: slideInUp 0.4s ease-out;
+}
+
+@keyframes slideInUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+
+.modal .close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    color: var(--text-light);
+    font-size: 32px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.modal .close:hover,
+.modal .close:focus {
+    color: var(--text-dark);
+}
+
+#formSubirImagenes {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#modalSubidaTitulo {
+    text-align: center;
+    color: var(--text-dark);
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 22px;
+}
+
+#formSubirImagenes label {
+    font-weight: 600;
+    color: #333;
+    font-size: 15px;
+}
+
+#formSubirImagenes input[type="file"] {
+    display: none;
+}
+
+#formSubirImagenes label[for="inputArchivos"] {
+    display: block;
+    padding: 20px;
+    background-color: var(--primary-light);
+    border: 2px dashed var(--primary-color);
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    color: var(--primary-dark);
+    font-weight: 600;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+#formSubirImagenes label[for="inputArchivos"]:hover {
+    background-color: #e0e8ff;
+    border-color: var(--primary-dark);
+}
+
+#formSubirImagenes textarea {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 80px;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 15px;
+    background-color: #fdfdff;
+    resize: vertical;
+}
+
+#formSubirImagenes button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--primary-color);
     color: white;
     font-weight: 700;
     font-size: 16px;
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-    transition: background 0.3s, transform 0.2s;
-    margin-top: 20px;
+    margin-top: 10px;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
-#formAgregarConsulta button[type="submit"]:hover {
-    background: linear-gradient(90deg, #50a3db, #143d8a);
+#formSubirImagenes button[type="submit"]:hover {
+    background-color: var(--primary-dark);
     transform: translateY(-2px);
-    /* Pequeño efecto al pasar el ratón. */
 }
 
-/* Mensaje de resultado del formulario */
-#mensajeConsulta {
-    text-align: center;
-    font-weight: 600;
-    font-size: 15px;
-    color: #00695c;
+#formSubirImagenes button[type="submit"]:disabled {
+    background-color: #a0aec0;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* VISTAS PREVIAS DE IMÁGENES */
+.previews-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 10px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+}
+
+.preview-item {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+.preview-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.preview-remove-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 22px;
+    height: 22px;
+    background-color: rgba(130, 22, 22, 0.6);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1;
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    transform: scale(0.8);
+}
+
+.preview-item:hover .preview-remove-btn {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* --- 9. DISEÑO DE DATOS PERSONALES --- */
+
+.datos-personales-grid {
+    display: grid;
+    /* FORZAMOS UNA CUADRÍCULA DE 2 COLUMNAS DE IGUAL TAMAÑO */
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 24px; /* Espacio entre las tarjetas */
     margin-top: 16px;
 }
 
-/* Contenedor para la lista de consultas y sus filtros */
-/* Aquí anulamos algunos estilos base de '.container > section' para adaptar el layout */
-#listaConsultas.consultas-container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    width: 100%;
-    max-width: 900px;
-    margin: 0 auto 40px auto;
-    background:transparent;
-}
-
-#listaConsultas.consultas-container h2 {
-    font-size: 26px;
-    color: #004a66;
-    margin-bottom: 20px;
-    text-align: center;
-    /* Centra el título de la tabla. */
-}
-
-.filtros {
-    max-width: 900px;
-    margin: 0 auto 20px auto;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-    padding: 0 10px;
-}
-
-/* Tabla de consultas */
-#tablaConsultas {
-    max-width: 900px;
-    border-collapse: separate;
-    border-spacing: 0 6px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+.dato-item {
+    background-color: #ffffff;
+    padding: 24px;
     border-radius: 12px;
-    overflow: hidden;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-#tablaConsultas thead {
-    background: linear-gradient(90deg, #4c9cca, #264cb6);
-    color: #fff;
-    font-weight: 700;
-    font-size: 16px;
+.dato-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
 }
 
-#tablaConsultas th,
-#tablaConsultas td {
-    padding: 12px 14px;
+.dato-item strong {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-light);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.dato-item span {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text-dark);
+    word-wrap: break-word; 
+}
+
+/* --- MEJORA PARA MÓVILES --- */
+/* Si la pantalla es más pequeña de 768px, las tarjetas se apilan en una sola columna */
+@media (max-width: 768px) {
+    .datos-personales-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* --- 10. ESTILOS PARA LA AGENDA Y SU CONTENEDOR --- */
+
+/* Contenedor principal que le da el aspecto de "tarjeta" */
+.calendario-container {
+    background-color: #ffffff;
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+
+    /* --- LÍNEAS NUEVAS PARA CENTRAR Y REDUCIR TAMAÑO --- */
+    max-width: 1000px;  /* Define un ancho máximo para que no se estire indefinidamente */
+    margin: 0 auto;     /* Centra el contenedor horizontalmente en el espacio disponible */
+}
+
+/* Estilos para los botones del calendario (usando nuestras variables) */
+#seccionAgenda .fc-button-primary {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+    font-weight: 600;
+}
+
+#seccionAgenda .fc-button-primary:hover {
+    background-color: var(--primary-dark) !important;
+}
+
+/* Estilo para resaltar el día de hoy */
+#seccionAgenda .fc-day-today {
+    background-color: var(--primary-light) !important;
+    font-weight: bold;
+}
+
+/* --- 11. ESTILOS PARA LAYOUT DE AGENDA Y PANEL DE DETALLES --- */
+
+.agenda-layout {
+    display: flex;
+    gap: 30px; /* Espacio entre el calendario y el panel de detalles */
+    align-items: flex-start;
+}
+
+.calendario-container {
+    flex-grow: 1; /* El calendario ocupará el espacio disponible */
+    /* Los estilos de tarjeta (fondo blanco, sombra, etc.) que ya tenía, se mantienen */
+}
+
+.panel-detalles {
+    width: 350px; /* Ancho fijo para el panel de detalles */
+    flex-shrink: 0; /* Evita que el panel se encoja */
+    background-color: #ffffff;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+    position: relative;
+    /* Por defecto estará oculto, lo mostraremos con JS */
+    display: none; 
+}
+
+.panel-detalles.visible {
+    display: block; /* Clase que usará JS para mostrarlo */
+}
+
+.panel-detalles h3 {
+    margin-top: 0;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 1.4rem;
+    color: var(--text-dark);
+}
+
+.cerrar-panel-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
     border: none;
-    vertical-align: middle;
-}
-
-#tablaConsultas tbody tr:nth-child(even) {
-    background-color: #f7faff;
-    border-radius: 12px;
-}
-
-#tablaConsultas tbody tr:hover {
-    background-color: #c0d9ff;
+    font-size: 28px;
+    line-height: 1;
+    color: var(--text-light);
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    box-shadow: inset 4px 0 0 #3657c4;
+    transition: color 0.2s ease;
+}
+.cerrar-panel-btn:hover {
+    color: var(--text-dark);
 }
 
-/* Filtros inputs y selects */
-#filtroEstado,
-#busquedaServicio {
-    max-width: 220px;
-    margin: 0 10px 20px 0;
-    padding: 6px 10px;
-    font-size: 16px;
-    border: 2px solid rgb(139, 135, 135);
+.detalles-contenido .detalle-item {
+    margin-bottom: 18px;
+}
+
+.detalles-contenido .detalle-item label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-light);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+
+.detalles-contenido .detalle-item span {
+    font-size: 1rem;
+    color: var(--text-dark);
+}
+
+/* --- 12. ESTILOS PARA LA GALERÍA DE IMÁGENES EN EL MODAL --- */
+
+.galeria-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.imagen-item {
+    position: relative;
+    width: 120px;
+    height: 120px;
     border-radius: 8px;
-    background-color: #f0f8ff;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    outline: none;
-    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
 }
 
-#filtroEstado:focus,
-#busquedaServicio:focus {
-    border-color: #33333d;
-    box-shadow: 0 0 6px rgba(132, 116, 158, 0.5);
+.imagen-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-/* Placeholder para input de búsqueda */
-#busquedaServicio::placeholder {
-    color: #aaa;
-    font-style: italic;
+.btn-eliminar-img {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 26px;
+    height: 26px;
+    background-color: rgba(229, 62, 62, 0.8); /* Rojo semitransparente */
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1;
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    transform: scale(0.8);
+}
+
+.imagen-item:hover .btn-eliminar-img {
+    opacity: 1;
+    transform: scale(1);
 }

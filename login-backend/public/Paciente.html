@@ -9,19 +9,22 @@
 </head>
 
 <body>
-    <header>
-        <button id="cerrarSesion">
-            Cerrar sesión
-        </button>
-    </header>
+
     <div class="container">
         <aside class="sidebar">
             <h2 id="nombreUsuario">👤 Cargando...</h2>
             <h3>Gestión Paciente</h3>
             <a href="#" id="btnDatosPersonales">Datos Personales</a>
             <a href="#" id="btnAgenda">Agenda</a>
-            <a href="#" id="btnVisualizarResultados">Visualizar Resultados</a>
             <a href="#" id="btnMisConsultas">Historial Médico</a>
+            <div class="sidebar-footer">
+            <button id="cerrarSesion">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18px" height="18px">
+                    <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" />
+                </svg>
+                <span>Cerrar Sesión</span>
+            </button>
+        </div>
         </aside>
 
         <section id="inicioPanel" class="contenido">
@@ -45,34 +48,31 @@
                     <option value="cancelada">Cancelada</option>
                 </select>
             </div>
-            <table id="tablaConsultasPaciente">
-                <thead>
-                    <tr>
-                        <th>ID Consulta</th>
-                        <th>Fecha</th>
-                        <th>Hora</th>
-                        <th>Estado</th>
-                        <th>Médico</th>
-                        <th>Sala</th>
-                        <th>Recepcionista</th>
-                        <th>Observaciones</th>
-                        <th>Servicio</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+
+            <div id="accordion-consultas" class="accordion-container">
+            </div>
         </section>
 
         <section id="seccionAgendaPaciente" class="contenido hidden">
-            <h2>Mi Agenda</h2>
-            <p>Contenido de la agenda del paciente.</p>
+            <h2>Agendar Nueva Cita</h2>
+            <p>Selecciona el servicio, tu médico de preferencia y el horario que más te convenga.</p>
+
+            <div id="contenedorFormularioCita">
+                <p>Cargando formulario...</p>
+            </div>
         </section>
 
         <section id="seccionResultadosPaciente" class="contenido hidden">
             <h2>Resultados de Estudios</h2>
             <p>Aquí se visualizarán los resultados del paciente.</p>
         </section>
+    </div>
+
+    <div id="lightbox" class="lightbox hidden">
+        <span class="lightbox-close">&times;</span>
+        <img class="lightbox-content" id="lightboxImg">
+        <a id="lightboxDownload" class="lightbox-download" href="#" download="resultado_clinica_cipro.jpg">Descargar
+            Imagen</a>
     </div>
 
     <script>
@@ -95,7 +95,6 @@
 
             const btnDatosPersonales = document.getElementById('btnDatosPersonales');
             const btnAgenda = document.getElementById('btnAgenda');
-            const btnVisualizarResultados = document.getElementById('btnVisualizarResultados');
             const btnMisConsultas = document.getElementById('btnMisConsultas');
             const btnCerrarSesion = document.getElementById('cerrarSesion');
 
@@ -158,66 +157,88 @@
             // Función para cargar y mostrar los datos personales del paciente
             async function cargarDatosPersonalesPaciente() {
                 mostrarSeccion('seccionDatosPersonalesPaciente');
-                const seccionDatosPersonalesEl = document.getElementById('seccionDatosPersonalesPaciente');
-                seccionDatosPersonalesEl.innerHTML = "<h2>Cargando Datos Personales...</h2>"; // Mensaje de carga
+                const seccionEl = document.getElementById('seccionDatosPersonalesPaciente');
+                seccionEl.innerHTML = "<h2>Cargando Datos Personales...</h2>";
 
                 try {
-                    const res = await fetch('/obtener-paciente'); // La ruta para obtener datos del paciente logueado
-                    if (res.status === 401) {
-                        seccionDatosPersonalesEl.innerHTML = "<p>No autorizado para ver sus datos personales. Inicie sesión como paciente.</p>";
-                        throw new Error('No autorizado');
-                    }
-                    const data = await res.json();
+                    const res = await fetch('/obtener-paciente', { credentials: 'include' });
+                    if (!res.ok) throw new Error('No autorizado o error del servidor');
 
+                    const data = await res.json();
                     if (data.ok) {
                         const info = data.datos;
+                        // NUEVA ESTRUCTURA HTML CON CLASES PARA EL DISEÑO DE TARJETAS
                         const html = `
                             <h2>Mis Datos Personales</h2>
-                            <p><strong>Primer Nombre:</strong> ${info.primerNombre}</p>
-                            <p><strong>Segundo Nombre:</strong> ${info.segundoNombre || ''}</p>
-                            <p><strong>Primer Apellido:</strong> ${info.primerApellido}</p>
-                            <p><strong>Segundo Apellido:</strong> ${info.segundoApellido || ''}</p>
-                            <p><strong>Fecha de Nacimiento:</strong> ${new Date(info.fechaNacimiento).toLocaleDateString()}</p>
-                            <p><strong>Sexo:</strong> ${info.sexo}</p>
-                            <p><strong>Dirección:</strong> ${info.direccion}</p>
-                            <p><strong>Teléfono:</strong> ${info.telefono}</p>
-                            <p><strong>Tipo de Sangre:</strong> ${info.tipoSangre || 'No especificado'}</p>
-                            <p><strong>Correo:</strong> ${info.correo}</p>
-                            <p><strong>Nombre de Usuario:</strong> ${info.nombreUsuario}</p>
+                            <div class="datos-personales-grid">
+                                <div class="dato-item">
+                                    <strong>Nombre Completo</strong>
+                                    <span>${info.primerNombre} ${info.segundoNombre || ''} ${info.primerApellido} ${info.segundoApellido || ''}</span>
+                                </div>
+                                <div class="dato-item">
+                                    <strong>Cédula</strong>
+                                    <span>${formatearCedula(info.cedula)}</span>
+                                </div>
+                                <div class="dato-item">
+                                    <strong>Fecha de Nacimiento</strong>
+                                    <span>${new Date(info.fechaNacimiento).toLocaleDateString('es-NI')}</span>
+                                </div>
+                                <div class="dato-item">
+                                    <strong>Teléfono</strong>
+                                    <span>${info.telefono}</span>
+                                </div>
+                                <div class="dato-item">
+                                    <strong>Correo</strong>
+                                    <span>${info.correo}</span>
+                                </div>
+                                <div class="dato-item">
+                                    <strong>Tipo de Sangre</strong>
+                                    <span>${info.tipoSangre || 'No especificado'}</span>
+                                </div>
+                                <div class="dato-item full-width">
+                                    <strong>Dirección</strong>
+                                    <span>${info.direccion}</span>
+                                </div>
+                            </div>
                         `;
-                        seccionDatosPersonalesEl.innerHTML = html;
+                        seccionEl.innerHTML = html;
                     } else {
-                        seccionDatosPersonalesEl.innerHTML = `<p>No se encontraron sus datos personales: ${data.mensaje || 'Error desconocido'}</p>`;
+                        seccionEl.innerHTML = `<h2>Mis Datos Personales</h2><p>No se encontraron sus datos: ${data.mensaje || 'Error'}</p>`;
                     }
                 } catch (err) {
-                    console.error("Error al obtener datos personales del paciente:", err);
-                    seccionDatosPersonalesEl.innerHTML = "<p>Error al obtener sus datos personales.</p>";
+                    console.error("Error al obtener datos personales:", err);
+                    seccionEl.innerHTML = `<h2>Mis Datos Personales</h2><p>Error al conectar con el servidor.</p>`;
                 }
             }
 
-            // Función para cargar y mostrar la tabla de consultas del paciente
+            // Función para cargar y mostrar las consultas del paciente
             async function cargarMisConsultas() {
-                mostrarSeccion('misConsultas'); // Muestra la sección de la tabla de consultas
-                const tbody = document.querySelector('#tablaConsultasPaciente tbody');
-                tbody.innerHTML = '<tr><td colspan="10">Cargando consultas...</td></tr>'; // Mensaje de carga
+                mostrarSeccion('misConsultas'); // Muestra la sección correcta
+
+                // Ahora apuntamos al nuevo contenedor del acordeón
+                const container = document.getElementById('accordion-consultas');
+                container.innerHTML = '<p>Cargando consultas...</p>'; // Mensaje de carga
 
                 try {
-                    const res = await fetch('/consultas-pacientes'); // Tu ruta de backend para consultas de paciente
+                    // La petición fetch para obtener los datos no cambia
+                    const res = await fetch('/consultas-pacientes');
                     if (res.status === 401) {
-                        alert('No autorizado. Por favor, inicie sesión como paciente.');
+                        // Manejo de error si no está autorizado
+                        container.innerHTML = '<p>No autorizado. Por favor, inicie sesión.</p>';
                         window.location.href = '/Clinica.html';
                         return;
                     }
                     const data = await res.json();
 
                     if (data.ok) {
+                        // Guardamos los datos y llamamos a la función que dibuja el acordeón
                         consultasPacienteGlobales = data.consultas;
-                        aplicarFiltrosPaciente(); // Aplica cualquier filtro local
+                        aplicarFiltrosPaciente();
                     } else {
-                        alert('Error al cargar sus consultas: ' + (data.mensaje || 'Error desconocido'));
+                        container.innerHTML = `<p>Error al cargar sus consultas: ${data.mensaje || 'Error desconocido'}</p>`;
                     }
                 } catch (err) {
-                    alert('Error al conectar con el servidor para cargar sus consultas.');
+                    container.innerHTML = '<p>Error de conexión al cargar sus consultas.</p>';
                     console.error('Error al cargar mis consultas:', err);
                 }
             }
@@ -225,34 +246,73 @@
             // Función para aplicar filtros locales a la tabla de consultas
             function aplicarFiltrosPaciente() {
                 const estadoFiltro = filtroEstadoPaciente.value.toLowerCase();
-                const tbody = document.querySelector('#tablaConsultasPaciente tbody');
-                tbody.innerHTML = ''; // Limpiar tabla
+                const container = document.getElementById('accordion-consultas');
+                container.innerHTML = ''; // Limpiar la lista
 
                 const filtradas = consultasPacienteGlobales.filter(c => {
                     return estadoFiltro === '' || c.estado.toLowerCase() === estadoFiltro;
                 });
 
                 if (filtradas.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="10">No hay consultas que coincidan con el filtro.</td></tr>';
+                    container.innerHTML = '<p>No hay consultas que coincidan con el filtro.</p>';
                     return;
                 }
 
                 filtradas.forEach(c => {
-                    const fila = document.createElement('tr');
-                    fila.innerHTML = `
-                        <td>${c.idConsulta}</td>
-                        <td>${new Date(c.fecha).toLocaleDateString()}</td>
-                        <td>${c.hora}</td>
-                        <td>${c.estado}</td>
-                        <td>${c.nombreMedico}</td>
-                        <td>${c.nombreSala}</td>
-                        <td>${c.nombreRecepcionista}</td>
-                        <td>${c.observaciones || ''}</td>
-                        <td>${c.nombreServicio}</td>
-                    `;
-                    tbody.appendChild(fila);
+                    const fechaFormateada = new Date(c.fecha).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+                    const item = document.createElement('div');
+                    item.className = 'accordion-item';
+                    // Guardamos el ID de la consulta en el elemento para usarlo después
+                    item.dataset.idConsulta = c.idConsulta;
+
+                    item.innerHTML = `
+                <div class="accordion-header">
+                    <div class="header-info">
+                        <h4>Consulta de ${c.nombreServicio}</h4>
+                        <span class="fecha-resumen">${fechaFormateada}</span>
+                    </div>
+                    <span class="estado-badge ${c.estado.toLowerCase()}">${c.estado}</span>
+                </div>
+                <div class="accordion-content">
+                <div class="consulta-details-grid">
+                    <div class="detail-item"><p><strong>Fecha:</strong> ${fechaFormateada}</p></div>
+                    <div class="detail-item"><p><strong>Hora:</strong> ${c.hora}</p></div>
+                    <div class="detail-item"><p><strong>Médico:</strong> ${c.nombreMedico || 'No asignado'}</p></div>
+                    <div class="detail-item"><p><strong>Sala:</strong> ${c.nombreSala}</p></div>
+                </div>
+                <div class="detail-item" style="grid-column: 1 / -1; margin-top: 15px;">
+                    <p><strong>Observaciones:</strong> ${c.observaciones || 'Sin observaciones.'}</p>
+                </div>
+                
+                <div class="imagenes-container" id="imagenes-${c.idConsulta}">
+                    <h4>Imágenes del Estudio:</h4>
+                    <p>Cargando imágenes...</p>
+                </div>
+                </div>
+                     `;
+                    container.appendChild(item);
                 });
             }
+
+            document.getElementById('accordion-consultas').addEventListener('click', function (e) {
+                // Buscamos si el clic fue en un header de acordeón
+                const header = e.target.closest('.accordion-header');
+                if (!header) return; // Si no fue en un header, no hacemos nada
+
+                const item = header.parentElement;
+
+                // Si el item ya está activo, lo cerramos. Si no, lo abrimos.
+                if (item.classList.contains('active')) {
+                    item.classList.remove('active');
+                } else {
+                    // Opcional: si quieres que solo uno esté abierto a la vez, primero cierra todos.
+                    // this.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
+                    // Aquí es donde llamaremos a la función para cargar las imágenes
+                    cargarImagenesDeConsulta(item);
+                }
+            });
+
 
             // --- Event Listeners para los botones del Sidebar ---
             btnDatosPersonales.addEventListener('click', (e) => {
@@ -262,19 +322,11 @@
 
             btnAgenda.addEventListener('click', (e) => {
                 e.preventDefault();
-                mostrarSeccion('seccionAgendaPaciente');
-                // Aquí podrías inicializar el calendario del paciente si lo implementas
-                // initPacienteCalendar();
-                document.getElementById('seccionAgendaPaciente').innerHTML = "<h2>Agenda del Paciente</h2><p>Contenido del calendario del paciente.</p>"; // Placeholder
+                mostrarSeccion('seccionAgendaPaciente'); // Muestra la sección correcta
+                cargarFormularioDeCita(); // Llama a la función que construye el formulario
             });
 
-            btnVisualizarResultados.addEventListener('click', (e) => {
-                e.preventDefault();
-                mostrarSeccion('seccionResultadosPaciente');
-                // Aquí cargarías la lógica para visualizar resultados
-                // cargarResultadosPaciente();
-                document.getElementById('seccionResultadosPaciente').innerHTML = "<h2>Resultados de Estudios</h2><p>Aquí se visualizarán los resultados del paciente.</p>"; // Placeholder
-            });
+        
 
             btnMisConsultas.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -288,7 +340,288 @@
             cargarNombreUsuarioYMostrarInicio(); // Carga nombre y muestra panel de inicio al principio
         });
 
+
+        // ... AGENDA.........
+
+        // --- FUNCIÓN PRINCIPAL PARA AGENDAR CITAS ---
+        async function cargarFormularioDeCita() {
+            const container = document.getElementById('contenedorFormularioCita');
+            container.innerHTML = '<p>Verificando tu perfil...</p>';
+
+            try {
+                // Obtenemos los datos completos del paciente, incluyendo la cédula.
+                // Asegúrate de que tu ruta '/obtener-paciente' devuelva la columna 'cedula'.
+                const pacienteRes = await fetch('/obtener-paciente');
+                const pacienteData = await pacienteRes.json();
+
+                if (!pacienteData.ok) {
+                    throw new Error(pacienteData.mensaje || 'No se pudo obtener el perfil.');
+                }
+
+                const paciente = pacienteData.datos;
+
+                // Verificamos si el paciente ya tiene una cédula registrada.
+                if (paciente.cedula) {
+                    // SI TIENE CÉDULA: mostramos el formulario de agendar cita directamente.
+                    mostrarFormularioCitaCompleto(paciente);
+                } else {
+                    // SI NO TIENE CÉDULA: mostramos un mini-formulario para que la ingrese.
+                    mostrarFormularioPedirCedula(paciente);
+                }
+
+            } catch (error) {
+                container.innerHTML = `<p class="error">Error al cargar tus datos: ${error.message}</p>`;
+            }
+        }
+
+        // Función que muestra el MINI-FORMULARIO para pedir la cédula por primera vez.
+        function mostrarFormularioPedirCedula(paciente) {
+            const container = document.getElementById('contenedorFormularioCita');
+            const formHTML = `
+        <div class="form-agenda-paciente" style="max-width: 500px; text-align: center; border: 1px solid #ddd; padding: 25px; border-radius: 10px; background: #fff;">
+            <h4>Completar Perfil para Agendar</h4>
+            <p>Hola ${paciente.primerNombre}, para poder agendar tu primera cita, necesitamos que registres tu número de cédula.</p>
+            <form id="formCompletarCedula">
+                <label for="inputCedula" style="display: block; margin-bottom: 10px;">Número de Cédula:</label>
+                <input type="text" id="inputCedula" name="cedula" placeholder="001-123456-7890X" required style="width: 100%; padding: 8px; margin-bottom: 15px;">
+                <button type="submit" class="btn-confirmar-cita">Guardar y Continuar</button>
+                <p id="mensajeCedula" class="mensaje-formulario"></p>
+            </form>
+        </div>
+    `;
+            container.innerHTML = formHTML;
+
+            document.getElementById('formCompletarCedula').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const cedula = e.target.cedula.value;
+                const mensajeEl = document.getElementById('mensajeCedula');
+                mensajeEl.innerHTML = '<div class="mensaje-alerta">Guardando...</div>';
+
+                try {
+                    // Llamamos a una NUEVA ruta de backend para actualizar la cédula.
+                    const res = await fetch('/obtener-paciente/actualizar-cedula', {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ cedula: cedula })
+                    });
+                    const data = await res.json();
+
+                    if (data.ok) {
+                        // Si se guardó bien, actualizamos el objeto del paciente y mostramos el formulario principal de citas.
+                        paciente.cedula = cedula;
+                        mostrarFormularioCitaCompleto(paciente);
+                    } else {
+                        mensajeEl.innerHTML = `<div class="mensaje-alerta error">❌ ${data.mensaje}</div>`;
+                    }
+                } catch (err) {
+                    mensajeEl.innerHTML = `<div class="mensaje-alerta error">🔌 Error de conexión.</div>`;
+                }
+            });
+        }
+
+        // Ahora recibe los datos del paciente para no tener que buscarlos de nuevo.
+        async function mostrarFormularioCitaCompleto(paciente) {
+            const container = document.getElementById('contenedorFormularioCita');
+
+            // Aquí pegamos tu código original para construir el formulario.
+            const formHTML = `
+         <form id="appointmentForm" class="form-agenda-paciente">
+            <input type="hidden" name="idPaciente" id="appointmentPacienteId">
+            <p class="info-text">Bienvenido, <strong id="patientNameDisplay"></strong>. Agenda tu cita:</p>
+            <label for="appointmentService">Servicio Requerido:</label>
+            <select name="idServicio" id="appointmentService" required><option value="">Selecciona un servicio</option></select>
+            <label for="appointmentDoctor">Médico de Preferencia (Opcional):</label>
+            <select name="idMedico" id="appointmentDoctor"><option value="">Cualquier médico disponible</option></select>
+            <label for="appointmentDate">Fecha Deseada:</label>
+            <input type="date" name="fecha" id="appointmentDate" required>
+            <label for="appointmentTime">Hora Deseada:</label>
+            <select name="hora" id="appointmentTime" required><option value="">Selecciona una fecha primero</option></select>
+            <label for="appointmentObservaciones">Observaciones Adicionales:</label>
+            <textarea name="observaciones" id="appointmentObservaciones" placeholder="Indica aquí cualquier síntoma o información relevante..."></textarea>
+            <button type="submit" class="btn-confirmar-cita">Confirmar Cita</button>
+            <p id="appointmentMessage" class="mensaje-formulario"></p>
+         </form>
+          `;
+            container.innerHTML = formHTML;
+
+            // Llenamos los datos que ya tenemos.
+            document.getElementById('appointmentPacienteId').value = paciente.idPaciente;
+            document.getElementById('patientNameDisplay').textContent = `${paciente.primerNombre} ${paciente.primerApellido}`;
+
+            // El resto de tu lógica para cargar selects y manejar el submit.
+            try {
+                const serviciosRes = await fetch('/api/servicios');
+                const servicios = await serviciosRes.json();
+                const selectServicio = document.getElementById('appointmentService');
+                servicios.forEach(s => {
+                    const opt = document.createElement('option');
+                    opt.value = s.idServicio;
+                    opt.textContent = s.nombreServicio;
+                    selectServicio.appendChild(opt);
+                });
+            } catch (error) { console.error("Error al cargar servicios:", error); }
+
+            try {
+                const medicosRes = await fetch('/api/medicos');
+                const medicos = await medicosRes.json();
+                const selectMedico = document.getElementById('appointmentDoctor');
+                medicos.forEach(m => {
+                    const opt = document.createElement('option');
+                    opt.value = m.idMedico;
+                    opt.textContent = m.nombreCompleto;
+                    selectMedico.appendChild(opt);
+                });
+            } catch (error) { console.error("Error al cargar médicos:", error); }
+
+            const appointmentDateInput = document.getElementById('appointmentDate');
+            const today = new Date();
+            today.setDate(today.getDate() + 1);
+            appointmentDateInput.min = today.toISOString().split('T')[0];
+
+            appointmentDateInput.addEventListener('change', () => {
+                const appointmentTimeSelect = document.getElementById('appointmentTime');
+                appointmentTimeSelect.innerHTML = '<option value="">Selecciona una hora</option>';
+                for (let h = 8; h < 17; h++) {
+                    appointmentTimeSelect.innerHTML += `<option value="${h}:00">${h}:00</option>`;
+                    appointmentTimeSelect.innerHTML += `<option value="${h}:30">${h}:30</option>`;
+                }
+            });
+
+            document.getElementById('appointmentForm').addEventListener('submit', async function (event) {
+                // ... (Tu lógica de submit se mantiene igual)
+                event.preventDefault();
+                const form = event.target;
+                const messageEl = document.getElementById('appointmentMessage');
+
+                const appointmentData = {
+                    fecha: form.fecha.value,
+                    hora: form.hora.value,
+                    estado: 'pendiente',
+                    idServicio: form.idServicio.value,
+                    observaciones: form.observaciones.value.trim(),
+                    idPaciente: form.idPaciente.value,
+                    idMedico: form.idMedico.value,
+                    idSala: 1,
+                    idRecepcionista: 1
+                };
+
+                try {
+                    messageEl.innerHTML = '<div class="mensaje-alerta">Procesando...</div>';
+                    const res = await fetch('/api/agendar-cita', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(appointmentData)
+                    });
+                    const data = await res.json();
+                    let alertHTML = '';
+                    if (data.ok) {
+                        alertHTML = `<div class="mensaje-alerta exito"><span>¡Cita agendada con éxito!</span></div>`;
+                        form.reset();
+                    } else {
+                        alertHTML = `<div class="mensaje-alerta error"><span>Error: ${data.mensaje}</span></div>`;
+                    }
+                    messageEl.innerHTML = alertHTML;
+                } catch (error) {
+                    messageEl.innerHTML = `<div class="mensaje-alerta error"><span>Error de conexión con el servidor.</span></div>`;
+                } finally {
+                    setTimeout(() => {
+                        messageEl.innerHTML = '';
+                    }, 5000);
+                }
+            });
+        }
+
+
+        // --- CARGAR IMÁGENES DE CONSULTA ---
+        async function cargarImagenesDeConsulta(accordionItem) {
+            const idConsulta = accordionItem.dataset.idConsulta;
+            const imagenesContainer = accordionItem.querySelector(`#imagenes-${idConsulta}`);
+
+            // Si ya cargamos las imágenes antes, no hacemos nada (para no llamar a la API cada vez)
+            if (accordionItem.dataset.imagenesCargadas === 'true') {
+                return;
+            }
+
+            try {
+                const res = await fetch(`/api/consultas/${idConsulta}/imagenes`);
+                const data = await res.json();
+
+                if (data.ok && data.imagenes.length > 0) {
+                    let imagenesHTML = '<div class="imagenes-grid">';
+                    data.imagenes.forEach(img => {
+                        // CORRECCIÓN: Usamos 'img.url' que es lo que envía el backend
+                        imagenesHTML += `<img src="${img.url}" alt="${img.descripcion || 'Imagen de consulta'}" data-src="${img.url}">`;
+                    });
+                    imagenesHTML += '</div>';
+                    imagenesContainer.innerHTML = `<h4>Imágenes del Estudio:</h4>${imagenesHTML}`;
+                } else {
+                    imagenesContainer.innerHTML = '<h4>Imágenes del Estudio:</h4><p>No hay imágenes disponibles para esta consulta.</p>';
+                }
+
+                // Marcamos el item como cargado
+                accordionItem.dataset.imagenesCargadas = 'true';
+
+            } catch (error) {
+                console.error("Error al cargar imágenes:", error);
+                imagenesContainer.innerHTML = '<h4>Imágenes del Estudio:</h4><p>Error al cargar las imágenes.</p>';
+            }
+        }
+
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        const lightboxDownload = document.getElementById('lightboxDownload');
+        const lightboxClose = document.querySelector('.lightbox-close');
+        const accordionContainer = document.getElementById('accordion-consultas');
+
+        // Añade este nuevo event listener para manejar los clics en las imágenes
+        accordionContainer.addEventListener('click', (e) => {
+            // Verificamos si se hizo clic en una imagen dentro de la galería de imágenes
+            if (e.target.tagName === 'IMG' && e.target.closest('.imagenes-grid')) {
+                e.preventDefault(); // Previene cualquier comportamiento por defecto
+                const imgSrc = e.target.src;
+
+                // Ponemos la imagen y el enlace de descarga en el lightbox
+                lightboxImg.src = imgSrc;
+                lightboxDownload.href = imgSrc;
+
+                // Mostramos el lightbox
+                lightbox.classList.remove('hidden');
+            }
+        });
+
+        // --- Lógica para cerrar el lightbox ---
+
+        // Función reutilizable para cerrar
+        function cerrarLightbox() {
+            lightbox.classList.add('hidden');
+        }
+
+        // 1. Cerrar al hacer clic en el botón 'X'
+        lightboxClose.addEventListener('click', cerrarLightbox);
+
+        // 2. Cerrar al hacer clic en el fondo oscuro (fuera de la imagen)
+        lightbox.addEventListener('click', (e) => {
+            // Si el clic fue en el fondo oscuro y no en sus hijos (imagen o botón)
+            if (e.target === lightbox) {
+                cerrarLightbox();
+            }
+        });
+
+        function formatearCedula(cedulaSinGuiones) {
+            // Si no hay cédula o no tiene 14 caracteres, la devolvemos como está o con un mensaje.
+            if (!cedulaSinGuiones || cedulaSinGuiones.length !== 14) {
+                return cedulaSinGuiones || 'No registrada';
+            }
+            // Separamos el string en sus tres partes y le añadimos los guiones.
+            const p1 = cedulaSinGuiones.substring(0, 3);
+            const p2 = cedulaSinGuiones.substring(3, 9);
+            const p3 = cedulaSinGuiones.substring(9, 14);
+            return `${p1}-${p2}-${p3}`;
+        }
+
     </script>
+
+
 </body>
 
 </html>

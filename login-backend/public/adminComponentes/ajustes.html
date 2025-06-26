@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajustes del Sistema - Clínica Cipro</title>
+    <link rel="stylesheet" href="../adminstyle.css">
+    <link rel="stylesheet" href="styleAgenda.css">
+    <link rel="stylesheet" href="styleAjustes.css">
+    <link rel="icon" href="../logo.jpg" type="image/jpeg">
+</head>
+
+<body>
+    <div class="admin-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../logo.jpg" alt="Logo Clínica Cipro" class="logo">
+                <span class="sidebar-title">Clínica Cipro</span>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="../AdminComponentes/Dashboard.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5z" />
+                            </svg>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../Admin.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path
+                                    d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
+                            </svg>
+                            <span>Personal y Pacientes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Agenda.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path
+                                    d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM7 12h5v5H7v-5z" />
+                            </svg>
+                            <span>Agenda</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="reportes.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path
+                                    d="M5 9.2h3V19H5V9.2zm8 0h3V19h-3V9.2zm-4 0h3V19h-3V9.2zm0-5h3v4h-3V4.2zm-4 0h3v4H5V4.2zm8 0h3v4h-3V4.2zM2 21h20V2H2v19z" />
+                            </svg>
+                            <span>Reportes</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="ajustes.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path
+                                    d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z" />
+                            </svg>
+                            <span>Ajustes</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="cerrarSesion">Cerrar Sesión</button>
+            </div>
+        </aside>
+
+
+        <div class="main-wrapper">
+            <header>
+                <h1 class="page-title">Ajustes del Sistema</h1>
+            </header>
+            <main>
+                <div class="dashboard-panel">
+                    <div class="panel-header">
+                        <h2>Gestión de Servicios</h2>
+                        <button id="btnAnadirServicio" class="btn-primary">+ Añadir Servicio</button>
+                    </div>
+                    <div class="tabla-container">
+                        <table id="tablaServicios">
+                            <thead>
+                                <tr>
+                                    <th>Nombre del Servicio</th>
+                                    <th>Descripción</th>
+                                    <th>Preparación Requerida</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="dashboard-panel" style="margin-top: 32px;">
+                    <div class="panel-header">
+                        <h2>Gestión de Especializaciones</h2>
+                        <button id="btnAnadirEspecializacion" class="btn-primary">+ Añadir</button>
+                    </div>
+                    <div class="tabla-container">
+                        <table id="tablaEspecializaciones">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="dashboard-panel" style="margin-top: 32px;">
+                    <div class="panel-header">
+                        <h2>Gestión de Salas</h2>
+                        <button id="btnAnadirSala" class="btn-primary">+ Añadir</button>
+                    </div>
+                    <div class="tabla-container">
+                        <table id="tablaSalas">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Tipo</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+
+            <div id="modalConfirmacionAjustes" class="modal">
+                <div class="modal-content"
+                    style="max-width: 450px; text-align: center; height: auto; min-height: initial; align-self: center;">
+                    <p id="mensajeConfirmacionAjustes" style="font-size: 1.2em; margin-bottom: 24px;"></p>
+                    <div class="confirmation-buttons">
+                        <button id="btnConfirmarAjustes" class="btn-primary"
+                            style="background-color: var(--danger-color);">Sí, eliminar</button>
+                        <button id="btnCancelarAjustes" class="btn-secondary">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalServicio" class="modal">
+        <div class="modal-content" style="max-width: 550px;">
+            <span class="close" id="closeServicioModal">&times;</span>
+            <div class="modal-body">
+                <h2 id="modalServicioTitulo">Añadir Nuevo Servicio</h2>
+                <form id="formServicio">
+                    <input type="hidden" name="idServicio">
+                    <div class="form-group">
+                        <label>Nombre del Servicio</label>
+                        <input type="text" name="nombreServicio" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Descripción</label>
+                        <textarea name="descripcion" rows="4"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Preparación Requerida</label>
+                        <textarea name="preparacionRequerida" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">Guardar</button>
+                    <p id="mensaje-servicio" class="form-message"></p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalEspecializacion" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeEspecializacionModal">&times;</span>
+            <div class="modal-body">
+                <h2 id="modalEspecializacionTitulo">Nueva Especialización</h2>
+                <form id="formEspecializacion">
+                    <input type="hidden" name="idEspecializacion">
+                    <div class="form-group">
+                        <label>Nombre de la Especialización</label>
+                        <input type="text" name="nombre" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalSala" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeSalaModal">&times;</span>
+            <div class="modal-body">
+                <h2 id="modalSalaTitulo">Nueva Sala</h2>
+                <form id="formSala">
+                    <input type="hidden" name="idSala">
+                    <div class="form-group">
+                        <label>Nombre de la Sala</label>
+                        <input type="text" name="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo de Sala</label>
+                        <input type="text" name="tipo" placeholder="Ej: Consulta, Rayos X, Ultrasonido" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+document.getElementById("cerrarSesion").addEventListener("click", () => {
+    window.location.href = "../Clinica.html";
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    // --- FUNCIÓN GENÉRICA PARA MOSTRAR MODAL DE CONFIRMACIÓN ---
+    async function mostrarConfirmacion(mensaje) {
+        const modal = document.getElementById('modalConfirmacionAjustes');
+        const mensajeP = document.getElementById('mensajeConfirmacionAjustes');
+        const btnConfirmar = document.getElementById('btnConfirmarAjustes');
+        const btnCancelar = document.getElementById('btnCancelarAjustes');
+
+        mensajeP.textContent = mensaje;
+        modal.style.display = 'flex';
+
+        return new Promise(resolve => {
+            btnConfirmar.onclick = () => { modal.style.display = 'none'; resolve(true); };
+            btnCancelar.onclick = () => { modal.style.display = 'none'; resolve(false); };
+            window.onclick = (e) => { if (e.target === modal) { modal.style.display = 'none'; resolve(false); } };
+        });
+    }
+
+    // --- LÓGICA PARA SERVICIOS ---
+    const modalServicio = document.getElementById('modalServicio');
+    const formServicio = document.getElementById('formServicio');
+    const modalServicioTitulo = document.getElementById('modalServicioTitulo');
+    const mensajeServicio = document.getElementById('mensaje-servicio');
+
+    async function cargarServicios() {
+        const tbody = document.querySelector("#tablaServicios tbody");
+        tbody.innerHTML = '<tr><td colspan="4">Cargando...</td></tr>';
+        try {
+            const response = await fetch('/api/serviciosA');
+            const servicios = await response.json();
+            tbody.innerHTML = '';
+            if (servicios.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4">No hay servicios registrados.</td></tr>';
+                return;
+            }
+            servicios.forEach(s => {
+                const fila = document.createElement('tr');
+                fila.innerHTML = `
+                    <td>${s.nombreServicio}</td>
+                    <td>${s.descripcion || ''}</td>
+                    <td>${s.preparacionRequerida || 'Ninguna'}</td>
+                    <td>
+                        <div class="action-buttons-container">
+                            <button class="btn-accion btn-editar" onclick="abrirModalParaEditar(${s.idServicio})">Editar</button>
+                            <button class="btn-accion btn-baja" onclick="eliminarServicio(${s.idServicio}, '${s.nombreServicio.replace(/'/g, "\\'")}')">Eliminar</button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(fila);
+            });
+        } catch (error) {
+            tbody.innerHTML = '<tr><td colspan="4">Error al cargar los servicios.</td></tr>';
+        }
+    }
+
+    function abrirModalParaAnadir() {
+        formServicio.reset();
+        formServicio.idServicio.value = '';
+        modalServicioTitulo.textContent = 'Añadir Nuevo Servicio';
+        mensajeServicio.className = 'form-message';
+        modalServicio.style.display = 'flex';
+    }
+
+    window.abrirModalParaEditar = async (id) => {
+        formServicio.reset();
+        mensajeServicio.className = 'form-message';
+        modalServicioTitulo.textContent = 'Editar Servicio';
+
+        try {
+            const response = await fetch(`/api/serviciosA/${id}`);
+            const result = await response.json();
+            if (result.ok) {
+                const servicio = result.data;
+                formServicio.idServicio.value = servicio.idServicio;
+                formServicio.nombreServicio.value = servicio.nombreServicio;
+                formServicio.descripcion.value = servicio.descripcion;
+                formServicio.preparacionRequerida.value = servicio.preparacionRequerida;
+                modalServicio.style.display = 'flex';
+            } else {
+                alert(result.mensaje);
+            }
+        } catch (error) {
+            alert('Error al cargar datos del servicio.');
+        }
+    }
+
+    window.eliminarServicio = async (id, nombre) => {
+        const confirmado = await mostrarConfirmacion(`¿Estás seguro de que deseas eliminar el servicio "${nombre}"? Esta acción no se puede deshacer.`);
+        if (!confirmado) return;
+
+        try {
+            const response = await fetch(`/api/serviciosA/${id}`, { method: 'DELETE' });
+            const result = await response.json();
+
+            if (result.ok) {
+                cargarServicios();
+            } else {
+                alert(`Error: ${result.mensaje}`);
+            }
+        } catch (error) {
+            alert('Error de conexión al intentar eliminar.');
+        }
+    }
+
+    document.getElementById('btnAnadirServicio').addEventListener('click', abrirModalParaAnadir);
+    document.getElementById('closeServicioModal').addEventListener('click', () => modalServicio.style.display = 'none');
+
+    formServicio.addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const idServicio = formServicio.idServicio.value;
+        const esEdicion = !!idServicio;
+
+        const datos = {
+            nombreServicio: formServicio.nombreServicio.value,
+            descripcion: formServicio.descripcion.value,
+            preparacionRequerida: formServicio.preparacionRequerida.value
+        };
+
+        const url = esEdicion ? `/api/serviciosA/${idServicio}` : '/api/serviciosA';
+        const method = esEdicion ? 'PUT' : 'POST';
+
+        try {
+            const response = await fetch(url, {
+                method: method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(datos)
+            });
+
+            const result = await response.json();
+
+            if (result.ok) {
+                modalServicio.style.display = 'none';
+                cargarServicios();
+            } else {
+                mensajeServicio.textContent = result.mensaje;
+                mensajeServicio.className = 'form-message error';
+            }
+        } catch (error) {
+            mensajeServicio.textContent = 'Error de conexión con el servidor.';
+            mensajeServicio.className = 'form-message error';
+        }
+    });
+
+    // --- LÓGICA PARA ESPECIALIZACIONES ---
+    const modalEspecializacion = document.getElementById('modalEspecializacion');
+    const formEspecializacion = document.getElementById('formEspecializacion');
+    const modalEspecializacionTitulo = document.getElementById('modalEspecializacionTitulo');
+
+    async function cargarEspecializaciones() {
+        const tbody = document.querySelector("#tablaEspecializaciones tbody");
+        tbody.innerHTML = '<tr><td colspan="2">Cargando...</td></tr>';
+        try {
+            const response = await fetch('/especializaciones/especial');
+            const data = await response.json();
+            tbody.innerHTML = '';
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="2">No hay especializaciones registradas.</td></tr>';
+                return;
+            }
+            data.forEach(item => {
+                const fila = document.createElement('tr');
+                fila.innerHTML = `
+                    <td>${item.nombre}</td>
+                    <td>
+                        <div class="action-buttons-container">
+                            <button class="btn-accion btn-editar" onclick="abrirModalParaEditarEspecializacion(${item.idEspecializacion})">Editar</button>
+                            <button class="btn-accion btn-baja" onclick="eliminarEspecializacion(${item.idEspecializacion}, '${item.nombre.replace(/'/g, "\\'")}')">Eliminar</button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(fila);
+            });
+        } catch (error) {
+            tbody.innerHTML = '<tr><td colspan="2">Error al cargar especializaciones.</td></tr>';
+        }
+    }
+
+    window.abrirModalParaEditarEspecializacion = async (id) => {
+        formEspecializacion.reset();
+        modalEspecializacionTitulo.textContent = 'Editar Especialización';
+        try {
+            const response = await fetch(`/especializaciones/${id}`);
+            const data = await response.json();
+            formEspecializacion.idEspecializacion.value = data.idEspecializacion;
+            formEspecializacion.nombre.value = data.nombre;
+            modalEspecializacion.style.display = 'flex';
+        } catch (error) {
+            alert('Error al cargar datos de la especialización.');
+        }
+    };
+
+    window.eliminarEspecializacion = async (id, nombre) => {
+        const confirmado = await mostrarConfirmacion(`¿Seguro que deseas eliminar la especialización "${nombre}"?`);
+        if (!confirmado) return;
+        try {
+            const response = await fetch(`/especializaciones/${id}`, { method: 'DELETE' });
+            const result = await response.json();
+            if (result.ok) cargarEspecializaciones();
+            else alert(result.mensaje);
+        } catch (error) {
+            alert('Error de conexión al intentar eliminar.');
+        }
+    };
+
+    document.getElementById('btnAnadirEspecializacion').addEventListener('click', () => {
+        formEspecializacion.reset();
+        formEspecializacion.idEspecializacion.value = '';
+        modalEspecializacionTitulo.textContent = 'Nueva Especialización';
+        modalEspecializacion.style.display = 'flex';
+    });
+    document.getElementById('closeEspecializacionModal').addEventListener('click', () => modalEspecializacion.style.display = 'none');
+
+    formEspecializacion.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const id = formEspecializacion.idEspecializacion.value;
+        const esEdicion = !!id;
+        const url = esEdicion ? `/especializaciones/${id}` : '/especializaciones';
+        const method = esEdicion ? 'PUT' : 'POST';
+        try {
+            const response = await fetch(url, {
+                method: method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nombre: formEspecializacion.nombre.value })
+            });
+            const result = await response.json();
+            if (result.ok) {
+                modalEspecializacion.style.display = 'none';
+                cargarEspecializaciones();
+            } else alert(result.mensaje);
+        } catch (error) {
+            alert('Error de conexión con el servidor.');
+        }
+    });
+
+    // --- LÓGICA PARA SALAS ---
+    const modalSala = document.getElementById('modalSala');
+    const formSala = document.getElementById('formSala');
+    const modalSalaTitulo = document.getElementById('modalSalaTitulo');
+
+    async function cargarSalas() {
+        const tbody = document.querySelector("#tablaSalas tbody");
+        tbody.innerHTML = '<tr><td colspan="3">Cargando...</td></tr>';
+        try {
+            const response = await fetch('/api/salas');
+            const data = await response.json();
+            tbody.innerHTML = '';
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3">No hay salas registradas.</td></tr>';
+                return;
+            }
+            data.forEach(item => {
+                const fila = document.createElement('tr');
+                fila.innerHTML = `
+                    <td>${item.nombre}</td>
+                    <td>${item.tipo}</td>
+                    <td>
+                        <div class="action-buttons-container">
+                            <button class="btn-accion btn-editar" onclick="abrirModalParaEditarSala(${item.idSala})">Editar</button>
+                            <button class="btn-accion btn-baja" onclick="eliminarSala(${item.idSala}, '${item.nombre.replace(/'/g, "\\'")}')">Eliminar</button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(fila);
+            });
+        } catch (error) {
+            tbody.innerHTML = '<tr><td colspan="3">Error al cargar salas.</td></tr>';
+        }
+    }
+
+    window.abrirModalParaEditarSala = async (id) => {
+        formSala.reset();
+        modalSalaTitulo.textContent = 'Editar Sala';
+        try {
+            const response = await fetch(`/api/salas/${id}`);
+            const data = await response.json();
+            formSala.idSala.value = data.idSala;
+            formSala.nombre.value = data.nombre;
+            formSala.tipo.value = data.tipo;
+            modalSala.style.display = 'flex';
+        } catch (error) {
+            alert('Error al cargar datos de la sala.');
+        }
+    };
+
+    window.eliminarSala = async (id, nombre) => {
+        const confirmado = await mostrarConfirmacion(`¿Seguro que deseas eliminar la sala "${nombre}"?`);
+        if (!confirmado) return;
+        try {
+            const response = await fetch(`/api/salas/${id}`, { method: 'DELETE' });
+            const result = await response.json();
+            if (result.ok) cargarSalas();
+            else alert(result.mensaje);
+        } catch (error) {
+            alert('Error de conexión al intentar eliminar.');
+        }
+    };
+
+    document.getElementById('btnAnadirSala').addEventListener('click', () => {
+        formSala.reset();
+        formSala.idSala.value = '';
+        modalSalaTitulo.textContent = 'Nueva Sala';
+        modalSala.style.display = 'flex';
+    });
+    document.getElementById('closeSalaModal').addEventListener('click', () => modalSala.style.display = 'none');
+
+    formSala.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const id = formSala.idSala.value;
+        const esEdicion = !!id;
+        const url = esEdicion ? `/api/salas/${id}` : '/api/salas';
+        const method = esEdicion ? 'PUT' : 'POST';
+        try {
+            const response = await fetch(url, {
+                method: method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nombre: formSala.nombre.value, tipo: formSala.tipo.value })
+            });
+            const result = await response.json();
+            if (result.ok) {
+                modalSala.style.display = 'none';
+                cargarSalas();
+            } else alert(result.mensaje);
+        } catch (error) {
+            alert('Error de conexión con el servidor.');
+        }
+    });
+
+    // --- CARGA INICIAL DE TODAS LAS TABLAS ---
+    cargarServicios();
+    cargarEspecializaciones();
+    cargarSalas();
+});
+    </script>
+</body>
+
+</html>

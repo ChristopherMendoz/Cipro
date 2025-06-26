@@ -4,9 +4,9 @@ const sql = require('mssql');
 //const config = require('../config.js');
 
 const config = {
-    user: 'sa',
-    password: '123456',
-    server: 'pc',
+    user: 'cipro_app_user',
+    password: '123456789',
+    server: 'DESKTOP-GMBSO0H',
     database: 'Cipro',
     options: {
         trustServerCertificate: true,
@@ -38,7 +38,7 @@ router.get('/', async (req, res) => {
 
         const result = await sql.query`
             SELECT 
-                c.idConsulta,
+                c.idConsulta, p.cedula,
                 CONVERT(varchar(10), c.fecha, 23) AS fecha,
                 CONVERT(varchar(5), c.hora, 108) AS hora,
                 c.estado,
@@ -68,6 +68,29 @@ router.get('/', async (req, res) => {
     } catch (error) {
         console.error('Error al obtener consultas para el médico logueado:', error);
         res.status(500).json({ ok: false, mensaje: 'Error al obtener consultas para el médico logueado' });
+    }
+});
+
+router.get('/agenda', async (req, res) => {
+    const idMedicoLogueado = req.session.idMedico;
+    
+    try {
+        await sql.connect(config);
+        const result = await sql.query`
+            SELECT 
+                c.idConsulta as id,
+                s.nombreServicio + ' - ' + p.primerNombre + ' ' + p.primerApellido as title,
+                CONVERT(varchar, c.fecha, 23) + 'T' + CONVERT(varchar(5), c.hora, 108) as start
+            FROM Consulta c
+            JOIN Paciente p ON c.idPaciente = p.idPaciente
+            JOIN Servicios s ON c.idServicio = s.idServicio
+            WHERE c.idMedico = ${idMedicoLogueado} AND c.estado = 'pendiente'`;
+
+        res.json(result.recordset);
+
+    } catch (error) {
+        console.error('Error al obtener datos para la agenda del médico:', error);
+        res.status(500).json([]);
     }
 });
 

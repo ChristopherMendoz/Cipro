@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Clínica Cipro</title>
+    <link rel="stylesheet" href="../adminstyle.css">
+    <link rel="stylesheet" href="styledashboard.css">
+    <link rel="icon" href="../logo.jpg" type="image/jpeg">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="admin-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../logo.jpg" alt="Logo Clínica Cipro" class="logo">
+                <span class="sidebar-title">Clínica Cipro</span>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active">
+                        <a href="../AdminComponentes/Dashboard.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5z" />
+                            </svg>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../Admin.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path
+                                    d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
+                            </svg>
+                            <span>Personal y Pacientes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Agenda.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path
+                                    d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM7 12h5v5H7v-5z" />
+                            </svg>
+                            <span>Agenda</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="reportes.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path
+                                    d="M5 9.2h3V19H5V9.2zm8 0h3V19h-3V9.2zm-4 0h3V19h-3V9.2zm0-5h3v4h-3V4.2zm-4 0h3v4H5V4.2zm8 0h3v4h-3V4.2zM2 21h20V2H2v19z" />
+                            </svg>
+                            <span>Reportes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="ajustes.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path
+                                    d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z" />
+                            </svg>
+                            <span>Ajustes</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="cerrarSesion">Cerrar Sesión</button>
+            </div>
+        </aside>
+
+        <div class="main-wrapper">
+            <header>
+                <h1 class="page-title">Dashboard</h1>
+            </header>
+
+            <main>
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="card-icon icon-pacientes"></div>
+                        <div class="card-value" id="kpi-total-pacientes">--</div>
+                        <div class="card-label">Pacientes Activos</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="card-icon icon-medicos"></div>
+                        <div class="card-value" id="kpi-total-medicos">--</div>
+                        <div class="card-label">Médicos Activos</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="card-icon icon-citas-totales"></div>
+                        <div class="card-value" id="kpi-citas-totales">--</div>
+                        <div class="card-label">Citas Históricas</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="card-icon icon-citas-pendientes"></div>
+                        <div class="card-value" id="kpi-citas-pendientes">--</div>
+                        <div class="card-label">Citas Pendientes</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="card-icon icon-citas-realizadas"></div>
+                        <div class="card-value" id="kpi-citas-realizadas">--</div>
+                        <div class="card-label">Citas Realizadas</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="card-icon icon-citas-canceladas"></div>
+                        <div class="card-value" id="kpi-citas-canceladas">--</div>
+                        <div class="card-label">Citas Canceladas</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="card-icon icon-ingresos"></div>
+                        <div class="card-value" id="kpi-ingresos-mes">--</div>
+                        <div class="card-label">Ingresos del Mes</div>
+                    </div>
+                </div>
+
+                <div class="dashboard-main-grid">
+                    <div class="dashboard-panel chart-panel" id="serviciosChartPanel">
+                        <h3>Distribución de Servicios Populares</h3>
+                        <canvas id="serviciosChart"></canvas>
+                    </div>
+
+                    <div class="dashboard-panel activity-panel">
+                        <h3>Actividad Reciente</h3>
+                        <ul class="activity-list" id="lista-actividad">
+                            <li>
+                                <div class="activity-icon icon-add-paciente"></div>
+                                <p>Se registró el paciente <strong>Carlos Pérez</strong>.</p>
+                                <span class="activity-time">hace 5 min</span>
+                            </li>
+                            <li>
+                                <div class="activity-icon icon-add-cita"></div>
+                                <p>Nueva cita para <strong>Ana Torres</strong> con el Dr. Mendoza.</p>
+                                <span class="activity-time">hace 30 min</span>
+                            </li>
+                            <li>
+                                <div class="activity-icon icon-add-medico"></div>
+                                <p>Se registró el médico <strong>Dr. Joe Masayita</strong>.</p>
+                                <span class="activity-time">hace 2 horas</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="dashboard-panel chart-panel" style="margin-top: 32px;">
+                        <h3>Citas en los Últimos 7 Días</h3>
+                        <div class="chart-container">
+                            <canvas id="citasChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("cerrarSesion").addEventListener("click", () => {
+            // Limpia la sesión y redirige
+            fetch('/logout', { method: 'POST' })
+                .then(() => window.location.href = "../Clinica.html");
+        });
+
+        // Ejecuta todo cuando el contenido de la página se haya cargado
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarEstadisticas();
+            cargarGraficoServicios();
+            cargarGraficoCitas();
+            cargarActividadReciente();
+        });
+
+
+        function timeAgo(seconds) {
+            if (seconds < 0 || seconds === null || typeof seconds === 'undefined') return '';
+            if (seconds < 60) return `hace menos de un minuto`;
+
+            let interval = seconds / 31536000;
+            if (interval > 1) {
+                const years = Math.floor(interval);
+                return `hace ${years} ${years === 1 ? 'año' : 'años'}`;
+            }
+            interval = seconds / 2592000;
+            if (interval > 1) {
+                const months = Math.floor(interval);
+                return `hace ${months} ${months === 1 ? 'mes' : 'meses'}`;
+            }
+            interval = seconds / 86400;
+            if (interval > 1) {
+                const days = Math.floor(interval);
+                return `hace ${days} ${days === 1 ? 'día' : 'días'}`;
+            }
+            interval = seconds / 3600;
+            if (interval > 1) {
+                const hours = Math.floor(interval);
+                return `hace ${hours} ${hours === 1 ? 'hora' : 'horas'}`;
+            }
+            interval = seconds / 60;
+            if (interval > 1) {
+                const minutes = Math.floor(interval);
+                return `hace ${minutes} ${minutes === 1 ? 'minuto' : 'minutos'}`;
+            }
+            return `hace ${Math.floor(seconds)} seg`;
+        }
+
+        // Función para cargar los datos de las tarjetas (KPIs)
+        async function cargarEstadisticas() {
+            try {
+                const response = await fetch('/api/dashboard/stats');
+                const data = await response.json();
+
+                if (data.ok) {
+                    document.getElementById('kpi-total-pacientes').textContent = data.totalPacientes;
+                    document.getElementById('kpi-total-medicos').textContent = data.totalMedicos;
+                    document.getElementById('kpi-citas-totales').textContent = data.totalCitas;
+                    document.getElementById('kpi-citas-pendientes').textContent = data.citasPendientes;
+                    document.getElementById('kpi-citas-realizadas').textContent = data.citasRealizadas;
+                    document.getElementById('kpi-citas-canceladas').textContent = data.citasCanceladas;
+                    // Dejamos la tarjeta de ingresos estática como acordamos
+                    document.getElementById('kpi-ingresos-mes').textContent = 'N/D';
+                }
+            } catch (error) {
+                console.error('Error cargando KPIs:', error);
+            }
+        }
+
+        // Función para cargar y renderizar el gráfico de citas
+        async function cargarGraficoServicios() {
+            try {
+                const response = await fetch('/api/dashboard/servicios-distribucion');
+                const result = await response.json();
+                if (!result.ok) return;
+
+                const labels = result.data.map(item => item.nombreServicio);
+                const dataPoints = result.data.map(item => item.total);
+
+                const ctx = document.getElementById('serviciosChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'doughnut', // Tipo de gráfico: dona
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Nº de Consultas',
+                            data: dataPoints,
+                            backgroundColor: [ // Paleta de colores atractiva
+                                'rgba(74, 144, 226, 0.7)',
+                                'rgba(80, 227, 194, 0.7)',
+                                'rgba(245, 166, 35, 0.7)',
+                                'rgba(208, 2, 27, 0.7)',
+                                'rgba(144, 19, 254, 0.7)',
+                                'rgba(126, 211, 33, 0.7)'
+                            ],
+                            borderColor: '#ffffff',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        //maintainAspectRatio: false,
+                        aspectRatio: 2.5,
+                        plugins: {
+                            legend: {
+                                position: 'bottom', // Leyenda en la parte inferior
+                            }
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Error cargando gráfico de servicios:', error);
+            }
+        }
+
+        // Función para cargar la actividad reciente
+        async function cargarActividadReciente() {
+            try {
+                const response = await fetch('/api/dashboard/actividad-reciente');
+                const result = await response.json();
+                if (!result.ok) return;
+
+                const activityList = document.getElementById('lista-actividad');
+                activityList.innerHTML = '';
+
+                if (result.data.length === 0) {
+                    activityList.innerHTML = '<li><p>No hay actividad reciente.</p></li>';
+                    return;
+                }
+
+                result.data.forEach(item => {
+                    const li = document.createElement('li');
+                    // Ahora usamos 'item.segundosTranscurridos' en la función timeAgo
+                    li.innerHTML = `
+                <div class="activity-icon icon-add-paciente"></div>
+                <p>Se registró el paciente: <strong>${item.primerNombre} ${item.primerApellido}</strong>.</p>
+                <span class="activity-time">${timeAgo(item.segundosTranscurridos)}</span> 
+            `;
+                    activityList.appendChild(li);
+                });
+
+            } catch (error) {
+                console.error('Error cargando actividad reciente:', error);
+            }
+        }
+
+
+        async function cargarGraficoCitas() {
+            try {
+                const response = await fetch('/api/dashboard/citas-semana');
+                const result = await response.json();
+                if (!result.ok) return;
+
+                const labels = result.data.map(item => item.dia);
+                const dataPoints = result.data.map(item => item.total);
+
+                const ctx = document.getElementById('citasChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Nº de Citas',
+                            data: dataPoints,
+                            backgroundColor: 'rgba(245, 166, 35, 0.6)',
+                            borderColor: 'rgba(245, 166, 35, 1)',
+                            borderWidth: 1,
+                            borderRadius: 5,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Error cargando gráfico de citas semanales:', error);
+            }
+        }
+    </script>
+</body>
+
+</html>

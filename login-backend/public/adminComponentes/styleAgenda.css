@@ -1,0 +1,247 @@
+/* En public/AdminComponentes/agenda.css */
+
+/* Ajustes para que el calendario ocupe el espacio correctamente */
+#calendar {
+    max-width: 1100px;
+    margin: 0 auto; /* Centra el calendario si el contenedor es más ancho */
+}
+
+/* Mejora la legibilidad de los botones y el título del calendario */
+.fc .fc-button-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+.fc .fc-button-primary:hover {
+    background-color: #3663c4;
+}
+
+.fc .fc-toolbar-title {
+    font-size: 1.75em;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+/* --- Estilos MEJORADOS para la lista de Próximas Citas --- */
+
+.upcoming-appointments-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.upcoming-appointments-list li {
+    /* Usamos grid para un control perfecto de las columnas */
+    display: grid;
+    grid-template-columns: 80px 1fr auto; /* Hora | Paciente | Médico */
+    align-items: center;
+    gap: 20px;
+    padding: 18px 10px;
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.2s ease;
+}
+
+.upcoming-appointments-list li:hover {
+    background-color: var(--primary-light);
+}
+
+.upcoming-appointments-list li:last-child {
+    border-bottom: none;
+}
+
+.appointment-time {
+    font-weight: 700;
+    font-size: 1.1em;
+    color: var(--primary-color);
+    text-align: center;
+}
+
+.appointment-patient {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.appointment-doctor {
+    color: var(--text-light);
+    font-style: italic;
+}
+
+/* --- Estilos para la vista de Agenda y Panel de Detalles --- */
+
+.agenda-view {
+    display: flex;
+    gap: 24px;
+}
+
+.calendar-main-panel {
+    flex-grow: 1; /* El calendario ocupa el espacio principal */
+    transition: width 0.4s ease;
+}
+
+.event-details-panel {
+    width: 350px; /* Ancho del panel */
+    flex-shrink: 0;
+    background-color: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
+    position: relative;
+    transform: translateX(120%); /* Empieza oculto a la derecha */
+    opacity: 0;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+    display: none; /* Empieza completamente oculto */
+}
+
+.event-details-panel.visible {
+    display: block;
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.close-panel-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: var(--text-light);
+    cursor: pointer;
+}
+
+.event-details-panel h3 {
+    margin-top: 0;
+    font-size: 1.4rem;
+    color: var(--text-dark);
+}
+
+.details-content {
+    margin-top: 20px;
+}
+
+.detail-item {
+    margin-bottom: 16px;
+    font-size: 1rem;
+}
+
+.detail-label {
+    display: block;
+    font-weight: 600;
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+}
+
+.detail-value {
+    color: var(--text-dark);
+    font-weight: 500;
+}
+.detail-text {
+    background-color: var(--background-light);
+    padding: 12px;
+    border-radius: 8px;
+    color: var(--text-dark);
+    min-height: 60px;
+}
+
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #fff;
+}
+.status-pendiente { background-color: #f6993f; }
+.status-realizada { background-color: #38a169; }
+.status-cancelada { background-color: #e53e3e; }
+
+/* Estilos para la nueva tabla de historial de citas */
+#tablaTodasCitas {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+#tablaTodasCitas th, #tablaTodasCitas td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+#tablaTodasCitas th {
+  background-color: var(--background-light);
+  font-weight: 600;
+}
+.btn-realizada { color: #2f855a; }
+.btn-realizada:hover { background-color: #f0fff4; }
+.btn-cancelar { color: #c53030; }
+.btn-cancelar:hover { background-color: #fff5f5; }
+
+#modalConfirmacionAgenda .modal-content {
+    height: auto;
+    min-height: initial; /* Resetea cualquier altura mínima heredada */
+    align-self: center; /* Ayuda a centrarlo verticalmente */
+}
+
+#modalConfirmacionAgenda .btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+#modalConfirmacionAgenda .btn-primary:hover {
+    background-color: #357ABD;
+}
+
+#modalConfirmacionAgenda .btn-secondary {
+    background-color: var(--border-color);
+    color: var(--text-dark);
+}
+#modalConfirmacionAgenda .btn-secondary:hover {
+    background-color: #d8dee4;
+}
+
+/* --- Estilos para los filtros de la tabla de citas --- */
+.filtros-citas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.filtros-citas input[type="text"] {
+    flex-grow: 1;
+    min-width: 250px;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+}
+
+.filtros-citas .filtro-fecha {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Pequeños ajustes para los botones de acción para que se vean mejor como íconos */
+.btn-realizada, .btn-cancelar {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+/* Estilos para la lista de próximas citas */
+/* Asegúrate de que la lista tenga un scroll si es necesario */
+.upcoming-appointments-list {
+    max-height: 300px; /* Puedes ajustar este valor a tu gusto */
+    overflow-y: auto;  /* Si el contenido excede la altura, aparece el scroll vertical */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Cambia el cursor a una 'manito' al pasar sobre las citas de la lista */
+.upcoming-appointments-list li:hover {
+    cursor: pointer;
+    background-color: var(--primary-light);
+}
+
+/* Evita el efecto hover en el mensaje de 'No hay citas' */
+.upcoming-appointments-list li.no-hover:hover {
+    cursor: default;
+    background-color: transparent;
+}

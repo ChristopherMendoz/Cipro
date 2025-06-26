@@ -1,0 +1,6 @@
+#modalEspecializacion .modal-content,
+#modalSala .modal-content {
+    height: auto;
+    min-height: initial;
+    align-self: center;
+}

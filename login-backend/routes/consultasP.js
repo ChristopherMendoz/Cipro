@@ -3,9 +3,9 @@ const router = express.Router();
 const sql = require('mssql');
 
 const config = {
-    user: process.env.DB_USER || 'sa',
-    password: process.env.DB_PASSWORD || '123456',
-    server: process.env.DB_SERVER || 'pc',
+    user: process.env.DB_USER || 'cipro_app_user',
+    password: process.env.DB_PASSWORD || '12345689',
+    server: process.env.DB_SERVER || 'DESKTOP-GMBSO0H',
     database: process.env.DB_DATABASE || 'Cipro',
     options: {
         trustServerCertificate: true,
@@ -47,7 +47,7 @@ router.get('/', async (req, res) => {
                 r.nombreCompleto AS nombreRecepcionista
             FROM Consulta c
             INNER JOIN Paciente p ON c.idPaciente = p.idPaciente
-            INNER JOIN Medico m ON c.idMedico = m.idMedico
+            LEFT JOIN Medico m ON c.idMedico = m.idMedico
             INNER JOIN Sala s ON c.idSala = s.idSala
             INNER JOIN Recepcionista r ON c.idRecepcionista = r.idRecepcionista
             INNER JOIN Servicios serv ON c.idServicio = serv.idServicio
