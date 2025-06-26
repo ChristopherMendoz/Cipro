@@ -4,9 +4,9 @@ const sql = require('mssql');
 
 // Configuración de conexión usando variables de entorno (¡Asegúrate de que tu .env esté configurado!)
 const config = {
-    user: process.env.DB_USER || 'sa',
-    password: process.env.DB_PASSWORD || '123456',
-    server: process.env.DB_SERVER || 'pc',
+    user: process.env.DB_USER || 'cipro_app_user',
+    password: process.env.DB_PASSWORD || '123456789',
+    server: process.env.DB_SERVER || 'DESKTOP-GMBSO0H',
     database: process.env.DB_DATABASE || 'Cipro',
     options: {
         trustServerCertificate: true,
@@ -26,7 +26,6 @@ router.use((req, res, next) => {
 });
 
 
-// Ruta: /obtener-paciente (ya no lleva :id en la URL)
 router.get('/', async (req, res) => {
     // Obtener el idPaciente y el idUsuario directamente de la sesión
     const idPacienteLogueado = req.session.idPaciente;
@@ -43,10 +42,12 @@ router.get('/', async (req, res) => {
 
         await ps.prepare(`
             SELECT
+                P.idPaciente,
                 P.primerNombre,
                 P.segundoNombre,
                 P.primerApellido,
                 P.segundoApellido,
+                P.cedula,
                 CONVERT(varchar(10), P.fechaNacimiento, 23) AS fechaNacimiento, -- Formateamos la fecha
                 P.sexo,
                 P.direccion,
@@ -75,5 +76,55 @@ router.get('/', async (req, res) => {
         res.status(500).json({ ok: false, mensaje: 'Error interno del servidor al obtener datos del paciente.' });
     }
 });
+
+
+// La ruta completa será: PUT /obtener-paciente/actualizar-cedula
+
+// --- RUTA PUT (La nueva, para actualizar la cédula) ---
+router.put('/actualizar-cedula', async (req, res) => {
+    // Obtenemos la cédula tal como la envía el usuario (con guiones)
+    const { cedula: cedulaConGuiones } = req.body;
+    const idPaciente = req.session.idPaciente;
+
+    if (!cedulaConGuiones || cedulaConGuiones.trim() === '') {
+        return res.status(400).json({ ok: false, mensaje: 'La cédula es requerida.' });
+    }
+
+    // --- LA LÍNEA CLAVE DE LA SOLUCIÓN ---
+    // Creamos una nueva variable con la cédula sin guiones
+    const cedulaLimpia = cedulaConGuiones.replace(/-/g, '');
+    // ------------------------------------
+    // Verificación opcional del formato (14 caracteres)
+    if (cedulaLimpia.length !== 14) {
+         return res.status(400).json({ ok: false, mensaje: 'El formato de la cédula no es válido.' });
+    }
+    try {
+        await sql.connect(config);
+        
+        // Verificamos si la cédula ya está en uso por OTRO paciente
+        const checkCedula = await sql.query`
+            SELECT idPaciente FROM Paciente WHERE cedula = ${cedulaLimpia}
+        `;
+        if (checkCedula.recordset.length > 0 && checkCedula.recordset[0].idPaciente !== idPaciente) {
+            return res.status(409).json({ ok: false, mensaje: 'Este número de cédula ya está registrado por otro usuario.' });
+        }
+
+        // Usamos la variable 'cedulaLimpia' para guardar en la base de datos
+        await sql.query`
+            UPDATE Paciente 
+            SET cedula = ${cedulaLimpia} -- <-- Usamos la variable limpia
+            WHERE idPaciente = ${idPaciente}
+        `;
+        res.json({ ok: true, mensaje: 'Cédula actualizada correctamente.' });
+
+    } catch (error) {
+        console.error("Error al actualizar la cédula:", error);
+        res.status(500).json({ ok: false, mensaje: 'Error del servidor al actualizar la cédula.' });
+    }
+});
+
+
+
+
 
 module.exports = router;

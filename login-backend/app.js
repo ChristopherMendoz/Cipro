@@ -7,7 +7,18 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+const obtenerPacienteByIdUsuarioRouter = require('./routes/Contacto/obtenerPacienteByIdUsuario');
+const obtenerMedicosRouter = require('./routes/Contacto/obtenerMedicos');
+const obtenerRecepcionistasRouter = require('./routes/Contacto/obtenerRecepcionistas');
+const agendarCitaRouter = require('./routes/Contacto/agendarCita');
 const session = require('express-session');
+const imagenesRouter = require('./routes/Images/imagenes'); 
+const uploadRouter = require('./routes/Images/upload');
+const dashboardRoutes = require('./routes/dashboard');
+const agendaRoutes = require('./routes/agenda');
+const reportesRoutes = require('./routes/reportes');
+const serviciosARouter = require('./routes/serviciosA');
+const salasRoutes = require('./routes/salas');
 
 
 
@@ -27,6 +38,7 @@ const agregarConsultaRoutes = require('./routes/agregarConsultaM');
 const consultasRoutes = require('./routes/consultasM');
 const catalogosRoutes = require('./routes/catalogos');
 const nombreUsuarioP = require('./routes/nombreUsuarioP');
+const serviciosRouter = require('./routes/servicios');
 const consultasPacientesRoutes = require('./routes/consultasP');
 const obtenerDatosMedRoutes = require('./routes/obtenerDpaciente')
 
@@ -46,7 +58,7 @@ app.use(bodyParser.json());
 // --- Configuración de express-session ---
 // ¡ES CRUCIAL QUE ESTO ESTÉ ANTES DE DEFINIR TUS RUTAS!
 app.use(session({
-    secret: process.env.SESSION_SECRET, // <-- ¡AHORA USA LA VARIABLE DE ENTORNO!
+    secret: process.env.SESSION_SECRET || 'mi_secreto_super_seguro', // <-- ¡AHORA USA LA VARIABLE DE ENTORNO!
     resave: false, // No guarda la sesión si no ha cambiado
     saveUninitialized: false, // No crea sesión para usuarios no autenticados
     cookie: {
@@ -56,7 +68,22 @@ app.use(session({
 }));
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public/Inicio'))); 
 
+
+
+app.use('/api/salas', salasRoutes);
+app.use('/api/serviciosA', serviciosARouter);
+app.use('/api/reportes', reportesRoutes);
+app.use('/api/agenda', agendaRoutes); 
+app.use('/api/dashboard', dashboardRoutes);
+app.use('/api', uploadRouter);
+app.use('/api', imagenesRouter);
+app.use('/api/servicios', serviciosRouter);
+app.use('/api/pacientes/by-idusuario', obtenerPacienteByIdUsuarioRouter);
+app.use('/api/medicos', obtenerMedicosRouter);
+app.use('/api/recepcionistas', obtenerRecepcionistasRouter);
+app.use('/api/agendar-cita', agendarCitaRouter);
 
 app.use('/login', loginRoutes);
 app.use('/register', registerRoutes);
@@ -76,6 +103,7 @@ app.use('/catalogos', catalogosRoutes);
 app.use('/nombre-usuario-p', nombreUsuarioP);
 app.use('/consultas-pacientes', consultasPacientesRoutes);
 app.use('/obtener-paciente', obtenerDatosMedRoutes);
+
 
 
 // Ruta raíz que redirige a index.html

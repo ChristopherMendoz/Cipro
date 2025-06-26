@@ -6,21 +6,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Médico</title>
     <link rel="stylesheet" href="medicostyle.css" />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js'></script>
 </head>
 
 <body>
-    <header>
-        <button id="cerrarSesion">Cerrar sesión</button>
-    </header>
+
 
     <div class="container">
         <aside class="sidebar">
-            <h2 id="nombreUsuario">👨‍⚕️ Cargando...</h2>
-            <h3>Gestión Médico</h3>
-            <a href="#" id="btnDatosPersonales">Datos Personales</a>
-            <a href="#" id="btnAgenda">Agenda</a>
-            <a href="#" id="btnDatosConsulta">Datos Consultas</a>
-            <a href="#" id="btnResultados">Cargar Resultados</a>
+            <div class="sidebar-header">
+                <h2 id="nombreUsuario">👨‍⚕️ Cargando...</h2>
+                <h3>Gestión Médico</h3>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="#" id="btnDatosPersonales">Datos Personales</a></li>
+                    <li><a href="#" id="btnAgenda">Agenda</a></li>
+                    <li><a href="#" id="btnDatosConsulta">Datos Consultas</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="cerrarSesion">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path
+                            d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" />
+                    </svg>
+                    <span>Cerrar Sesión</span>
+                </button>
+            </div>
         </aside>
         <section id="inicioPanelMedico" class="contenido">
             <img src="logosinfondo.png" alt="Logo de Clínica Cipro" class="logo-panel-inicio">
@@ -33,112 +46,200 @@
 
         <section id="seccionAgenda" class="contenido hidden">
             <h2>Agenda</h2>
-            <p>Aquí ira la agenda.</p>
+            <div class="agenda-layout">
+                <div class="calendario-container">
+                    <div id="calendario-agenda"></div>
+                </div>
+
+                <div id="panelDetallesCita" class="panel-detalles">
+                    <button id="cerrarPanelDetalles" class="cerrar-panel-btn">&times;</button>
+                    <h3>Detalles de la Cita</h3>
+                    <div class="detalles-contenido">
+                        <div class="detalle-item">
+                            <label>Servicio:</label>
+                            <span id="detalleServicio">--</span>
+                        </div>
+                        <div class="detalle-item">
+                            <label>Paciente:</label>
+                            <span id="detallePaciente">--</span>
+                        </div>
+                        <div class="detalle-item">
+                            <label>Fecha y Hora:</label>
+                            <span id="detalleFechaHora">--</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </section>
 
-        <section id="formConsulta" class="contenido hidden">
-            <h2>Agregar Nueva Consulta</h2>
-            <form id="formAgregarConsulta">
-                <label>Fecha: <input type="date" name="fecha" required></label><br><br>
-                <label>Hora: <input type="time" name="hora" required></label><br><br>
-                <label>Estado:
-                    <select name="estado" required>
+        <section id="seccionDatosConsulta" class="contenido hidden">
+
+            <div id="contenedorFormularioConsulta">
+                <h2>Agregar Nueva Consulta</h2>
+                <form id="formAgregarConsulta">
+                    <div class="form-group">
+                        <label for="fecha">Fecha:</label>
+                        <input type="date" id="fecha" name="fecha" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="hora">Hora:</label>
+                        <input type="time" id="hora" name="hora" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="selectServicio">Tipo de Servicio:</label>
+                        <select id="selectServicio" name="idServicio" required>
+                            <option value="">Cargando…</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="selectPaciente">Paciente:</label>
+                        <select id="selectPaciente" name="idPaciente" required>
+                            <option value="">Cargando…</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="selectMedico">Médico:</label>
+                        <select id="selectMedico" name="idMedico" required>
+                            <option value="">Cargando…</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="selectSala">Sala:</label>
+                        <select id="selectSala" name="idSala" required>
+                            <option value="">Cargando…</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="selectRecepcionista">Recepcionista:</label>
+                        <select id="selectRecepcionista" name="idRecepcionista" required>
+                            <option value="">Cargando…</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="estado">Estado:</label>
+                        <select id="estado" name="estado" required>
+                            <option value="pendiente">Pendiente</option>
+                            <option value="realizada">Realizada</option>
+                            <option value="cancelada">Cancelada</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="observaciones">Observaciones:</label>
+                        <textarea id="observaciones" name="observaciones"></textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <button type="submit">Agregar Consulta</button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="contenedorListaConsultas">
+                <h2>Lista de Consultas</h2>
+                <div class="filtros">
+                    <label for="filtroEstado">Filtrar por estado:</label>
+                    <select id="filtroEstado">
+                        <option value="">Todos</option>
                         <option value="pendiente">Pendiente</option>
                         <option value="realizada">Realizada</option>
                         <option value="cancelada">Cancelada</option>
                     </select>
-                </label><br><br>
-                    <select id="selectServicio" name="idServicio" required>
-                        <option value="">Cargando…</option>
-                    </select>
-                </label><br><br>
-                <label>Observaciones: <textarea name="observaciones"></textarea></label><br><br>
-                <label>Paciente:
-                    <select id="selectPaciente" name="idPaciente" required>
-                        <option value="">Cargando…</option>
-                    </select>
-                </label><br><br>
-                <label>Médico:
-                    <select id="selectMedico" name="idMedico" required>
-                        <option value="">Cargando…</option>
-                    </select>
-                </label><br><br>
-                <label>Sala:
-                    <select id="selectSala" name="idSala" required>
-                        <option value="">Cargando…</option>
-                    </select>
-                </label><br><br>
-                <label>Recepcionista:
-                    <select id="selectRecepcionista" name="idRecepcionista" required>
-                        <option value="">Cargando…</option>
-                    </select>
-                </label><br><br>
-                <button type="submit">Agregar Consulta</button>
-            </form>
-            <div id="mensajeConsulta" style="margin-top:10px; color: green;"></div>
-        </section>
-
-        <section id="listaConsultas" class="contenido consultas-container hidden">
-            <h2>Lista de Consultas</h2>
-            <div class="filtros">
-                <label for="filtroEstado">Filtrar por estado:</label>
-                <select id="filtroEstado">
-                    <option value="">Todos</option>
-                    <option value="pendiente">Pendiente</option>
-                    <option value="realizada">Realizada</option>
-                    <option value="cancelada">Cancelada</option>
-                </select>
-
-                <!-- CORRECCIÓN: El placeholder ahora coincide con el ID del input -->
-                <label for="busquedaServicio">Buscar por servicio:</label>
-                <input type="text" id="busquedaServicio" placeholder="Nombre del servicio...">
+                    <label for="busquedaServicio">Buscar por servicio:</label>
+                    <input type="text" id="busquedaServicio" placeholder="Nombre del servicio...">
+                </div>
+                <table id="tablaConsultas" border="1" cellpadding="8" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Estado</th>
+                            <th>Paciente</th>
+                            <th>Cédula</th>
+                            <th>Médico</th>
+                            <th>Sala</th>
+                            <th>Recepcionista</th>
+                            <th>Observaciones</th>
+                            <th>Tipo de Servicio</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
-            <table id="tablaConsultas" border="1" cellpadding="8" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Fecha</th>
-                        <th>Hora</th>
-                        <th>Estado</th>
-                        <th>Paciente</th>
-                        <th>Médico</th>
-                        <th>Sala</th>
-                        <th>Recepcionista</th>
-                        <th>Observaciones</th>
-                        <th>Tipo de Servicio</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Se llenará con JS -->
-                </tbody>
-            </table>
+
         </section>
-        
         <!-- Sección de Cargar Resultados (no se ha tocado) -->
-        <section id="seccionCargarResultados" class="contenido hidden">
-            <h2>Cargar Resultados</h2>
-            <p>Aquí irá el formulario para subir resultados.</p>
-        </section>
+
+    </div>
+
+    <div id="modalSubirImagenes" class="modal hidden">
+        <div class="modal-content">
+            <span class="close" id="closeModalSubida">&times;</span>
+            <h2 id="modalSubidaTitulo">Gestionar Imágenes</h2>
+            <div id="galeriaImagenesExistentes" class="galeria-container">
+            </div>
+
+            <form id="formSubirImagenes">
+                <input type="hidden" id="idConsultaParaSubida">
+
+                <label for="inputArchivos">Añadir nuevas imágenes (máx. 10):</label>
+                <input type="file" id="inputArchivos" name="imagenesConsulta" multiple accept="image/jpeg, image/png">
+
+                <div id="previewsContainer" class="previews-container"></div>
+
+                <label for="inputDescripcion">Descripción (opcional):</label>
+                <textarea id="inputDescripcion" name="descripcion"
+                    placeholder="Ej: Radiografía frontal de tórax"></textarea>
+
+                <button type="submit" disabled>Subir Nuevos Archivos</button>
+                <p id="mensajeSubida" class="mensaje-formulario"></p>
+            </form>
+        </div>
     </div>
 
 </body>
 
 <!-- CORRECCIÓN 1: Se ha combinado todo el JavaScript en un solo bloque <script> para evitar errores de funciones duplicadas -->
 <script>
+
     document.addEventListener('DOMContentLoaded', () => {
 
-        // --- REFERENCIAS A ELEMENTOS (SIN CAMBIOS) ---
+        // =======================================================
+        // == PARTE 1: DEFINICIÓN DE TODAS LAS VARIABLES ==
+        // =======================================================
+
+        let consultasGlobales = [];
+        let archivosParaSubir = [];
+
+        // --- Referencias a elementos del panel ---
         const nombreUsuarioEl = document.getElementById("nombreUsuario");
         const inicioPanelMedicoEl = document.getElementById("inicioPanelMedico");
         const seccionDatosPersonalesMedicoEl = document.getElementById("seccionDatosPersonalesMedico");
         const seccionAgendaEl = document.getElementById("seccionAgenda");
-        const formConsultaEl = document.getElementById("formConsulta");
-        const listaConsultasEl = document.getElementById("listaConsultas");
+        const seccionDatosConsultaEl = document.getElementById("seccionDatosConsulta");
+        const tablaConsultasEl = document.getElementById('tablaConsultas');
         const seccionCargarResultadosEl = document.getElementById("seccionCargarResultados");
+
+        // --- Referencias a los botones del sidebar ---
         const btnDatosPersonales = document.getElementById("btnDatosPersonales");
         const btnAgenda = document.getElementById("btnAgenda");
         const btnResultados = document.getElementById("btnResultados");
         const btnDatosConsulta = document.getElementById("btnDatosConsulta");
+
+        // --- Referencias al modal de subida de imágenes ---
+        const modalSubida = document.getElementById('modalSubirImagenes');
+        const formSubida = document.getElementById('formSubirImagenes');
+        const inputConsultaId = document.getElementById('idConsultaParaSubida');
+        const modalSubidaTitulo = document.getElementById('modalSubidaTitulo');
+        const inputArchivos = document.getElementById('inputArchivos');
+        const previewsContainer = document.getElementById('previewsContainer');
+        const btnSubirArchivos = document.querySelector('#formSubirImagenes button[type="submit"]');
+
+        // =======================================================
+        // == PARTE 2: ASIGNACIÓN DE TODOS LOS EVENT LISTENERS ==
+        // =======================================================
 
         document.getElementById("cerrarSesion").addEventListener("click", () => {
             sessionStorage.clear();
@@ -146,24 +247,168 @@
             window.location.href = "/Clinica.html";
         });
 
-        // --- FUNCIÓN PARA MOSTRAR SECCIONES (SIN CAMBIOS) ---
-        function mostrarSeccion(seccionesIdsAMostrar) {
-            if (!Array.isArray(seccionesIdsAMostrar)) {
-                seccionesIdsAMostrar = [seccionesIdsAMostrar];
+        btnDatosPersonales.addEventListener('click', (e) => { e.preventDefault(); cargarDatosPersonalesMedico(); });
+        btnAgenda.addEventListener('click', (e) => { e.preventDefault(); inicializarAgenda(); });
+        btnDatosConsulta.addEventListener("click", (e) => { e.preventDefault(); mostrarSeccion("seccionDatosConsulta"); });
+
+        tablaConsultasEl.addEventListener('click', (e) => {
+            if (e.target.classList.contains('btn-subir-img')) {
+                const idConsulta = e.target.dataset.idConsulta;
+                const nombrePaciente = e.target.dataset.paciente;
+                inputConsultaId.value = idConsulta;
+                modalSubidaTitulo.textContent = `Subir Imágenes para: ${nombrePaciente} (Consulta #${idConsulta})`;
+                modalSubida.classList.remove('hidden');
+                abrirModalGestionImagenes(idConsulta, nombrePaciente);
             }
-            const todasLasSeccionesDeContenido = [
-                inicioPanelMedicoEl, seccionDatosPersonalesMedicoEl, seccionAgendaEl,
-                formConsultaEl, listaConsultasEl, seccionCargarResultadosEl
-            ];
-            todasLasSeccionesDeContenido.forEach(seccion => {
-                if (seccion) {
-                    seccion.classList.toggle('hidden', !seccionesIdsAMostrar.includes(seccion.id));
-                }
+        });
+
+        document.getElementById('closeModalSubida').addEventListener('click', () => {
+            modalSubida.classList.add('hidden');
+            formSubida.reset();
+            previewsContainer.innerHTML = '';
+            btnSubirArchivos.disabled = true;
+            document.getElementById('mensajeSubida').innerHTML = '';
+        });
+
+        formSubida.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const idConsulta = inputConsultaId.value;
+            const mensajeSubidaEl = document.getElementById('mensajeSubida');
+
+            // CREAMOS EL FORMDATA A PARTIR DE NUESTRO ARRAY, NO DEL INPUT
+            const formData = new FormData();
+            formData.append('descripcion', document.getElementById('inputDescripcion').value);
+
+            archivosParaSubir.forEach(file => {
+                formData.append('imagenesConsulta', file); // 'imagenesConsulta' debe coincidir con el backend
             });
+
+            mensajeSubidaEl.innerHTML = '<div class="mensaje-alerta">Subiendo imágenes...</div>';
+
+            try {
+                const res = await fetch(`/api/consultas/${idConsulta}/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+
+                if (data.ok) {
+                    mensajeSubidaEl.innerHTML = '<div class="mensaje-alerta exito">✅ Imágenes subidas con éxito.</div>';
+                    archivosParaSubir = []; // Limpiamos nuestro carrito
+                    renderizarVistasPrevias(); // Limpiamos las vistas previas
+                    setTimeout(() => {
+                        modalSubida.classList.add('hidden');
+                        formSubida.reset();
+                    }, 2000);
+                } else {
+                    mensajeSubidaEl.innerHTML = `<div class="mensaje-alerta error">❌ ${data.mensaje}</div>`;
+                }
+            } catch (err) {
+                mensajeSubidaEl.innerHTML = '<div class="mensaje-alerta error">🔌 Error de conexión.</div>';
+            }
+        });
+
+        inputArchivos.addEventListener('change', handleFileSelect);
+
+        document.getElementById('formAgregarConsulta').addEventListener('submit', async (e) => { /* ... tu lógica de submit de consulta ... */ });
+        document.querySelector('#filtroEstado').addEventListener('change', aplicarFiltros);
+        document.querySelector('#busquedaServicio').addEventListener('input', aplicarFiltros);
+
+        async function abrirModalGestionImagenes(idConsulta, nombrePaciente) {
+            const modal = document.getElementById('modalSubirImagenes');
+            const galeria = document.getElementById('galeriaImagenesExistentes');
+            const inputConsultaId = document.getElementById('idConsultaParaSubida');
+            const modalTitulo = document.getElementById('modalSubidaTitulo');
+
+            // 1. Preparamos el modal
+            galeria.innerHTML = '<p>Cargando imágenes existentes...</p>';
+            inputConsultaId.value = idConsulta;
+            modalTitulo.textContent = `Gestionar Imágenes de: ${nombrePaciente} (#${idConsulta})`;
+            modal.classList.remove('hidden');
+
+            // 2. Hacemos fetch a la nueva ruta del backend para obtener las imágenes
+            try {
+                const res = await fetch(`/api/consultas/${idConsulta}/imagenes`, { credentials: 'include' });
+                const data = await res.json();
+
+                galeria.innerHTML = ''; // Limpiamos el mensaje de "cargando"
+                if (data.ok && data.imagenes.length > 0) {
+                    data.imagenes.forEach(img => {
+                        const item = document.createElement('div');
+                        item.className = 'imagen-item';
+                        item.innerHTML = `
+                    <img src="${img.url}" alt="Imagen de consulta">
+                    <button class="btn-eliminar-img" data-id-imagen="${img.idImagen}" title="Eliminar Imagen">&times;</button>
+                `;
+                        galeria.appendChild(item);
+                    });
+                } else {
+                    galeria.innerHTML = '<p>No hay imágenes para esta consulta.</p>';
+                }
+            } catch (error) {
+                console.error("Error al cargar imágenes:", error);
+                galeria.innerHTML = '<p style="color:red;">Error al cargar las imágenes.</p>';
+            }
         }
 
+        // Añade un event listener para manejar la eliminación de imágenes
+        document.getElementById('galeriaImagenesExistentes').addEventListener('click', async (e) => {
+            if (e.target.classList.contains('btn-eliminar-img')) {
+                const idImagen = e.target.dataset.idImagen;
+                const imagenItem = e.target.closest('.imagen-item');
+
+                if (confirm('¿Estás seguro de que deseas eliminar esta imagen de forma permanente?')) {
+                    try {
+                        const res = await fetch(`/api/imagenes/${idImagen}`, {
+                            method: 'DELETE',
+                            credentials: 'include'
+                        });
+                        const data = await res.json();
+
+                        if (data.ok) {
+                            imagenItem.remove(); // Elimina la imagen del DOM para feedback instantáneo
+                            alert('Imagen eliminada.');
+                        } else {
+                            alert(`Error: ${data.mensaje}`);
+                        }
+                    } catch (error) {
+                        alert('Error de conexión al intentar eliminar la imagen.');
+                    }
+                }
+            }
+        });
+
+
+        // =======================================================
+        // == PARTE 3: DEFINICIÓN DE TODAS LAS FUNCIONES ==
+        // =======================================================
+
+        // --- FUNCIÓN PARA MOSTRAR SECCIONES (SIN CAMBIOS) ---
+        function mostrarSeccion(seccionIdAMostrar) {
+            // Lista actualizada de TODAS las secciones de contenido posibles.
+            const todasLasSecciones = [
+                inicioPanelMedicoEl,
+                seccionDatosPersonalesMedicoEl,
+                seccionAgendaEl,
+                seccionDatosConsultaEl, // <--- La nueva sección ya está aquí
+                seccionCargarResultadosEl
+            ];
+
+            // Ocultamos todas las secciones
+            todasLasSecciones.forEach(seccion => {
+                if (seccion) { // Verificamos que el elemento exista
+                    seccion.classList.add('hidden');
+                }
+            });
+
+            // Mostramos solo la que queremos
+            const seccionAMostrar = document.getElementById(seccionIdAMostrar);
+            if (seccionAMostrar) {
+                seccionAMostrar.classList.remove('hidden');
+            }
+        }
         // CORRECCIÓN 2: Se añade `{ credentials: 'include' }` a CADA `fetch` para enviar la cookie de sesión.
-        
+
         async function cargarNombreUsuarioYMostrarInicio() {
             try {
                 const resNombre = await fetch('/nombre-usuario', { credentials: 'include' });
@@ -183,11 +428,13 @@
                 nombreUsuarioEl.textContent = "Error de conexión";
             }
         }
-        
+
+
+
         async function cargarDatosPersonalesMedico() {
             mostrarSeccion("seccionDatosPersonalesMedico");
             const targetEl = document.getElementById("seccionDatosPersonalesMedico");
-            targetEl.innerHTML = "<h2>Cargando Datos Personales...</h2>";
+            targetEl.innerHTML = "<h2>Cargando Datos Personales...</h2>"; // Mensaje de carga
             try {
                 const res = await fetch('/obtener-medico', { credentials: 'include' });
                 if (res.status === 401) {
@@ -197,13 +444,31 @@
                 const data = await res.json();
                 if (data.ok) {
                     const info = data.datos;
+                    // NUEVA ESTRUCTURA HTML CON CLASES PARA EL DISEÑO
                     targetEl.innerHTML = `
                         <h2>Datos Personales</h2>
-                        <p><strong>Nombre Completo:</strong> ${info.nombreCompleto}</p>
-                        <p><strong>Cédula Profesional:</strong> ${info.cedulaProfesional}</p>
-                        <p><strong>Teléfono:</strong> ${info.telefono}</p>
-                        <p><strong>Especialización:</strong> ${info.nombreEspecializacion}</p>
-                        <p><strong>Nombre de Usuario:</strong> ${info.nombreUsuario}</p>`;
+                        <div class="datos-personales-grid">
+                            <div class="dato-item">
+                                <strong>Nombre Completo</strong>
+                                <span>${info.nombreCompleto || 'No disponible'}</span>
+                            </div>
+                            <div class="dato-item">
+                                <strong>Cédula Profesional</strong>
+                                <span>${info.cedulaProfesional || 'No disponible'}</span>
+                            </div>
+                            <div class="dato-item">
+                                <strong>Teléfono</strong>
+                                <span>${info.telefono || 'No disponible'}</span>
+                            </div>
+                            <div class="dato-item">
+                                <strong>Especialización</strong>
+                                <span>${info.nombreEspecializacion || 'No disponible'}</span>
+                            </div>
+                             <div class="dato-item">
+                                <strong>Nombre de Usuario</strong>
+                                <span>${info.nombreUsuario || 'No disponible'}</span>
+                            </div>
+                        </div>`;
                 } else {
                     targetEl.innerHTML = `<p>No se encontraron datos: ${data.mensaje || 'Error'}</p>`;
                 }
@@ -212,10 +477,8 @@
                 targetEl.innerHTML = "<p>Error al obtener los datos personales.</p>";
             }
         }
-
         // --- CÓDIGO DE MANEJO DE CONSULTAS (CON CORRECCIONES) ---
 
-        let consultasGlobales = []; // Declarada una sola vez
 
         async function cargarConsultas() {
             try {
@@ -238,7 +501,7 @@
             const busquedaServicio = document.querySelector('#busquedaServicio').value.toLowerCase();
             const tbody = document.querySelector('#tablaConsultas tbody');
             tbody.innerHTML = '';
-            
+
             if (!Array.isArray(consultasGlobales)) {
                 console.error("consultasGlobales no es un array");
                 return;
@@ -249,31 +512,53 @@
                 const servicioMatch = c.nombreServicio?.toLowerCase().includes(busquedaServicio);
                 return estadoMatch && servicioMatch;
             });
-            
+
             if (filtradas.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="10" style="text-align: center;">No se encontraron consultas.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="12" style="text-align: center; padding: 20px;">No se encontraron consultas que coincidan con los filtros.</td></tr>`;
                 return;
             }
 
             filtradas.forEach(c => {
                 const fila = document.createElement('tr');
                 const fechaFormateada = c.fecha ? c.fecha.split('T')[0] : 'Sin fecha';
-                // CORRECCIÓN 3: Se ha eliminado la columna duplicada de 'nombreServicio'
+
+                // Lógica para asignar clase de estado
+                let estadoClass = '';
+                switch (c.estado?.toLowerCase()) {
+                    case 'realizada':
+                        estadoClass = 'estado-realizada';
+                        break;
+                    case 'pendiente':
+                        estadoClass = 'estado-pendiente';
+                        break;
+                    case 'cancelada':
+                        estadoClass = 'estado-cancelada';
+                        break;
+                }
+
                 fila.innerHTML = `
                     <td>${c.idConsulta || ''}</td>
                     <td>${fechaFormateada}</td>
                     <td>${c.hora || ''}</td>
-                    <td>${c.estado || ''}</td>
+                    <td><span class="estado-badge ${estadoClass}">${c.estado || ''}</span></td>
                     <td>${c.nombrePaciente || ''}</td>
+                    <td>${c.cedula || 'N/A'}</td>
                     <td>${c.nombreMedico || ''}</td>
                     <td>${c.nombreSala || ''}</td>
                     <td>${c.nombreRecepcionista || ''}</td>
                     <td>${c.observaciones || ''}</td>
-                    <td>${c.nombreServicio || ''}</td>`;
+                    <td>${c.nombreServicio || ''}</td>
+                    <td>
+                        <button class="btn-subir-img" data-id-consulta="${c.idConsulta}" data-paciente="${c.nombrePaciente}">
+                            Subir Imágenes
+                        </button>
+                    </td>
+                    `;
                 tbody.appendChild(fila);
             });
         }
-        
+
+
         document.querySelector('#filtroEstado').addEventListener('change', aplicarFiltros);
         document.querySelector('#busquedaServicio').addEventListener('input', aplicarFiltros);
 
@@ -288,31 +573,31 @@
                     fetch('/catalogos/recepcionistas', { credentials: 'include' }),
                     fetch('/catalogos/servicios', { credentials: 'include' })
                 ]);
-                
+
                 // CORRECCIÓN 4: Se ha eliminado el '1' suelto que causaba un error de sintaxis.
-                
+
                 llenarSelect(document.getElementById('selectPaciente'), await pacientesRes.json(), 'idPaciente', 'nombreCompleto');
                 llenarSelect(document.getElementById('selectMedico'), await medicosRes.json(), 'idMedico', 'nombreCompleto');
                 llenarSelect(document.getElementById('selectSala'), await salasRes.json(), 'idSala', 'nombre');
                 llenarSelect(document.getElementById('selectRecepcionista'), await recepcionistasRes.json(), 'idRecepcionista', 'nombreCompleto');
                 llenarSelect(document.getElementById('selectServicio'), await serviciosRes.json(), 'idServicio', 'nombreServicio');
-                
+
             } catch (error) {
                 console.error("Error al cargar los catálogos:", error);
             }
         }
-        
+
         function llenarSelect(selectEl, datos, valueField, textField) {
-             if (!selectEl) return;
-             selectEl.innerHTML = '<option value="">Seleccione…</option>';
-             if(Array.isArray(datos)) {
+            if (!selectEl) return;
+            selectEl.innerHTML = '<option value="">Seleccione…</option>';
+            if (Array.isArray(datos)) {
                 datos.forEach(item => {
                     const opt = document.createElement('option');
                     opt.value = item[valueField];
                     opt.textContent = item[textField];
                     selectEl.appendChild(opt);
                 });
-             }
+            }
         }
 
         document.getElementById('formAgregarConsulta').addEventListener('submit', async (e) => {
@@ -345,39 +630,148 @@
                     form.reset();
                     cargarConsultas(); // refrescar tabla
                 }
-            } catch(err) {
-                 mensajeDiv.style.color = 'red';
-                 mensajeDiv.textContent = 'Error de conexión al agregar consulta.';
+            } catch (err) {
+                mensajeDiv.style.color = 'red';
+                mensajeDiv.textContent = 'Error de conexión al agregar consulta.';
             }
         });
-        
-        // --- EVENT LISTENERS DE NAVEGACIÓN (SIN CAMBIOS) ---
-        btnDatosPersonales.addEventListener('click', (e) => {
-            e.preventDefault();
-            cargarDatosPersonalesMedico();
+
+        function renderizarVistasPrevias() {
+            previewsContainer.innerHTML = ''; // Limpiar siempre antes de volver a dibujar
+
+            archivosParaSubir.forEach((file, index) => {
+                const previewItem = document.createElement('div');
+                previewItem.classList.add('preview-item');
+
+                const previewImage = document.createElement('img');
+                const reader = new FileReader();
+                reader.onload = () => { previewImage.src = reader.result; };
+                reader.readAsDataURL(file);
+                previewItem.appendChild(previewImage);
+
+                // Creamos el botón de eliminar
+                const removeBtn = document.createElement('button');
+                removeBtn.type = 'button'; // MUY IMPORTANTE: para que no envíe el formulario
+                removeBtn.classList.add('preview-remove-btn');
+                removeBtn.innerHTML = '&times;';
+                removeBtn.title = 'Eliminar imagen';
+                removeBtn.dataset.index = index; // Guardamos el índice para saber cuál borrar
+                previewItem.appendChild(removeBtn);
+
+                previewsContainer.appendChild(previewItem);
+            });
+
+            btnSubirArchivos.disabled = archivosParaSubir.length === 0;
+        }
+
+        function inicializarAgenda() {
+            mostrarSeccion('seccionAgenda');
+
+            const calendarEl = document.getElementById('calendario-agenda');
+            const panelDetalles = document.getElementById('panelDetallesCita');
+            const btnCerrarPanel = document.getElementById('cerrarPanelDetalles');
+
+            // Lógica para cerrar el panel
+            btnCerrarPanel.addEventListener('click', () => {
+                panelDetalles.classList.remove('visible');
+            });
+
+            if (calendarEl.querySelector('.fc')) {
+                const calendar = FullCalendar.Calendar.getInstance(calendarEl);
+                if (calendar) { calendar.refetchEvents(); }
+                return;
+            }
+
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                locale: 'es',
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                events: function (fetchInfo, successCallback, failureCallback) {
+                    fetch('/consultas/agenda', { credentials: 'include' })
+                        .then(response => {
+                            if (!response.ok) throw new Error(`Error ${response.status}`);
+                            return response.json();
+                        })
+                        .then(data => successCallback(data))
+                        .catch(error => failureCallback(error));
+                },
+                dateClick: function (info) {
+                    mostrarSeccion('seccionDatosConsulta');
+                    document.getElementById('fecha').value = info.dateStr;
+                    document.getElementById('hora').focus();
+                },
+
+                // ================================================================
+                // ==        MODIFICACIÓN DE eventClick PARA MOSTRAR EL PANEL      ==
+                // ================================================================
+                eventClick: function (info) {
+                    const evento = info.event;
+
+                    // Separamos el título para obtener el servicio y el paciente
+                    const [servicio, paciente] = evento.title.split(' - ');
+
+                    // Llenamos el panel con la información del evento
+                    document.getElementById('detalleServicio').textContent = servicio || 'No disponible';
+                    document.getElementById('detallePaciente').textContent = paciente || 'No disponible';
+                    document.getElementById('detalleFechaHora').textContent = evento.start.toLocaleString('es-NI', {
+                        dateStyle: 'long',
+                        timeStyle: 'short'
+                    });
+
+                    // Mostramos el panel
+                    panelDetalles.classList.add('visible');
+                }
+            });
+
+            calendar.render();
+        }
+
+        // --- FUNCIÓN QUE SE ACTIVA AL SELECCIONAR ARCHIVOS ---
+        function handleFileSelect(event) {
+            const nuevosArchivos = event.target.files;
+            for (const file of nuevosArchivos) {
+                if (file.type.startsWith('image/') && !archivosParaSubir.some(f => f.name === file.name)) {
+                    archivosParaSubir.push(file);
+                }
+            }
+            event.target.value = ''; // Resetea el input para poder seleccionar los mismos archivos
+            renderizarVistasPrevias(); // Redibuja las vistas previas con los nuevos archivos
+        }
+
+
+        // --- EVENT LISTENERS DEL MODAL ---
+
+        // 1. Listener para el input de archivos
+        inputArchivos.addEventListener('change', handleFileSelect);
+
+
+        // 2. Listener para ELIMINAR imágenes (LA PIEZA CLAVE QUE PROBABLEMENTE FALTABA)
+        previewsContainer.addEventListener('click', (e) => {
+            // Si el elemento clickeado es un botón de eliminar
+            if (e.target.classList.contains('preview-remove-btn')) {
+                // Obtenemos el índice del archivo a eliminar
+                const indexAEliminar = parseInt(e.target.dataset.index, 10);
+
+                // Eliminamos el archivo de nuestro array "carrito"
+                archivosParaSubir.splice(indexAEliminar, 1);
+
+                // Volvemos a dibujar las vistas previas actualizadas
+                renderizarVistasPrevias();
+            }
         });
 
-        btnAgenda.addEventListener('click', (e) => {
-            e.preventDefault();
-            mostrarSeccion("seccionAgenda");
-        });
-
-        btnResultados.addEventListener('click', (e) => {
-            e.preventDefault();
-            mostrarSeccion("seccionCargarResultados");
-        });
-
-        btnDatosConsulta.addEventListener("click", (e) => {
-            e.preventDefault();
-            mostrarSeccion(["formConsulta", "listaConsultas"]);
-            // No es necesario cargar las consultas de nuevo, ya se cargan al inicio
-        });
-        
-        // --- INICIALIZACIÓN DE LA PÁGINA ---
+        // ==============================================================
+        // == PARTE 4: CÓDIGO QUE SE EJECUTA AL INICIAR LA PÁGINA ==
+        // ==============================================================
         cargarNombreUsuarioYMostrarInicio();
         cargarCatalogos();
         cargarConsultas();
-    });
+
+    }); 
 </script>
 
 </html>

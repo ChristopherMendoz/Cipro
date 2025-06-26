@@ -4,926 +4,1395 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administrar Pacientes</title>
+    <title>Panel de Administración - Clínica Cipro</title>
     <link rel="stylesheet" href="adminstyle.css">
+    <link rel="icon" href="logo.jpg" type="image/jpeg">
 </head>
 
 
 <body>
-    <header>
-        <div class="header-content">
-            <img src="logo.jpg" alt="Logo de Clínica Cipro" class="logo">
-            <h1>Panel de Administración</h1>
-        </div>
-        <button id="cerrarSesion" onclick="cerrarSesion()">
-            <span style="font-size:1.2em;vertical-align:middle;">&#x274C;</span> Cerrar sesión
-        </button>
-    </header>
-
-    <h1>Lista de Pacientes</h1>
-
-    <!-- Pacientes: Buscador y checks juntos -->
-    <main style="max-width:1500px;margin:0 auto;padding:24px;">
-        <section style="margin-bottom:40px;">
-            <div style="display:flex;align-items:center;gap:16px;margin-bottom:18px;">
-                <input type="text" id="busqueda" placeholder="Buscar por nombre o apellido..."
-                    style="flex:1;max-width:340px;">
-                <label><input type="checkbox" id="chkPacientesActivos" checked> Activos</label>
-                <label><input type="checkbox" id="chkPacientesBaja"> Dados de baja</label>
-                <button class="btn-registrar-personal" onclick="abrirModalPaciente()" style="margin-left:auto;">+
-                    Agregar Paciente</button>
+    <div class="admin-container" style="display:flex;min-height:100vh;">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="logo.jpg" alt="Logo Clínica Cipro" class="logo">
+                <span class="sidebar-title">Clínica Cipro</span>
             </div>
-            <div class="tabla-responsive">
-                <table id="tablaPacientes">
-                    <thead>
-                        <tr>
-                            <th>Primer Nombre</th>
-                            <th>Segundo Nombre</th>
-                            <th>Primer Apellido</th>
-                            <th>Segundo Apellido</th>
-                            <th>Fecha Nacimiento</th>
-                            <th>Sexo</th>
-                            <th>Dirección</th>
-                            <th>Teléfono</th>
-                            <th>Tipo de Sangre</th>
-                            <th>Correo</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Datos serán insertados con JS -->
-                    </tbody>
-                </table>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="AdminComponentes/Dashboard.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5z" />
+                            </svg>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="Admin.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path
+                                    d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
+                            </svg>
+                            <span>Personal y Pacientes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="AdminComponentes/agenda.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path
+                                    d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM7 12h5v5H7v-5z" />
+                            </svg>
+                            <span>Agenda</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="adminComponentes/reportes.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path
+                                    d="M5 9.2h3V19H5V9.2zm8 0h3V19h-3V9.2zm-4 0h3V19h-3V9.2zm0-5h3v4h-3V4.2zm-4 0h3v4H5V4.2zm8 0h3v4h-3V4.2zM2 21h20V2H2v19z" />
+                            </svg>
+                            <span>Reportes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="adminComponentes/ajustes.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path
+                                    d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z" />
+                            </svg>
+                            <span>Ajustes</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="cerrarSesion">Cerrar Sesión</button>
             </div>
-        </section>
+        </aside>
 
-        <section>
-            <div style="display:flex;align-items:center;gap:16px;margin-bottom:18px;">
-                <input type="text" id="busquedaMedico" placeholder="Buscar médico..." style="flex:1;max-width:340px;">
-                <label><input type="checkbox" id="chkActivos" checked> Activos</label>
-                <label><input type="checkbox" id="chkInactivos"> Dados de baja</label>
-                <button class="btn-registrar-personal" onclick="abrirModalPersonal()" style="margin-left:auto;">+
-                    Registrar Médico</button>
-            </div>
-            <div class="tabla-responsive">
-                <table id="tablaMedicos">
-                    <thead>
-                        <tr>
-                            <th>Nombre Completo</th>
-                            <th>Cédula Profesional</th>
-                            <th>Teléfono</th>
-                            <th>Especialización</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-        </section>
-    </main>
-
-    <!-- Modal Agregar Paciente -->
-    <div id="modalPaciente" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="cerrarModalPaciente()">&times;</span>
-            <div class="modal-body">
-                <h2 style="text-align:center;margin-bottom:18px;">Agregar Paciente</h2>
-                <form id="formAgregar" autocomplete="off">
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-                        <input type="text" name="nombre" placeholder="Primer Nombre" required>
-                        <input type="text" name="Snombre" placeholder="Segundo Nombre" required>
-                        <input type="text" name="apellido" placeholder="Primer Apellido" required>
-                        <input type="text" name="Sapellido" placeholder="Segundo Apellido" required>
-                        <input type="date" name="fechan" id="fechan" required style="grid-column:1/3;">
-                        <select name="genero" id="genero" required style="grid-column:1/3;">
-                            <option value="">Género</option>
-                            <option value="masculino">Masculino</option>
-                            <option value="femenino">Femenino</option>
-                        </select>
-                        <input type="text" name="direccion" placeholder="Dirección" required style="grid-column:1/3;">
-                        <input type="text" name="telefono" placeholder="Teléfono" required style="grid-column:1/3;">
-                        <input type="text" name="tipoSangre" placeholder="Tipo de Sangre" required
-                            style="grid-column:1/3;">
+        <!-- Main content -->
+        <div class="main-wrapper" style="flex:1;display:flex;flex-direction:column;">
+            <header style="background:#fff;padding:24px 40px 18px 40px;border-bottom:1px solid #e2e8f0;">
+                <h1 class="page-title" style="font-size:2rem;font-weight:700;color:#003366;margin:0;">Panel de
+                    Administración</h1>
+            </header>
+            <main style="flex:1;padding:32px;max-width:1400px;margin:0 auto;">
+                <!-- SECCIÓN PACIENTES -->
+                <section class="panel-section">
+                    <div class="panel-header" style="display:flex;align-items:center;justify-content:space-between;">
+                        <h2 style="margin:0;">Lista de Pacientes</h2>
+                        <button class="btn-primary" onclick="abrirModalPaciente()">+ Agregar Paciente</button>
                     </div>
-                    <div class="autocomplete-container" style="margin-top:10px;">
-                        <label for="inputCorreo" style="font-weight:500;">Correo del Usuario:</label>
-                        <input type="email" name="correo" id="inputCorreo" placeholder="Buscar o ingresar correo"
-                            autocomplete="off" required>
-                        <div id="sugerenciasCorreo" class="sugerencias-box"></div>
-                        <div id="opcionCrearUsuario">
-                            <button type="button" onclick="mostrarFormularioNuevoUsuario()">Crear nuevo usuario con este
-                                correo</button>
-                        </div>
-                        <div id="nuevoUsuarioCampos">
-                            <input type="text" name="nombreUsuarioNuevo" placeholder="Nombre de Usuario">
-                            <input type="password" name="contrasenaNuevo" placeholder="Contraseña">
+                    <div class="action-bar">
+                        <input type="text" id="busqueda" placeholder="Buscar por nombre o apellido...">
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" id="chkPacientesActivos" checked> Activos</label>
+                            <label><input type="checkbox" id="chkPacientesBaja"> Dados de baja</label>
                         </div>
                     </div>
-                    <button type="submit" style="margin-top:18px;">Agregar Paciente</button>
-                    <p id="mensaje-paciente"></p>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Editar Paciente -->
-    <div id="modalEditarPaciente" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="cerrarModalEditarPaciente()">&times;</span>
-            <div class="modal-body">
-                <h2 style="text-align:center;margin-bottom:18px;">Editar Paciente</h2>
-                <form id="formEditarPaciente">
-                    <input type="hidden" name="idPaciente">
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-                        <input type="text" name="primerNombre" placeholder="Primer Nombre" required>
-                        <input type="text" name="segundoNombre" placeholder="Segundo Nombre">
-                        <input type="text" name="primerApellido" placeholder="Primer Apellido" required>
-                        <input type="text" name="segundoApellido" placeholder="Segundo Apellido">
-                        <input type="date" name="fechaNacimiento" required style="grid-column:1/3;">
-                        <select name="sexo" required style="grid-column:1/3;">
-                            <option value="">Género</option>
-                            <option value="masculino">Masculino</option>
-                            <option value="femenino">Femenino</option>
-                        </select>
-                        <input type="text" name="direccion" placeholder="Dirección" required style="grid-column:1/3;">
-                        <input type="text" name="telefono" placeholder="Teléfono" required style="grid-column:1/3;">
-                        <input type="text" name="tipoSangre" placeholder="Tipo de Sangre" style="grid-column:1/3;">
+                    <div class="tabla-responsive">
+                        <table id="tablaPacientes">
+                            <thead>
+                                <tr>
+                                    <th>Primer Nombre</th>
+                                    <th>Segundo Nombre</th>
+                                    <th>Primer Apellido</th>
+                                    <th>Segundo Apellido</th>
+                                    <th>Cédula</th>
+                                    <th>Fecha Nacimiento</th>
+                                    <th>Sexo</th>
+                                    <th>Dirección</th>
+                                    <th>Teléfono</th>
+                                    <th>Tipo de Sangre</th>
+                                    <th>Correo</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Datos serán insertados con JS -->
+                            </tbody>
+                        </table>
                     </div>
-                    <button type="submit" style="margin-top:18px;">Guardar Cambios</button>
-                </form>
-            </div>
-        </div>
-    </div>
 
-    <!-- Modal Registrar Médico -->
-    <div id="modalPersonal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="cerrarModalPersonal()">&times;</span>
-            <div class="modal-body">
-                <h2 style="text-align:center;margin-bottom:18px;">Registrar Médico</h2>
-                <form id="form-personal">
-                    <input type="text" name="nombreCompleto" placeholder="Nombre Completo" required>
-                    <input type="text" name="cedulaProfesional" placeholder="Cédula Profesional" required>
-                    <input type="text" name="telefono" placeholder="Teléfono" required>
-                    <input type="email" name="correo" placeholder="Correo" required>
-                    <input type="text" name="nombreUsuario" placeholder="Usuario" required>
-                    <input type="password" name="contraseña" placeholder="Contraseña" required>
-                    <select name="idEspecializacion" required>
-                        <!-- Opciones serán llenadas dinámicamente desde JS -->
-                    </select>
-                    <button type="submit" style="margin-top:18px;">Registrar</button>
-                    <p id="mensaje-registro"></p>
-                </form>
-            </div>
-        </div>
-    </div>
+                    <div class="pagination-controls" id="paginationPacientes">
+                        <select class="rows-per-page">
+                            <option value="5" selected>5</option>
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                        </select>
+                        <span>filas por página</span>
+                        <div class="page-nav">
+                            <button class="prev-page" disabled>&lt; Anterior</button>
+                            <span class="page-info">Página 1 de 1</span>
+                            <button class="next-page" disabled>Siguiente &gt;</button>
+                        </div>
+                    </div>
+                </section>
 
-    <!-- Modal Editar Médico -->
-    <div id="modalEditarMedico" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="cerrarModalEditarMedico()">&times;</span>
-            <div class="modal-body">
-                <h2 style="text-align:center;margin-bottom:18px;">Editar Médico</h2>
-                <form id="formEditarMedico">
-                    <input type="hidden" name="idMedico" />
-                    <input type="text" name="nombreCompleto" placeholder="Nombre Completo" required />
-                    <input type="text" name="cedulaProfesional" placeholder="Cédula Profesional" required />
-                    <input type="text" name="telefono" placeholder="Teléfono" required />
-                    <select name="idEspecializacion" required>
-                        <!-- Se llena dinámicamente -->
-                    </select>
-                    <button type="submit" style="margin-top:18px;">Guardar Cambios</button>
-                    <p id="mensaje-editar-medico"></p>
-                </form>
-            </div>
-        </div>
-    </div>
+                <!-- SECCIÓN MÉDICOS -->
+                <section class="panel-section">
+                    <div class="panel-header">
+                        <h2>Lista de Médicos</h2>
+                        <button class="btn-primary" onclick="abrirModalPersonal()">+ Registrar Médico</button>
+                    </div>
+                    <div class="action-bar">
+                        <input type="text" id="busquedaMedico" placeholder="Buscar médico...">
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" id="chkActivos" checked> Activos</label>
+                            <label><input type="checkbox" id="chkInactivos"> Dados de baja</label>
+                        </div>
+                    </div>
+                    <div class="tabla-container">
+                        <table id="tablaMedicos">
+                            <thead>
+                                <tr>
+                                    <th>Nombre Completo</th>
+                                    <th>Cédula Profesional</th>
+                                    <th>Teléfono</th>
+                                    <th>Especialización</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
 
-    <!-- Modal Confirmación -->
-    <div id="modalConfirmacion" class="modal">
-        <div class="modal-content">
-            <p id="mensajeConfirmacion" style="font-size:1.1em;"></p>
-            <div style="margin-top: 20px;display:flex;gap:16px;justify-content:center;">
-                <button id="btnConfirmar" style="background:#0074d9;">Sí</button>
-                <button id="btnCancelar" onclick="cerrarModalConfirmacion()"
-                    style="background:#ccc;color:#222;">Cancelar</button>
-            </div>
-        </div>
-    </div>
+                    <div class="pagination-controls" id="paginationMedicos">
+                        <select class="rows-per-page">
+                            <option value="5" selected>5</option>
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                        </select>
+                        <span>filas por página</span>
+                        <div class="page-nav">
+                            <button class="prev-page" disabled>&lt; Anterior</button>
+                            <span class="page-info">Página 1 de 1</span>
+                            <button class="next-page" disabled>Siguiente &gt;</button>
+                        </div>
+                    </div>
+                </section>
 
-    <div id="mensajeSistema" class="mensaje-sistema"></div>
+                <div id="modalPaciente" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="cerrarModalPaciente()">&times;</span>
+                        <div class="modal-body">
+                            <h2>Agregar Nuevo Paciente</h2>
+                            <form id="formAgregar" autocomplete="off">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="nombre">Primer Nombre</label>
+                                        <input type="text" id="nombre" name="nombre" placeholder="Ej: Juan" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Snombre">Segundo Nombre</label>
+                                        <input type="text" id="Snombre" name="Snombre" placeholder="Ej: Carlos">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="apellido">Primer Apellido</label>
+                                        <input type="text" id="apellido" name="apellido" placeholder="Ej: Pérez"
+                                            required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Sapellido">Segundo Apellido</label>
+                                        <input type="text" id="Sapellido" name="Sapellido" placeholder="Ej: Rodríguez">
+                                    </div>
+                                    <div class="form-group full-width">
+                                        <label for="cedula">Cédula (Opcional)</label>
+                                        <input type="text" id="cedula" name="cedula"
+                                            placeholder="Ej: 0011234560001A (sin guiones)" maxlength="14">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="fechan">Fecha de Nacimiento</label>
+                                        <input type="date" name="fechan" id="fechan" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="genero">Género</label>
+                                        <select name="genero" id="genero" required>
+                                            <option value="">Seleccionar...</option>
+                                            <option value="masculino">Masculino</option>
+                                            <option value="femenino">Femenino</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="telefono">Teléfono</label>
+                                        <input type="tel" name="telefono" placeholder="Ej: 88888888" maxlength="8"
+                                            required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="tipoSangre">Tipo de Sangre</label>
+                                        <input type="text" name="tipoSangre" placeholder="Ej: O+" maxlength="3"
+                                            required>
+                                    </div>
+                                    <div class="form-group full-width">
+                                        <label for="direccion">Dirección</label>
+                                        <input type="text" name="direccion"
+                                            placeholder="Ej: Residencial Las Brisas, Casa #25" required>
+                                    </div>
+                                </div>
 
-    <script>
+                                <div class="form-group autocomplete-container" style="margin-top: 20px;">
+                                    <label for="inputCorreo">Correo del Usuario</label>
+                                    <input type="email" name="correo" id="inputCorreo"
+                                        placeholder="Buscar o ingresar correo" autocomplete="off" required>
+                                    <div id="sugerenciasCorreo" class="sugerencias-box"></div>
+                                    <div id="opcionCrearUsuario">
+                                        <button type="button" onclick="mostrarFormularioNuevoUsuario()">Crear nuevo
+                                            usuario con este correo</button>
+                                    </div>
+                                    <div id="nuevoUsuarioCampos" class="form-grid">
+                                        <div class="form-group">
+                                            <label>Nombre de Usuario</label>
+                                            <input type="text" name="nombreUsuarioNuevo"
+                                                placeholder="Nombre de Usuario">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Contraseña</label>
+                                            <input type="password" name="contrasenaNuevo" placeholder="Contraseña">
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn-primary">Agregar Paciente</button>
+                                <p id="mensaje-paciente"></p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
 
-        //-----------------------------------------------------------------------------------------------------------------------------medicos 
-        function mostrarMensajeSistema(mensaje, color = "#155724", fondo = "#d4edda") {
-            const mensajeDiv = document.createElement("div");
-            mensajeDiv.innerText = mensaje;
-            mensajeDiv.style.position = "fixed";
-            mensajeDiv.style.top = "20px";
-            mensajeDiv.style.left = "50%";
-            mensajeDiv.style.transform = "translateX(-50%)";
-            mensajeDiv.style.backgroundColor = fondo;
-            mensajeDiv.style.color = color;
-            mensajeDiv.style.padding = "12px 20px";
-            mensajeDiv.style.borderRadius = "8px";
-            mensajeDiv.style.boxShadow = "0 0 10px rgba(0,0,0,0.2)";
-            mensajeDiv.style.zIndex = 9999;
+                <div id="modalEditarPaciente" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="cerrarModalEditarPaciente()">&times;</span>
+                        <div class="modal-body">
+                            <h2>Editar Paciente</h2>
+                            <form id="formEditarPaciente">
+                                <input type="hidden" name="idPaciente">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>Primer Nombre</label>
+                                        <input type="text" name="primerNombre" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Segundo Nombre</label>
+                                        <input type="text" name="segundoNombre">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Primer Apellido</label>
+                                        <input type="text" name="primerApellido" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Segundo Apellido</label>
+                                        <input type="text" name="segundoApellido">
+                                    </div>
+                                    <div class="form-group full-width">
+                                        <label>Cédula</label>
+                                        <input type="text" name="cedula">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Fecha Nacimiento</label>
+                                        <input type="date" name="fechaNacimiento" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Sexo</label>
+                                        <select name="sexo" required>
+                                            <option value="">Seleccionar...</option>
+                                            <option value="masculino">Masculino</option>
+                                            <option value="femenino">Femenino</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Teléfono</label>
+                                        <input type="text" name="telefono" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Tipo de Sangre</label>
+                                        <input type="text" name="tipoSangre">
+                                    </div>
+                                    <div class="form-group full-width">
+                                        <label>Dirección</label>
+                                        <input type="text" name="direccion" required>
+                                    </div>
+                                </div>
+                                <p id="mensaje-editar-paciente" class="form-message"></p>
+                                <button type="submit" class="btn-primary">Guardar Cambios</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
 
-            document.body.appendChild(mensajeDiv);
+                <div id="modalPersonal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="cerrarModalPersonal()">&times;</span>
+                        <div class="modal-body">
+                            <h2>Registrar Nuevo Médico</h2>
+                            <form id="form-personal">
+                                <div class="form-group">
+                                    <label>Nombre Completo</label>
+                                    <input type="text" name="nombreCompleto" placeholder="Ej: Dr. Ana María Velez"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Cédula Profesional</label>
+                                    <input type="text" name="cedulaProfesional" placeholder="Código del MINSA o similar"
+                                        required>
+                                </div>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>Teléfono</label>
+                                        <input type="text" name="telefono" placeholder="Ej: 88888888" maxlength="8"
+                                            required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Especialización</label>
+                                        <select name="idEspecializacion" required>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Correo</label>
+                                    <input type="email" name="correo" placeholder="correo@ejemplo.com" required>
+                                </div>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>Nombre de Usuario</label>
+                                        <input type="text" name="nombreUsuario" placeholder="Para iniciar sesión"
+                                            required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Contraseña</label>
+                                        <input type="password" name="contraseña" placeholder="Mínimo 5 caracteres"
+                                            required>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn-primary">Registrar Médico</button>
+                                <p id="mensaje-registro"></p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
 
-            setTimeout(() => {
-                mensajeDiv.remove();
-            }, 3000);
-        }
+                <div id="modalEditarMedico" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="cerrarModalEditarMedico()">&times;</span>
+                        <div class="modal-body">
+                            <h2>Editar Médico</h2>
+                            <form id="formEditarMedico">
+                                <input type="hidden" name="idMedico" />
+                                <div class="form-group">
+                                    <label>Nombre Completo</label>
+                                    <input type="text" name="nombreCompleto" required />
+                                </div>
+                                <div class="form-group">
+                                    <label>Cédula Profesional</label>
+                                    <input type="text" name="cedulaProfesional" required />
+                                </div>
+                                <div class="form-group">
+                                    <label>Teléfono</label>
+                                    <input type="text" name="telefono" required />
+                                </div>
+                                <div class="form-group">
+                                    <label>Especialización</label>
+                                    <select name="idEspecializacion" required>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn-primary">Guardar Cambios</button>
+                                <p id="mensaje-editar-medico"></p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
 
+                <div id="modalConfirmacion" class="modal">
+                    <div class="modal-content" style="max-width: 400px; text-align: center;">
+                        <p id="mensajeConfirmacion" style="font-size: 1.2em; margin-bottom: 24px;"></p>
+                        <div class="confirmation-buttons">
+                            <button id="btnConfirmar" class="btn-primary">Sí, continuar</button>
+                            <button id="btnCancelar" class="btn-secondary"
+                                onclick="cerrarModalConfirmacion()">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
 
-        //cargar los medicos.. tabla medicos
-        function crearFilaMedico(med, esActivo) {
-            const fila = document.createElement("tr");
-            if (!esActivo) {
-                fila.classList.add("medicos-inactivos");
-            }
-            fila.innerHTML = `
-             <td>${med.nombreCompleto}</td>
-             <td>${med.cedulaProfesional}</td>
-             <td>${med.telefono}</td>
-             <td>${med.especializacion}</td>
-             <td>
-                 ${esActivo
-                    ? `<button onclick="editarMedico('${med.idMedico}')">Editar</button>
-                       <button onclick="darDeBajaMedico('${med.idMedico}')">Dar de baja</button>`
-                    : `<button onclick="reactivarMedico('${med.idMedico}')">Reactivar</button>`
-                }
-                  </td>
-                   `;
-            return fila;
-        }
+                <div id="mensajeSistema" class="mensaje-sistema"></div>
 
-        //funcion para cargar medicos
-        async function cargarMedicos() {
-            const mostrarActivos = document.getElementById("chkActivos").checked;
-            const mostrarInactivos = document.getElementById("chkInactivos").checked;
+                <script>
+                    //-----------------------------------------------------------------------------------------------------------------------------medicos 
+                    function mostrarMensajeSistema(mensaje, color = "#155724", fondo = "#d4edda") {
+                        const mensajeDiv = document.createElement("div");
+                        mensajeDiv.innerText = mensaje;
+                        mensajeDiv.style.position = "fixed";
+                        mensajeDiv.style.top = "20px";
+                        mensajeDiv.style.left = "50%";
+                        mensajeDiv.style.transform = "translateX(-50%)";
+                        mensajeDiv.style.backgroundColor = fondo;
+                        mensajeDiv.style.color = color;
+                        mensajeDiv.style.padding = "12px 20px";
+                        mensajeDiv.style.borderRadius = "8px";
+                        mensajeDiv.style.boxShadow = "0 0 10px rgba(0,0,0,0.2)";
+                        mensajeDiv.style.zIndex = 9999;
 
-            const tbody = document.querySelector("#tablaMedicos tbody");
-            tbody.innerHTML = "";
+                        document.body.appendChild(mensajeDiv);
 
-            // Cargar médicos activos si está seleccionado
-            if (mostrarActivos) {
-                const resActivos = await fetch('/medicos');
-                const medicosActivos = await resActivos.json();
-                medicosActivos.forEach(med => {
-                    const fila = crearFilaMedico(med, true);
-                    tbody.appendChild(fila);
-                });
-            }
-
-            // Cargar médicos dados de baja si está seleccionado
-            if (mostrarInactivos) {
-                const resInactivos = await fetch('/medicos-inactivos');
-                const medicosBaja = await resInactivos.json();
-                medicosBaja.forEach(med => {
-                    const fila = crearFilaMedico(med, false);
-                    tbody.appendChild(fila);
-                });
-            }
-        }
-        document.getElementById("chkActivos").addEventListener("change", cargarMedicos);
-        document.getElementById("chkInactivos").addEventListener("change", cargarMedicos);
-
-        document.getElementById("busquedaMedico").addEventListener("input", async function () {
-            const texto = this.value.toLowerCase();
-            const mostrarActivos = document.getElementById("chkActivos").checked;
-            const mostrarInactivos = document.getElementById("chkInactivos").checked;
-            let medicos = [];
-
-            if (mostrarActivos) {
-                const res = await fetch('/medicos');
-                const activos = await res.json();
-                medicos = medicos.concat(activos.map(m => ({ ...m, activo: true })));
-            }
-            if (mostrarInactivos) {
-                const res = await fetch('/medicos-inactivos');
-                const inactivos = await res.json();
-                medicos = medicos.concat(inactivos.map(m => ({ ...m, activo: false })));
-            }
-
-            const filtrados = medicos.filter(m =>
-                (m.nombreCompleto && m.nombreCompleto.toLowerCase().includes(texto)) ||
-                (m.cedulaProfesional && m.cedulaProfesional.toLowerCase().includes(texto))
-            );
-
-            const tbody = document.querySelector("#tablaMedicos tbody");
-            tbody.innerHTML = "";
-            filtrados.forEach(m => {
-                const fila = crearFilaMedico(m, m.activo);
-                tbody.appendChild(fila);
-            });
-        });
-
-
-        //dar de baja el medico
-        async function darDeBajaMedico(idMedico) {
-            mostrarModalConfirmacion("¿Estás seguro de dar de baja a este médico?", async () => {
-                try {
-                    const res = await fetch(`/medicos/${idMedico}`, {
-                        method: 'DELETE'
-                    });
-                    const result = await res.json();
-
-                    if (result.ok) {
-                        mostrarMensajeSistema("✅ Médico dado de baja.");
-                        cargarMedicos();
-                    } else {
-                        mostrarMensajeSistema("❌ No se pudo dar de baja.", "#721c24", "#f8d7da");
+                        setTimeout(() => {
+                            mensajeDiv.remove();
+                        }, 3000);
                     }
-                } catch (error) {
-                    console.error("❌ Error al dar de baja:", error);
-                    mostrarMensajeSistema("❌ Error del servidor.", "#721c24", "#f8d7da");
-                }
-            });
-        }
 
-        //reactivar medico
-        function reactivarMedico(idMedico) {
-            mostrarModalConfirmacion("¿Deseas reactivar a este médico?", async () => {
-                try {
-                    const res = await fetch(`/medicos/${idMedico}/reactivar`, {
-                        method: "PUT"
-                    });
-                    const result = await res.json();
 
-                    if (result.ok) {
-                        mostrarMensajeSistema("✅ Médico reactivado.");
-                        cargarMedicos();
-                    } else {
-                        mostrarMensajeSistema("❌ No se pudo reactivar.");
+                    //cargar los medicos.. tabla medicos
+                    function crearFilaMedico(med, esActivo) {
+                        const fila = document.createElement("tr");
+                        if (!esActivo) {
+                            fila.classList.add("medicos-inactivos");
+                        }
+                        fila.innerHTML = `
+  <td>${med.nombreCompleto}</td>
+  <td>${med.cedulaProfesional}</td>
+  <td>${med.telefono}</td>
+  <td>${med.especializacion}</td>
+  <td>
+      ${esActivo
+                                ? `<button class="btn-accion btn-editar" onclick="editarMedico('${med.idMedico}')">Editar</button>
+           <button class="btn-accion btn-baja" onclick="darDeBajaMedico('${med.idMedico}')">Dar de baja</button>`
+                                : `<button class="btn-accion btn-reactivar" onclick="reactivarMedico('${med.idMedico}')">Reactivar</button>`
+                            }
+  </td>
+`;
+                        return fila;
                     }
-                } catch (error) {
-                    console.error("❌ Error al reactivar médico:", error);
-                    mostrarMensajeSistema("❌ Error del servidor.");
-                }
-            });
-        }
 
 
-        //editar medico
-        async function editarMedico(idMedico) {
-            try {
-                const res = await fetch(`/medicos/editar/${idMedico}`);
-                const medico = await res.json();
+                    //dar de baja el medico
+                    async function darDeBajaMedico(idMedico) {
+                        mostrarModalConfirmacion("¿Estás seguro de dar de baja a este médico?", async () => {
+                            try {
+                                const res = await fetch(`/medicos/${idMedico}`, {
+                                    method: 'DELETE'
+                                });
+                                const result = await res.json();
 
-                const form = document.getElementById("formEditarMedico");
-                form.idMedico.value = medico.idMedico;
-                form.nombreCompleto.value = medico.nombreCompleto;
-                form.cedulaProfesional.value = medico.cedulaProfesional;
-                form.telefono.value = medico.telefono;
+                                if (result.ok) {
+                                    mostrarMensajeSistema("✅ Médico dado de baja.");
+                                    cargarMedicos();
+                                } else {
+                                    mostrarMensajeSistema("❌ No se pudo dar de baja.", "#721c24", "#f8d7da");
+                                }
+                            } catch (error) {
+                                console.error("❌ Error al dar de baja:", error);
+                                mostrarMensajeSistema("❌ Error del servidor.", "#721c24", "#f8d7da");
+                            }
+                        });
+                    }
 
-                // Cargar especializaciones en el select
-                const especializacionesRes = await fetch('/especializaciones');
-                const especializaciones = await especializacionesRes.json();
-                const select = form.idEspecializacion;
-                select.innerHTML = especializaciones.map(e =>
-                    `<option value="${e.idEspecializacion}">${e.nombre}</option>`
-                ).join('');
+                    //reactivar medico
+                    function reactivarMedico(idMedico) {
+                        mostrarModalConfirmacion("¿Deseas reactivar a este médico?", async () => {
+                            try {
+                                const res = await fetch(`/medicos/${idMedico}/reactivar`, {
+                                    method: "PUT"
+                                });
+                                const result = await res.json();
 
-                // Seleccionar la especialización actual
-                select.value = medico.idEspecializacion;
-
-                document.getElementById("modalEditarMedico").style.display = "block";
-            } catch (error) {
-                mostrarMensajeSistema("❌ Error al cargar datos del médico");
-            }
-        }
-
-        function cerrarModalEditarMedico() {
-            document.getElementById("modalEditarMedico").style.display = "none";
-        }
-
-
-
-        // Abrir/Cerrar Modal
-        function abrirModalPersonal() {
-            document.getElementById("modalPersonal").style.display = "block";
-            cargarEspecializaciones(); // Llenar select dinámicamente
-        }
-        function cerrarModalPersonal() {
-            document.getElementById("modalPersonal").style.display = "none";
-        }
-
-        async function cargarEspecializaciones() {
-            const response = await fetch('/especializaciones');
-            const data = await response.json();
-            const select = document.querySelector('[name="idEspecializacion"]');
-            select.innerHTML = data.map(e => `<option value="${e.idEspecializacion}">${e.nombre}</option>`).join('');
-        }
-
-        //-----------------------------------------------------------------------------------------------------------------------------medicos------------------------------------^
-
-        document.getElementById("cerrarSesion").addEventListener("click", function () {
-            // Si usás localStorage o sessionStorage, podés limpiarlo así:
-            localStorage.clear();
-            sessionStorage.clear();
-
-            // Redirige al login o página principal
-            window.location.href = "/Clinica.html";
-        });
-
-        //-----------------------------------------------------------------------------------------------------------------------------pacientes-----------------------------------V
-        function abrirModalPaciente() {
-            document.getElementById("modalPaciente").style.display = "block";
-            // Oculta campos de usuario y opciones al abrir
-            document.getElementById("nuevoUsuarioCampos").style.display = "none";
-            document.getElementById("opcionCrearUsuario").style.display = "none";
-            document.getElementById("sugerenciasCorreo").style.display = "none";
-        }
-
-        function cerrarModalPaciente() {
-            document.getElementById("modalPaciente").style.display = "none";
-            document.getElementById("nuevoUsuarioCampos").style.display = "none";
-            document.getElementById("opcionCrearUsuario").style.display = "none";
-            document.getElementById("sugerenciasCorreo").style.display = "none";
-            document.getElementById("formAgregar").reset();
-        }
-
-        function cerrarModalEditarPaciente() {
-            document.getElementById("modalEditarPaciente").style.display = "none";
-        }
-
-        //funcion para cargar pacientes activos e inactivos
-        async function cargarPacientes() {
-            const mostrarActivos = document.getElementById("chkPacientesActivos").checked;
-            const mostrarInactivos = document.getElementById("chkPacientesBaja").checked;
-            const tbody = document.querySelector("#tablaPacientes tbody");
-            tbody.innerHTML = "";
-
-            if (mostrarActivos) {
-                const res = await fetch('/pacientes');
-                const pacientes = await res.json();
-                pacientes.forEach(p => {
-                    const fila = crearFilaPaciente(p, true);
-                    tbody.appendChild(fila);
-                });
-            }
-
-            if (mostrarInactivos) {
-                const res = await fetch('/pacientes-inactivos/inactivos');
-                const pacientes = await res.json();
-                pacientes.forEach(p => {
-                    const fila = crearFilaPaciente(p, false);
-                    tbody.appendChild(fila);
-                });
-            }
-        }
-
-        document.getElementById("chkPacientesActivos").addEventListener("change", cargarPacientes);
-        document.getElementById("chkPacientesBaja").addEventListener("change", cargarPacientes);
+                                if (result.ok) {
+                                    mostrarMensajeSistema("✅ Médico reactivado.");
+                                    cargarMedicos();
+                                } else {
+                                    mostrarMensajeSistema("❌ No se pudo reactivar.");
+                                }
+                            } catch (error) {
+                                console.error("❌ Error al reactivar médico:", error);
+                                mostrarMensajeSistema("❌ Error del servidor.");
+                            }
+                        });
+                    }
 
 
-        function crearFilaPaciente(p, activo) {
-            const fila = document.createElement("tr");
-            if (!activo) {
-                fila.classList.add("pacientes-inactivos");
-            }
+                    //editar medico
+                    async function editarMedico(idMedico) {
+                        try {
+                            const res = await fetch(`/medicos/editar/${idMedico}`);
+                            const medico = await res.json();
 
-            // Formatear fecha de nacimiento
-            let fechaFormateada = "";
-            if (p.fechaNacimiento) {
-                const fecha = new Date(p.fechaNacimiento);
-                // Formato: dd/mm/yyyy
-                fechaFormateada = fecha.toLocaleDateString('es-ES');
-                // Si prefieres yyyy-mm-dd: 
-                // fechaFormateada = fecha.toISOString().slice(0,10);
-            }
+                            const form = document.getElementById("formEditarMedico");
+                            form.idMedico.value = medico.idMedico;
+                            form.nombreCompleto.value = medico.nombreCompleto;
+                            form.cedulaProfesional.value = medico.cedulaProfesional;
+                            form.telefono.value = medico.telefono;
 
-            fila.innerHTML = `
-      <td>${p.primerNombre}</td>
-      <td>${p.segundoNombre}</td>
-      <td>${p.primerApellido}</td>
-      <td>${p.segundoApellido}</td>
-      <td>${fechaFormateada}</td>
-      <td>${p.sexo}</td>
-      <td>${p.direccion}</td>
-      <td>${p.telefono}</td>
-      <td>${p.tipoSangre}</td>
-      <td>${p.correo || ''}</td>
-      <td>
-          ${activo
-            ? `<button onclick="editarPaciente('${p.idPaciente}')">Editar</button>
-               <button onclick="darDeBajaPaciente('${p.idPaciente}')">Dar de baja</button>`
-            : `<button onclick="reactivarPaciente('${p.idPaciente}')">Reactivar</button>`
-        }
-      </td>
-     `;
-    return fila;
-}
+                            // Cargar especializaciones en el select
+                            const especializacionesRes = await fetch('/especializaciones');
+                            const especializaciones = await especializacionesRes.json();
+                            const select = form.idEspecializacion;
+                            select.innerHTML = especializaciones.map(e =>
+                                `<option value="${e.idEspecializacion}">${e.nombre}</option>`
+                            ).join('');
 
-        //funcion para reactivar paciente
-        async function reactivarPaciente(id) {
-            mostrarModalConfirmacion("¿Deseas reactivar este paciente?", async () => {
-                try {
-                    const res = await fetch(`/pacientes/${id}/reactivar`, { method: 'PUT' });
-                    const result = await res.json();
-                    if (result.ok) {
-                        mostrarMensajeSistema("✅ Paciente reactivado.");
+                            // Seleccionar la especialización actual
+                            select.value = medico.idEspecializacion;
+
+                            document.getElementById("modalEditarMedico").style.display = "block";
+                        } catch (error) {
+                            mostrarMensajeSistema("❌ Error al cargar datos del médico");
+                        }
+                    }
+
+                    function cerrarModalEditarMedico() {
+                        document.getElementById("modalEditarMedico").style.display = "none";
+                    }
+
+
+
+                    // Abrir/Cerrar Modal
+                    function abrirModalPersonal() {
+                        document.getElementById("modalPersonal").style.display = "block";
+                        cargarEspecializaciones(); // Llenar select dinámicamente
+                    }
+                    function cerrarModalPersonal() {
+                        document.getElementById("modalPersonal").style.display = "none";
+                    }
+
+                    async function cargarEspecializaciones() {
+                        const response = await fetch('/especializaciones');
+                        const data = await response.json();
+                        const select = document.querySelector('[name="idEspecializacion"]');
+                        select.innerHTML = data.map(e => `<option value="${e.idEspecializacion}">${e.nombre}</option>`).join('');
+                    }
+
+                    //-----------------------------------------------------------------------------------------------------------------------------medicos------------------------------------^
+
+                    document.getElementById("cerrarSesion").addEventListener("click", function () {
+                        // Si usás localStorage o sessionStorage, podés limpiarlo así:
+                        localStorage.clear();
+                        sessionStorage.clear();
+
+                        // Redirige al login o página principal
+                        window.location.href = "/Clinica.html";
+                    });
+
+                    // --- LÓGICA COMBINADA DE BÚSQUEDA Y PAGINACIÓN ---
+
+                    // Variables para Pacientes
+                    let allPacientes = []; // Guarda TODOS los pacientes del servidor
+                    let filteredPacientes = []; // Guarda los pacientes filtrados por la búsqueda
+                    let currentPagePacientes = 1;
+                    let rowsPerPagePacientes = 5;
+
+                    // Variables para Médicos
+                    let allMedicos = []; // Guarda TODOS los médicos del servidor
+                    let filteredMedicos = []; // Guarda los médicos filtrados por la búsqueda
+                    let currentPageMedicos = 1;
+                    let rowsPerPageMedicos = 5;
+
+
+                    // --- FUNCIONES PARA LA TABLA DE PACIENTES ---
+
+                    // Renderiza la tabla de pacientes usando el array filtrado
+                    function renderPacientesTable() {
+                        const tbody = document.querySelector("#tablaPacientes tbody");
+                        tbody.innerHTML = "";
+
+                        const startIndex = (currentPagePacientes - 1) * rowsPerPagePacientes;
+                        const endIndex = startIndex + rowsPerPagePacientes;
+                        const paginatedPacientes = filteredPacientes.slice(startIndex, endIndex);
+
+                        paginatedPacientes.forEach(p => {
+                            const fila = crearFilaPaciente(p, p.activo);
+                            tbody.appendChild(fila);
+                        });
+
+                        updatePaginationInfo('Pacientes');
+                    }
+
+                    // Carga todos los pacientes y actualiza la tabla
+                    async function cargarPacientes() {
+                        const mostrarActivos = document.getElementById("chkPacientesActivos").checked;
+                        const mostrarInactivos = document.getElementById("chkPacientesBaja").checked;
+
+                        allPacientes = [];
+
+                        try {
+                            if (mostrarActivos) {
+                                const res = await fetch('/pacientes');
+                                const activos = await res.json();
+                                allPacientes = allPacientes.concat(activos.map(p => ({ ...p, activo: true })));
+                            }
+
+                            if (mostrarInactivos) {
+                                const res = await fetch('/pacientes-inactivos/inactivos');
+                                const inactivos = await res.json();
+                                allPacientes = allPacientes.concat(inactivos.map(p => ({ ...p, activo: false })));
+                            }
+                        } catch (error) {
+                            console.error("Error cargando pacientes:", error);
+                            mostrarMensajeSistema("Error al cargar la lista de pacientes.", "#cc0000");
+                        }
+
+                        // Al cargar, la lista filtrada es igual a la lista completa
+                        filteredPacientes = [...allPacientes];
+                        currentPagePacientes = 1;
+                        renderPacientesTable();
+                    }
+
+
+                    // --- FUNCIONES PARA LA TABLA DE MÉDICOS ---
+
+                    // Renderiza la tabla de médicos usando el array filtrado
+                    function renderMedicosTable() {
+                        const tbody = document.querySelector("#tablaMedicos tbody");
+                        tbody.innerHTML = "";
+                        const startIndex = (currentPageMedicos - 1) * rowsPerPageMedicos;
+                        const endIndex = startIndex + rowsPerPageMedicos;
+                        const paginatedMedicos = filteredMedicos.slice(startIndex, endIndex);
+                        paginatedMedicos.forEach(m => {
+                            const fila = crearFilaMedico(m, m.activo);
+                            tbody.appendChild(fila);
+                        });
+                        updatePaginationInfo('Medicos');
+                    }
+
+                    // Carga todos los médicos y actualiza la tabla
+                    async function cargarMedicos() {
+                        const mostrarActivos = document.getElementById("chkActivos").checked;
+                        const mostrarInactivos = document.getElementById("chkInactivos").checked;
+                        allMedicos = [];
+
+                        try {
+                            if (mostrarActivos) {
+                                const res = await fetch('/medicos');
+                                const activos = await res.json();
+                                allMedicos = allMedicos.concat(activos.map(m => ({ ...m, activo: true })));
+                            }
+
+                            if (mostrarInactivos) {
+                                const res = await fetch('/medicos-inactivos');
+                                const inactivos = await res.json();
+                                allMedicos = allMedicos.concat(inactivos.map(m => ({ ...m, activo: false })));
+                            }
+                        } catch (error) {
+                            console.error("Error cargando médicos:", error);
+                            mostrarMensajeSistema("Error al cargar la lista de médicos.", "#cc0000");
+                        }
+
+                        // Al cargar, la lista filtrada es igual a la lista completa
+                        filteredMedicos = [...allMedicos];
+                        currentPageMedicos = 1;
+                        renderMedicosTable();
+                    }
+
+
+                    // --- FUNCIONES Y EVENT LISTENERS GENÉRICOS (Paginación y Búsqueda) ---
+
+                    // Actualiza la info de paginación ("Página X de Y") para ambas tablas
+                    function updatePaginationInfo(type) {
+                        if (type === 'Pacientes') {
+                            const pageInfo = document.querySelector("#paginationPacientes .page-info");
+                            const prevBtn = document.querySelector("#paginationPacientes .prev-page");
+                            const nextBtn = document.querySelector("#paginationPacientes .next-page");
+                            const totalPages = Math.ceil(filteredPacientes.length / rowsPerPagePacientes);
+
+                            pageInfo.textContent = `Página ${currentPagePacientes} de ${totalPages > 0 ? totalPages : 1}`;
+                            prevBtn.disabled = currentPagePacientes === 1;
+                            nextBtn.disabled = currentPagePacientes === totalPages || totalPages === 0;
+                        } else if (type === 'Medicos') {
+                            const pageInfo = document.querySelector("#paginationMedicos .page-info");
+                            const prevBtn = document.querySelector("#paginationMedicos .prev-page");
+                            const nextBtn = document.querySelector("#paginationMedicos .next-page");
+                            const totalPages = Math.ceil(filteredMedicos.length / rowsPerPageMedicos);
+
+                            pageInfo.textContent = `Página ${currentPageMedicos} de ${totalPages > 0 ? totalPages : 1}`;
+                            prevBtn.disabled = currentPageMedicos === 1;
+                            nextBtn.disabled = currentPageMedicos === totalPages || totalPages === 0;
+                        }
+                    }
+
+                    // NUEVO: Event Listener para la barra de búsqueda de Pacientes
+                    document.getElementById("busqueda").addEventListener("input", function () {
+                        // 1. Divide la búsqueda en palabras individuales y elimina espacios vacíos
+                        const terminosDeBusqueda = this.value.toLowerCase().split(' ').filter(term => term.length > 0);
+
+                        // 2. Filtra la lista completa de pacientes
+                        filteredPacientes = allPacientes.filter(p => {
+                            // 3. Crea una cadena de texto única con todos los datos buscables del paciente
+                            const textoCompleto = [
+                                p.primerNombre,
+                                p.segundoNombre,
+                                p.primerApellido,
+                                p.segundoApellido,
+                                p.cedula,
+                                p.correo
+                            ].join(' ').toLowerCase();
+
+                            // 4. Comprueba si CADA término de búsqueda está incluido en el texto completo del paciente
+                            return terminosDeBusqueda.every(term => textoCompleto.includes(term));
+                        });
+
+                        currentPagePacientes = 1; // Vuelve a la página 1 con cada nueva búsqueda
+                        renderPacientesTable();
+                    });
+
+                    // NUEVO: Event Listener para la barra de búsqueda de Médicos
+                    document.getElementById("busquedaMedico").addEventListener("input", function () {
+                        const terminosDeBusqueda = this.value.toLowerCase().split(' ').filter(term => term.length > 0);
+
+                        filteredMedicos = allMedicos.filter(m => {
+                            const textoCompleto = [
+                                m.nombreCompleto,
+                                m.cedulaProfesional
+                            ].join(' ').toLowerCase();
+
+                            return terminosDeBusqueda.every(term => textoCompleto.includes(term));
+                        });
+
+                        currentPageMedicos = 1; // Vuelve a la página 1
+                        renderMedicosTable();
+                    });
+
+                    // Event Listeners para los controles de paginación de pacientes
+                    const paginationControlsPacientes = document.getElementById('paginationPacientes');
+                    if (paginationControlsPacientes) {
+                        paginationControlsPacientes.querySelector('.rows-per-page').addEventListener('change', (e) => {
+                            rowsPerPagePacientes = parseInt(e.target.value);
+                            currentPagePacientes = 1;
+                            renderPacientesTable();
+                        });
+
+                        paginationControlsPacientes.querySelector('.prev-page').addEventListener('click', () => {
+                            if (currentPagePacientes > 1) {
+                                currentPagePacientes--;
+                                renderPacientesTable();
+                            }
+                        });
+
+                        paginationControlsPacientes.querySelector('.next-page').addEventListener('click', () => {
+                            const totalPages = Math.ceil(filteredPacientes.length / rowsPerPagePacientes);
+                            if (currentPagePacientes < totalPages) {
+                                currentPagePacientes++;
+                                renderPacientesTable();
+                            }
+                        });
+                    }
+
+                    // Event Listeners para los controles de paginación de médicos
+                    const paginationControlsMedicos = document.getElementById('paginationMedicos');
+                    if (paginationControlsMedicos) {
+                        paginationControlsMedicos.querySelector('.rows-per-page').addEventListener('change', (e) => {
+                            rowsPerPageMedicos = parseInt(e.target.value);
+                            currentPageMedicos = 1;
+                            renderMedicosTable();
+                        });
+
+                        paginationControlsMedicos.querySelector('.prev-page').addEventListener('click', () => {
+                            if (currentPageMedicos > 1) {
+                                currentPageMedicos--;
+                                renderMedicosTable();
+                            }
+                        });
+
+                        paginationControlsMedicos.querySelector('.next-page').addEventListener('click', () => {
+                            const totalPages = Math.ceil(filteredMedicos.length / rowsPerPageMedicos);
+                            if (currentPageMedicos < totalPages) {
+                                currentPageMedicos++;
+                                renderMedicosTable();
+                            }
+                        });
+                    }
+
+                    // Event listeners para los checkboxes que recargan los datos
+                    document.getElementById("chkPacientesActivos").addEventListener("change", cargarPacientes);
+                    document.getElementById("chkPacientesBaja").addEventListener("change", cargarPacientes);
+                    document.getElementById("chkActivos").addEventListener("change", cargarMedicos);
+                    document.getElementById("chkInactivos").addEventListener("change", cargarMedicos);
+
+                    // Carga inicial de datos al entrar a la página
+                    window.addEventListener("DOMContentLoaded", () => {
                         cargarPacientes();
-                    } else {
-                        mostrarMensajeSistema("❌ Error al reactivar paciente.");
-                    }
-                } catch (error) {
-                    mostrarMensajeSistema("❌ Error del servidor.");
-                }
-            });
-        }
-
-
-
-        function verAgendaPaciente(idPaciente) {
-            // Cambia esta ruta por la que use tu backend para mostrar agenda paciente
-            window.location.href = `/agenda-paciente/${idPaciente}`;
-        }
-
-        // funcion para dar de baja paciente
-        function darDeBajaPaciente(id) {
-            mostrarModalConfirmacion("¿Estás seguro de dar de baja este paciente?", async () => {
-                try {
-                    const res = await fetch(`/pacientes/${id}/baja`, {
-                        method: 'PUT'
+                        cargarMedicos();
                     });
-                    const result = await res.json();
 
-                    if (result.ok) {
-                        mostrarMensajeSistema("✅ Paciente dado de baja.");
-                        cargarPacientes();
-                    } else {
-                        mostrarMensajeSistema("❌ No se pudo dar de baja.");
+                    // Fin del bloque de código para reemplazar
+                    //-----------------------------------------------------------------------------------------------------------------------------pacientes-----------------------------------V
+                    function abrirModalPaciente() {
+                        document.getElementById("modalPaciente").style.display = "block";
+                        // Oculta campos de usuario y opciones al abrir
+                        document.getElementById("nuevoUsuarioCampos").style.display = "none";
+                        document.getElementById("opcionCrearUsuario").style.display = "none";
+                        document.getElementById("sugerenciasCorreo").style.display = "none";
                     }
-                } catch (error) {
-                    console.error("❌ Error al dar de baja:", error);
-                    mostrarMensajeSistema("❌ Error del servidor.");
-                }
-            });
-        }
 
+                    function cerrarModalPaciente() {
+                        document.getElementById("modalPaciente").style.display = "none";
+                        document.getElementById("nuevoUsuarioCampos").style.display = "none";
+                        document.getElementById("opcionCrearUsuario").style.display = "none";
+                        document.getElementById("sugerenciasCorreo").style.display = "none";
+                        document.getElementById("formAgregar").reset();
+                    }
 
-        async function editarPaciente(id) {
-            try {
-                // Obtener datos del paciente desde backend
-                const res = await fetch(`/pacientes/${id}`);
-                if (!res.ok) throw new Error("No se encontró el paciente");
-                const paciente = await res.json();
-
-                // Obtener el formulario y llenar los campos con los datos recibidos
-                const form = document.getElementById("formEditarPaciente");
-                form.idPaciente.value = paciente.idPaciente; // campo oculto o input para ID
-
-                form.primerNombre.value = paciente.primerNombre || "";
-                form.segundoNombre.value = paciente.segundoNombre || "";
-                form.primerApellido.value = paciente.primerApellido || "";
-                form.segundoApellido.value = paciente.segundoApellido || "";
-                form.fechaNacimiento.value = paciente.fechaNacimiento ? paciente.fechaNacimiento.split('T')[0] : ""; // solo fecha si viene en ISO
-                form.sexo.value = paciente.sexo || "";
-                form.direccion.value = paciente.direccion || "";
-                form.telefono.value = paciente.telefono || "";
-                form.tipoSangre.value = paciente.tipoSangre || "";
-
-                // Mostrar el modal
-                document.getElementById("modalEditarPaciente").style.display = "block";
-            } catch (error) {
-                alert("Error cargando datos del paciente: " + error.message);
-            }
-        }
-
-        const formEditarPaciente = document.getElementById("formEditarPaciente");
-        if (formEditarPaciente) {
-            formEditarPaciente.addEventListener("submit", async function (e) {
-                e.preventDefault();
-                const id = formEditarPaciente.idPaciente.value;
-                const datos = {
-                    primerNombre: formEditarPaciente.primerNombre.value,
-                    segundoNombre: formEditarPaciente.segundoNombre.value,
-                    primerApellido: formEditarPaciente.primerApellido.value,
-                    segundoApellido: formEditarPaciente.segundoApellido.value,
-                    fechaNacimiento: formEditarPaciente.fechaNacimiento.value,
-                    sexo: formEditarPaciente.sexo.value,
-                    direccion: formEditarPaciente.direccion.value,
-                    telefono: formEditarPaciente.telefono.value,
-                    tipoSangre: formEditarPaciente.tipoSangre.value
-                };
-                try {
-                    const res = await fetch(`/pacientes/${id}`, {
-                        method: "PUT",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(datos)
-                    });
-                    const result = await res.json();
-                    if (result.ok) {
-                        mostrarMensajeSistema("✅ Paciente actualizado correctamente.");
-                        formEditarPaciente.reset();
+                    function cerrarModalEditarPaciente() {
                         document.getElementById("modalEditarPaciente").style.display = "none";
-                        cargarPacientes();
-                    } else {
-                        mostrarMensajeSistema("❌ No se pudo actualizar.");
                     }
-                } catch (error) {
-                    mostrarMensajeSistema("❌ Error del servidor.");
-                }
-            });
-        } else {
-            console.error("⚠️ No se encontró el formulario #formEditarPaciente");
-        }
-
-        document.getElementById("formAgregar").addEventListener("submit", async function (e) {
-            e.preventDefault();
-
-            const form = e.target;
-            const datos = {
-                nombre: form.nombre.value,
-                Snombre: form.Snombre.value,
-                apellido: form.apellido.value,
-                Sapellido: form.Sapellido.value,
-                fechan: form.fechan.value,
-                genero: form.genero.value,
-                direccion: form.direccion.value,
-                telefono: form.telefono.value,
-                correo: form.correo.value,
-                tipoSangre: form.tipoSangre.value
-            };
-
-            // Solo agrega los campos de usuario si el bloque está visible y los campos tienen valor
-            const nuevoUsuarioCampos = document.getElementById("nuevoUsuarioCampos");
-            if (nuevoUsuarioCampos && nuevoUsuarioCampos.style.display !== "none") {
-                const nombreUsuarioNuevo = form.nombreUsuarioNuevo ? form.nombreUsuarioNuevo.value.trim() : "";
-                const contrasenaNuevo = form.contrasenaNuevo ? form.contrasenaNuevo.value.trim() : "";
-                if (!nombreUsuarioNuevo || !contrasenaNuevo) {
-                    mostrarMensajeSistema("Debes ingresar nombre de usuario y contraseña para el nuevo usuario.");
-                    return;
-                }
-                datos.nombreUsuarioNuevo = nombreUsuarioNuevo;
-                datos.contrasenaNuevo = contrasenaNuevo;
-            }
-
-            console.log(datos); // <-- Aquí revisa si nombreUsuarioNuevo y contrasenaNuevo aparecen y tienen valor
-            const res = await fetch('/pacientes', {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(datos)
-            });
-            const result = await res.json();
-            if (result.ok) {
-                mostrarMensajeSistema("✅ Paciente agregado correctamente.");
-                form.reset();
-                document.getElementById("modalPaciente").style.display = "none";
-                document.getElementById("nuevoUsuarioCampos").style.display = "none";
-                document.getElementById("opcionCrearUsuario").style.display = "none";
-                cargarPacientes();
-            } else {
-                mostrarMensajeSistema(result.mensaje || "❌ No se pudo agregar el paciente.");
-            }
-        });
 
 
 
-        // Buscar por nombre o apellido en pacientes
-        document.getElementById("busqueda").addEventListener("input", async function () {
-            const texto = this.value.toLowerCase();
-            const mostrarActivos = document.getElementById("chkPacientesActivos").checked;
-            const mostrarInactivos = document.getElementById("chkPacientesBaja").checked;
-            let pacientes = [];
 
-            if (mostrarActivos) {
-                const res = await fetch('/pacientes');
-                const activos = await res.json();
-                pacientes = pacientes.concat(activos.map(p => ({ ...p, activo: true })));
-            }
-            if (mostrarInactivos) {
-                const res = await fetch('/pacientes-inactivos/inactivos');
-                const inactivos = await res.json();
-                pacientes = pacientes.concat(inactivos.map(p => ({ ...p, activo: false })));
-            }
+                    function crearFilaPaciente(p, activo) {
+                        const fila = document.createElement("tr");
+                        if (!activo) {
+                            fila.classList.add("pacientes-inactivos");
+                        }
 
-            const filtrados = pacientes.filter(p =>
-                (p.primerNombre && p.primerNombre.toLowerCase().includes(texto)) ||
-                (p.primerApellido && p.primerApellido.toLowerCase().includes(texto)) ||
-                (p.segundoNombre && p.segundoNombre.toLowerCase().includes(texto)) ||
-                (p.segundoApellido && p.segundoApellido.toLowerCase().includes(texto))
-            );
+                        // Formatear fecha de nacimiento
+                        let fechaFormateada = "";
+                        if (p.fechaNacimiento) {
+                            const fecha = new Date(p.fechaNacimiento);
+                            // Formato: dd/mm/yyyy
+                            fechaFormateada = fecha.toLocaleDateString('es-ES');
+                            // Si prefieres yyyy-mm-dd: 
+                            // fechaFormateada = fecha.toISOString().slice(0,10);
+                        }
 
-            const tbody = document.querySelector("#tablaPacientes tbody");
-            tbody.innerHTML = "";
-            filtrados.forEach(p => {
-                const fila = crearFilaPaciente(p, p.activo);
-                tbody.appendChild(fila);
-            });
-        });
+                        fila.innerHTML = `
+  <td>${p.primerNombre}</td>
+  <td>${p.segundoNombre}</td>
+  <td>${p.primerApellido}</td>
+  <td>${p.segundoApellido}</td>
+  <td>${formatearCedula(p.cedula)}</td>
+  <td>${fechaFormateada}</td>
+  <td>${p.sexo}</td>
+  <td>${p.direccion}</td>
+  <td>${p.telefono}</td>
+  <td>${p.tipoSangre}</td>
+  <td>${p.correo || ''}</td>
+  <td>
+      ${activo
+                                ? `<button class="btn-accion btn-editar" onclick="editarPaciente('${p.idPaciente}')">Editar</button>
+           <button class="btn-accion btn-baja" onclick="darDeBajaPaciente('${p.idPaciente}')">Dar de baja</button>`
+                                : `<button class="btn-accion btn-reactivar" onclick="reactivarPaciente('${p.idPaciente}')">Reactivar</button>`
+                            }
+  </td>
+`;
+                        return fila;
+                    }
 
-        window.addEventListener("DOMContentLoaded", () => {
-            cargarPacientes();
-            cargarMedicos();
-        });
+                    //funcion para reactivar paciente
+                    async function reactivarPaciente(id) {
+                        mostrarModalConfirmacion("¿Deseas reactivar este paciente?", async () => {
+                            try {
+                                const res = await fetch(`/pacientes/${id}/reactivar`, { method: 'PUT' });
+                                const result = await res.json();
+                                if (result.ok) {
+                                    mostrarMensajeSistema("✅ Paciente reactivado.");
+                                    cargarPacientes();
+                                } else {
+                                    mostrarMensajeSistema("❌ Error al reactivar paciente.");
+                                }
+                            } catch (error) {
+                                mostrarMensajeSistema("❌ Error del servidor.");
+                            }
+                        });
+                    }
 
-        //para mensaje de alerta
-        let confirmarCallback = null;
 
-        function mostrarModalConfirmacion(mensaje, callback) {
-            document.getElementById("mensajeConfirmacion").innerText = mensaje;
-            document.getElementById("modalConfirmacion").style.display = "block";
-            confirmarCallback = callback;
-        }
 
-        function cerrarModalConfirmacion() {
-            document.getElementById("modalConfirmacion").style.display = "none";
-            confirmarCallback = null;
-        }
+                    function verAgendaPaciente(idPaciente) {
+                        // Cambia esta ruta por la que use tu backend para mostrar agenda paciente
+                        window.location.href = `/agenda-paciente/${idPaciente}`;
+                    }
 
-        document.getElementById("btnConfirmar").addEventListener("click", () => {
-            if (typeof confirmarCallback === 'function') {
-                confirmarCallback();
-            }
-            cerrarModalConfirmacion();
-        });
-        document.getElementById("btnCancelar").addEventListener("click", cerrarModalConfirmacion);
-        //-----------------------------------------------------------------------------------------------------------------------------Correo busqueda-----------------------------------^
+                    // funcion para dar de baja paciente
+                    function darDeBajaPaciente(id) {
+                        mostrarModalConfirmacion("¿Estás seguro de dar de baja este paciente?", async () => {
+                            try {
+                                const res = await fetch(`/pacientes/${id}/baja`, {
+                                    method: 'PUT'
+                                });
+                                const result = await res.json();
 
-        const inputCorreo = document.getElementById("inputCorreo");
-        const sugerenciasDiv = document.getElementById("sugerenciasCorreo");
-        const opcionCrearUsuario = document.getElementById("opcionCrearUsuario");
-        const nuevoUsuarioCampos = document.getElementById("nuevoUsuarioCampos");
+                                if (result.ok) {
+                                    mostrarMensajeSistema("✅ Paciente dado de baja.");
+                                    cargarPacientes();
+                                } else {
+                                    mostrarMensajeSistema("❌ No se pudo dar de baja.");
+                                }
+                            } catch (error) {
+                                console.error("❌ Error al dar de baja:", error);
+                                mostrarMensajeSistema("❌ Error del servidor.");
+                            }
+                        });
+                    }
 
-        inputCorreo.addEventListener("input", async function () {
-            const texto = this.value.trim();
-            sugerenciasDiv.innerHTML = "";
-            sugerenciasDiv.style.display = "none";
-            opcionCrearUsuario.style.display = "none";
-            nuevoUsuarioCampos.style.display = "none";
 
-            if (texto.length < 2) return;
+                    async function editarPaciente(id) {
+                        try {
+                            // Obtener datos del paciente desde backend
+                            const res = await fetch(`/pacientes/${id}`);
+                            if (!res.ok) throw new Error("No se encontró el paciente");
+                            const paciente = await res.json();
 
-            try {
-                const res = await fetch(`/buscar-correo/?q=${encodeURIComponent(texto)}`);
-                const correos = await res.json();
+                            // Obtener el formulario y llenar los campos con los datos recibidos
+                            const form = document.getElementById("formEditarPaciente");
+                            form.idPaciente.value = paciente.idPaciente; // campo oculto o input para ID
 
-                if (correos.length > 0) {
-                    sugerenciasDiv.style.display = "block";
-                    correos.forEach(c => {
-                        const item = document.createElement("div");
-                        item.classList.add("sugerencia");
-                        item.textContent = c.correo;
-                        item.addEventListener("click", () => {
-                            inputCorreo.value = c.correo;
+                            form.primerNombre.value = paciente.primerNombre || "";
+                            form.segundoNombre.value = paciente.segundoNombre || "";
+                            form.primerApellido.value = paciente.primerApellido || "";
+                            form.segundoApellido.value = paciente.segundoApellido || "";
+                            form.cedula.value = paciente.cedula || "";
+                            form.fechaNacimiento.value = paciente.fechaNacimiento ? paciente.fechaNacimiento.split('T')[0] : ""; // solo fecha si viene en ISO
+                            form.sexo.value = paciente.sexo || "";
+                            form.direccion.value = paciente.direccion || "";
+                            form.telefono.value = paciente.telefono || "";
+                            form.tipoSangre.value = paciente.tipoSangre || "";
+
+                            // Mostrar el modal
+                            document.getElementById("modalEditarPaciente").style.display = "block";
+                        } catch (error) {
+                            alert("Error cargando datos del paciente: " + error.message);
+                        }
+                    }
+
+                    const formEditarPaciente = document.getElementById("formEditarPaciente");
+                    if (formEditarPaciente) {
+                        formEditarPaciente.addEventListener("submit", async function (e) {
+                            e.preventDefault();
+                            const form = e.target; // Usamos form para consistencia
+                            const mensaje = document.getElementById("mensaje-editar-paciente");
+                            const cedulaValue = form.cedula.value.trim();
+                            const telefonoValue = form.telefono.value.trim();
+                            mensaje.className = "form-message";
+
+                            // --- NUEVA VALIDACIÓN PARA LA CÉDULA ---
+                            if (cedulaValue.length > 0 && cedulaValue.length < 14) {
+                                mensaje.innerText = "El campo Cédula está incompleto. Debe tener 14 caracteres.";
+                                mensaje.className = "form-message error";
+                                return; // Detiene el envío del formulario
+                            }
+                            // --- FIN DE LA NUEVA VALIDACIÓN ---
+                            // --- ¡NUEVA VALIDACIÓN PARA EL TELÉFONO! ---
+                            if (telefonoValue.length > 0 && telefonoValue.length < 8) {
+                                mensaje.innerText = "El campo Teléfono está incompleto. Debe tener 8 dígitos.";
+                                mensaje.className = "form-message error";
+                                return; // Detiene el envío del formulario
+                            }
+                            // --- FIN DE LA NUEVA VALIDACIÓN ---
+
+                            const id = form.idPaciente.value;
+                            const datos = {
+                                primerNombre: form.primerNombre.value,
+                                segundoNombre: form.segundoNombre.value,
+                                primerApellido: form.primerApellido.value,
+                                segundoApellido: form.segundoApellido.value,
+                                cedula: cedulaValue,
+                                fechaNacimiento: form.fechaNacimiento.value,
+                                sexo: form.sexo.value,
+                                direccion: form.direccion.value,
+                                telefono: form.telefono.value,
+                                tipoSangre: form.tipoSangre.value
+                            };
+
+                            try {
+                                const res = await fetch(`/pacientes/${id}`, {
+                                    method: "PUT",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify(datos)
+                                });
+                                const result = await res.json();
+                                if (result.ok) {
+                                    mostrarMensajeSistema("✅ Paciente actualizado correctamente.");
+                                    form.reset();
+                                    document.getElementById("modalEditarPaciente").style.display = "none";
+                                    cargarPacientes();
+                                } else {
+                                    mensaje.innerText = result.mensaje || "❌ No se pudo actualizar el paciente.";
+                                    mensaje.className = "form-message error";
+                                }
+                            } catch (error) {
+                                mostrarMensajeSistema("❌ Error del servidor al actualizar.", "#cc0000");
+                            }
+                        });
+                    }
+                    // Reemplaza tu EventListener actual de formAgregar con este:
+                    document.getElementById("formAgregar").addEventListener("submit", async function (e) {
+                        e.preventDefault();
+                        const form = e.target;
+                        const mensaje = document.getElementById("mensaje-paciente");
+                        const cedulaValue = form.cedula.value.trim();
+                        const telefonoValue = form.telefono.value.trim();
+                        mensaje.className = "form-message";
+
+                        // --- NUEVA VALIDACIÓN PARA LA CÉDULA ---
+                        // Si el campo de cédula no está vacío Y tiene menos de 14 caracteres...
+                        if (cedulaValue.length > 0 && cedulaValue.length < 14) {
+                            mensaje.innerText = "El campo Cédula está incompleto. Debe tener 14 caracteres.";
+                            mensaje.className = "form-message error";
+                            return; // Detiene el envío del formulario
+                        }
+                        // --- FIN DE LA NUEVA VALIDACIÓN ---
+                        // --- ¡NUEVA VALIDACIÓN PARA EL TELÉFONO! ---
+                        if (telefonoValue.length > 0 && telefonoValue.length < 8) {
+                            mensaje.innerText = "El campo Teléfono está incompleto. Debe tener 8 dígitos.";
+                            mensaje.className = "form-message error";
+                            return; // Detiene el envío del formulario
+                        }
+                        // --- FIN DE LA NUEVA VALIDACIÓN ---
+
+                        // (El resto del código para validar la contraseña y enviar los datos sigue aquí...)
+                        const datos = {
+                            nombre: form.nombre.value,
+                            Snombre: form.Snombre.value,
+                            apellido: form.apellido.value,
+                            Sapellido: form.Sapellido.value,
+                            cedula: cedulaValue,
+                            fechan: form.fechan.value,
+                            genero: form.genero.value,
+                            direccion: form.direccion.value,
+                            telefono: form.telefono.value,
+                            correo: form.correo.value,
+                            tipoSangre: form.tipoSangre.value
+                        };
+
+                        const nuevoUsuarioCampos = document.getElementById("nuevoUsuarioCampos");
+                        if (nuevoUsuarioCampos && nuevoUsuarioCampos.style.display !== "none") {
+                            const nombreUsuarioNuevo = form.nombreUsuarioNuevo ? form.nombreUsuarioNuevo.value.trim() : "";
+                            const contrasenaNuevo = form.contrasenaNuevo ? form.contrasenaNuevo.value.trim() : "";
+                            const passwordSegura = /^(?=.*[a-zA-Z])(?=.*\d).{5,}$/;
+
+                            if (!nombreUsuarioNuevo || !contrasenaNuevo) {
+                                mensaje.innerText = "Debe ingresar nombre de usuario y contraseña para el nuevo usuario.";
+                                mensaje.className = "form-message error";
+                                return;
+                            }
+                            if (!passwordSegura.test(contrasenaNuevo)) {
+                                mensaje.innerText = "La contraseña debe tener al menos 5 caracteres y contener letras y números.";
+                                mensaje.className = "form-message error";
+                                return;
+                            }
+                            datos.nombreUsuarioNuevo = nombreUsuarioNuevo;
+                            datos.contrasenaNuevo = contrasenaNuevo;
+                        }
+
+                        try {
+                            const res = await fetch('/pacientes', {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify(datos)
+                            });
+                            const result = await res.json();
+                            if (result.ok) {
+                                mostrarMensajeSistema("✅ Paciente agregado correctamente.");
+                                form.reset();
+                                document.getElementById("modalPaciente").style.display = "none";
+                                cargarPacientes();
+                            } else {
+                                mensaje.innerText = result.mensaje || "❌ Error desconocido. Intente de nuevo.";
+                                mensaje.className = "form-message error";
+                            }
+                        } catch (error) {
+                            mensaje.innerText = "❌ Error de conexión. No se pudo contactar al servidor.";
+                            mensaje.className = "form-message error";
+                        }
+                    });
+
+                    //para mensaje de alerta
+                    let confirmarCallback = null;
+
+                    function mostrarModalConfirmacion(mensaje, callback) {
+                        document.getElementById("mensajeConfirmacion").innerText = mensaje;
+                        document.getElementById("modalConfirmacion").style.display = "block";
+                        confirmarCallback = callback;
+                    }
+
+                    function cerrarModalConfirmacion() {
+                        document.getElementById("modalConfirmacion").style.display = "none";
+                        confirmarCallback = null;
+                    }
+
+                    document.getElementById("btnConfirmar").addEventListener("click", () => {
+                        if (typeof confirmarCallback === 'function') {
+                            confirmarCallback();
+                        }
+                        cerrarModalConfirmacion();
+                    });
+                    document.getElementById("btnCancelar").addEventListener("click", cerrarModalConfirmacion);
+                    //-----------------------------------------------------------------------------------------------------------------------------Correo busqueda-----------------------------------^
+
+                    const inputCorreo = document.getElementById("inputCorreo");
+                    const sugerenciasDiv = document.getElementById("sugerenciasCorreo");
+                    const opcionCrearUsuario = document.getElementById("opcionCrearUsuario");
+                    const nuevoUsuarioCampos = document.getElementById("nuevoUsuarioCampos");
+
+                    inputCorreo.addEventListener("input", async function () {
+                        const texto = this.value.trim();
+                        sugerenciasDiv.innerHTML = "";
+                        sugerenciasDiv.style.display = "none";
+                        opcionCrearUsuario.style.display = "none";
+                        nuevoUsuarioCampos.style.display = "none";
+
+                        if (texto.length < 2) return;
+
+                        try {
+                            const res = await fetch(`/buscar-correo/?q=${encodeURIComponent(texto)}`);
+                            const correos = await res.json();
+
+                            if (correos.length > 0) {
+                                sugerenciasDiv.style.display = "block";
+                                correos.forEach(c => {
+                                    const item = document.createElement("div");
+                                    item.classList.add("sugerencia");
+                                    item.textContent = c.correo;
+                                    item.addEventListener("click", () => {
+                                        inputCorreo.value = c.correo;
+                                        sugerenciasDiv.innerHTML = "";
+                                        sugerenciasDiv.style.display = "none";
+                                        opcionCrearUsuario.style.display = "none";
+                                        nuevoUsuarioCampos.style.display = "none";
+                                    });
+                                    sugerenciasDiv.appendChild(item);
+                                });
+                            } else {
+                                sugerenciasDiv.style.display = "block";
+                                opcionCrearUsuario.style.display = "block";
+                            }
+                        } catch (err) {
+                            console.error("Error buscando correos:", err);
+                        }
+                    });
+
+                    // Si el usuario hace click fuera del input o sugerencias, ocultar sugerencias y opciones
+                    document.addEventListener("click", function (e) {
+                        // Evita ocultar si el click es dentro del autocomplete-container
+                        if (
+                            !inputCorreo.contains(e.target) &&
+                            !sugerenciasDiv.contains(e.target) &&
+                            !opcionCrearUsuario.contains(e.target) &&
+                            !nuevoUsuarioCampos.contains(e.target)
+                        ) {
                             sugerenciasDiv.innerHTML = "";
                             sugerenciasDiv.style.display = "none";
                             opcionCrearUsuario.style.display = "none";
-                            nuevoUsuarioCampos.style.display = "none";
-                        });
-                        sugerenciasDiv.appendChild(item);
+                            //nuevoUsuarioCampos.style.display = "none";
+                        }
                     });
-                } else {
-                    sugerenciasDiv.style.display = "block";
-                    opcionCrearUsuario.style.display = "block";
-                }
-            } catch (err) {
-                console.error("Error buscando correos:", err);
-            }
-        });
 
-        // Si el usuario hace click fuera del input o sugerencias, ocultar sugerencias y opciones
-        document.addEventListener("click", function (e) {
-            // Evita ocultar si el click es dentro del autocomplete-container
-            if (
-                !inputCorreo.contains(e.target) &&
-                !sugerenciasDiv.contains(e.target) &&
-                !opcionCrearUsuario.contains(e.target) &&
-                !nuevoUsuarioCampos.contains(e.target)
-            ) {
-                sugerenciasDiv.innerHTML = "";
-                sugerenciasDiv.style.display = "none";
-                opcionCrearUsuario.style.display = "none";
-                //nuevoUsuarioCampos.style.display = "none";
-            }
-        });
-
-        // Mostrar campos para crear usuario
-        function mostrarFormularioNuevoUsuario() {
-            console.log("Mostrando campos para nuevo usuario");
-            nuevoUsuarioCampos.style.display = "block";
-            opcionCrearUsuario.style.display = "none";
-        }
-
-
-
-    </script>
-
-
-
-
-
-    <script>
-        //codigo ligado para registrar personal(medico) con registrarpersonal.js
-        document.getElementById("form-personal").addEventListener("submit", async function (e) {
-            e.preventDefault();
-            const form = e.target;
-            const datos = {
-                nombreCompleto: form.nombreCompleto.value,
-                cedulaProfesional: form.cedulaProfesional.value,
-                telefono: form.telefono.value,
-                correo: form.correo.value,
-                nombreUsuario: form.nombreUsuario.value,
-                contraseña: form.contraseña.value,
-                idEspecializacion: form.idEspecializacion.value
-            };
-
-            try {
-                const res = await fetch('/registrar-personal', {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(datos)
-                });
-                const data = await res.json();
-                const mensaje = document.getElementById("mensaje-registro");
-
-                if (data.ok) {
-                    mensaje.innerText = "✅ Registrado correctamente.";
-                    mensaje.style.color = "green";
-                    form.reset();
-                } else {
-                    mensaje.innerText = data.mensaje;
-                    mensaje.style.color = "red";
-                }
-
-            } catch (err) {
-                console.error(err);
-                document.getElementById("mensaje-registro").innerText = "❌ Error del servidor.";
-            }
-
-        }
-        );
-
-        //Manejar el submit para guardar cambios cuando das edit al medico
-        const form = document.getElementById("formEditarMedico");
-        if (form) {
-            form.addEventListener("submit", async function (e) {
-                e.preventDefault();
-                const id = form.idMedico.value;
-                const datos = {
-                    nombreCompleto: form.nombreCompleto.value,
-                    cedulaProfesional: form.cedulaProfesional.value,
-                    telefono: form.telefono.value,
-                    idEspecializacion: form.idEspecializacion.value
-                };
-                try {
-                    const res = await fetch(`/medicos/editar/${id}`, {
-                        method: "PUT",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(datos)
-                    });
-                    const result = await res.json();
-                    if (result.ok) {
-                        mostrarMensajeSistema("✅ Médico actualizado correctamente.");
-                        form.reset();
-                        document.getElementById("modalEditarMedico").style.display = "none";
-                        cargarMedicos();
-                    } else {
-                        mostrarMensajeSistema("❌ No se pudo actualizar.");
+                    // Mostrar campos para crear usuario
+                    function mostrarFormularioNuevoUsuario() {
+                        console.log("Mostrando campos para nuevo usuario");
+                        nuevoUsuarioCampos.style.display = "block";
+                        opcionCrearUsuario.style.display = "none";
                     }
-                } catch (error) {
-                    console.error("❌ Error al enviar actualización:", error);
-                    mostrarMensajeSistema("❌ Error del servidor.");
-                }
-            });
-        } else {
-            console.error("⚠️ No se encontró el formulario #formEditarMedico");
-        }
+
+                    //======================================================================
+                    //--- VALIDACIONES EN TIEMPO REAL PARA TODOS LOS FORMULARIOS ---
+                    //======================================================================
+
+                    /**
+                     * Función reutilizable que aplica todas las validaciones a un formulario dado.
+                     * @param {HTMLFormElement} formElement - El elemento del formulario al que se aplicarán las validaciones.
+                     */
+                    function setupFormValidation(formElement) {
+                        if (!formElement) return;
+
+                        // --- Validación para campos de Nombre y Apellido (no permite números) ---
+                        const camposDeNombre = formElement.querySelectorAll(
+                            'input[name="nombre"], input[name="Snombre"], input[name="apellido"], input[name="Sapellido"], input[name="primerNombre"], input[name="segundoNombre"], input[name="primerApellido"], input[name="segundoApellido"], input[name="nombreCompleto"]'
+                        );
+                        camposDeNombre.forEach(input => {
+                            input.addEventListener('input', function () {
+                                this.value = this.value.replace(/\d/g, '');
+                            });
+                        });
+
+                        // --- Validación para el campo de Teléfono (solo números, max 8) ---
+                        const telefonoInput = formElement.querySelector('input[name="telefono"]');
+                        if (telefonoInput) {
+                            telefonoInput.maxLength = 8; // Aseguramos el máximo de caracteres
+                            telefonoInput.addEventListener('input', function () {
+                                this.value = this.value.replace(/\D/g, '');
+                            });
+                        }
+
+                        // --- Validación para el campo Tipo de Sangre (no permite números, max 3) ---
+                        const tipoSangreInput = formElement.querySelector('input[name="tipoSangre"]');
+                        if (tipoSangreInput) {
+                            tipoSangreInput.maxLength = 3; // Aseguramos el máximo
+                            tipoSangreInput.addEventListener('input', function () {
+                                this.value = this.value.replace(/\d/g, '');
+                            });
+                        }
+
+                        // --- Validación para el campo Cédula (opcional, max 14) ---
+                        const cedulaInput = formElement.querySelector('input[name="cedula"]');
+                        if (cedulaInput) {
+                            cedulaInput.maxLength = 14;
+                        }
+                    }
+
+                    // --- Aplicamos las validaciones a TODOS los formularios cuando la página cargue ---
+                    document.addEventListener('DOMContentLoaded', () => {
+                        setupFormValidation(document.getElementById('formAgregar'));        // Modal Agregar Paciente
+                        setupFormValidation(document.getElementById('formEditarPaciente'));  // Modal Editar Paciente
+                        setupFormValidation(document.getElementById('form-personal'));       // Modal Registrar Médico
+                        setupFormValidation(document.getElementById('formEditarMedico'));    // Modal Editar Médico
+                    });
 
 
-        // Mensaje bonito en pantalla
-        function mostrarMensajeSistema(texto) {
-            let mensaje = document.getElementById("mensajeSistema");
-            if (!mensaje) {
-                mensaje = document.createElement("div");
-                mensaje.id = "mensajeSistema";
-                mensaje.style.position = "fixed";
-                mensaje.style.top = "20px";
-                mensaje.style.left = "50%";
-                mensaje.style.transform = "translateX(-50%)";
-                mensaje.style.background = "#e0ffe0";
-                mensaje.style.padding = "10px 20px";
-                mensaje.style.borderRadius = "8px";
-                mensaje.style.boxShadow = "0 0 10px rgba(0,0,0,0.2)";
-                mensaje.style.zIndex = "9999";
-                document.body.appendChild(mensaje);
-            }
 
-            mensaje.innerText = texto;
-            mensaje.style.display = "block";
-            setTimeout(() => {
-                mensaje.style.display = "none";
-            }, 3000);
-        }
+                </script>
 
 
 
-    </script>
+
+
+                <script>
+                    //codigo ligado para registrar personal(medico) con registrarpersonal.js
+                    document.getElementById("form-personal").addEventListener("submit", async function (e) {
+                        e.preventDefault();
+                        const form = e.target;
+                        const mensaje = document.getElementById("mensaje-registro");
+                        const telefonoValue = form.telefono.value.trim();
+                        mensaje.className = "form-message";
+
+                        // --- ¡NUEVA VALIDACIÓN PARA EL TELÉFONO! ---
+                        if (telefonoValue.length > 0 && telefonoValue.length < 8) {
+                            mensaje.innerText = "El campo Teléfono está incompleto. Debe tener 8 dígitos.";
+                            mensaje.className = "form-message error";
+                            return; // Detiene el envío del formulario
+                        }
+                        // --- FIN DE LA NUEVA VALIDACIÓN ---
+
+                        const datos = {
+                            nombreCompleto: form.nombreCompleto.value,
+                            cedulaProfesional: form.cedulaProfesional.value,
+                            telefono: telefonoValue,
+                            correo: form.correo.value,
+                            nombreUsuario: form.nombreUsuario.value,
+                            contraseña: form.contraseña.value,
+                            idEspecializacion: form.idEspecializacion.value
+                        };
+
+                        try {
+                            const res = await fetch('/registrar-personal', {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify(datos)
+                            });
+                            const data = await res.json();
+                            if (data.ok) {
+                                mensaje.innerText = "✅ Registrado correctamente.";
+                                mensaje.className = "form-message success";
+                                form.reset();
+                                cargarMedicos(); // Recargamos la tabla para ver el nuevo médico
+                            } else {
+                                mensaje.innerText = data.mensaje;
+                                mensaje.className = "form-message error";
+                            }
+                        } catch (err) {
+                            console.error(err);
+                            mensaje.innerText = "❌ Error del servidor.";
+                            mensaje.className = "form-message error";
+                        }
+                    });
+
+                    //Manejar el submit para guardar cambios cuando das edit al medico
+                    const formEditarMedico = document.getElementById("formEditarMedico");
+                    if (formEditarMedico) {
+                        formEditarMedico.addEventListener("submit", async function (e) {
+                            e.preventDefault();
+                            const form = e.target;
+                            const mensaje = document.getElementById("mensaje-editar-medico");
+                            const telefonoValue = form.telefono.value.trim();
+                            mensaje.className = "form-message";
+
+                            // --- ¡NUEVA VALIDACIÓN PARA EL TELÉFONO! ---
+                            if (telefonoValue.length > 0 && telefonoValue.length < 8) {
+                                mensaje.innerText = "El campo Teléfono está incompleto. Debe tener 8 dígitos.";
+                                mensaje.className = "form-message error";
+                                return; // Detiene el envío del formulario
+                            }
+                            // --- FIN DE LA NUEVA VALIDACIÓN ---
+
+                            const id = form.idMedico.value;
+                            const datos = {
+                                nombreCompleto: form.nombreCompleto.value,
+                                cedulaProfesional: form.cedulaProfesional.value,
+                                telefono: telefonoValue,
+                                idEspecializacion: form.idEspecializacion.value
+                            };
+
+                            try {
+                                const res = await fetch(`/medicos/editar/${id}`, {
+                                    method: "PUT",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify(datos)
+                                });
+                                const result = await res.json();
+                                if (result.ok) {
+                                    mostrarMensajeSistema("✅ Médico actualizado correctamente.");
+                                    form.reset();
+                                    document.getElementById("modalEditarMedico").style.display = "none";
+                                    cargarMedicos();
+                                } else {
+                                    mensaje.innerText = result.mensaje || "❌ No se pudo actualizar el médico.";
+                                    mensaje.className = "form-message error";
+                                }
+                            } catch (error) {
+                                console.error("❌ Error al enviar actualización:", error);
+                                mostrarMensajeSistema("❌ Error del servidor.");
+                            }
+                        });
+                    }
+
+
+                    // Mensaje bonito en pantalla
+                    function mostrarMensajeSistema(texto, color = "#155724", fondo = "#d4edda") {
+                        let mensaje = document.getElementById("mensajeSistema");
+
+                        // Si el elemento no existe, lo crea (esto es por si acaso)
+                        if (!mensaje) {
+                            mensaje = document.createElement("div");
+                            mensaje.id = "mensajeSistema";
+                            document.body.appendChild(mensaje);
+                        }
+
+                        mensaje.innerText = texto;
+                        mensaje.style.backgroundColor = fondo;
+                        mensaje.style.color = color;
+
+                        // Hacemos visible el mensaje con la nueva clase
+                        mensaje.classList.add("visible");
+
+                        // Después de 3 segundos, lo ocultamos de nuevo
+                        setTimeout(() => {
+                            mensaje.classList.remove("visible");
+                        }, 3000);
+                    }
+
+                    function formatearCedula(cedula) {
+                        // Si la cédula no existe o está vacía, devuelve 'N/A'
+                        if (!cedula) {
+                            return 'N/A';
+                        }
+
+                        // Asegurarse de que es una cadena de texto
+                        const cedulaStr = String(cedula).trim();
+
+                        // La cédula de Nicaragua tiene 14 caracteres (13 números y 1 letra al final)
+                        // Si no tiene el largo correcto, la devolvemos como está para no causar errores.
+                        if (cedulaStr.length !== 14) {
+                            return cedulaStr;
+                        }
+
+                        // Partimos la cédula en el formato XXX-XXXXXX-XXXXY
+                        const part1 = cedulaStr.substring(0, 3);
+                        const part2 = cedulaStr.substring(3, 9);
+                        const part3 = cedulaStr.substring(9, 14);
+
+                        return `
+                        ${part1}-
+                        ${part2}-
+                        ${part3}`;
+                    }
+
+
+                </script>
 
 </body>
 

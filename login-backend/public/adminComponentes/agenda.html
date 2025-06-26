@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda de Citas - Clínica Cipro</title>
+    <link rel="stylesheet" href="../adminstyle.css">
+    <link rel="icon" href="../logo.jpg" type="image/jpeg">
+
+    <link rel="stylesheet" href="styleAgenda.css">
+
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+</head>
+
+<body>
+    <div class="admin-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../logo.jpg" alt="Logo Clínica Cipro" class="logo">
+                <span class="sidebar-title">Clínica Cipro</span>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="../AdminComponentes/Dashboard.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5z" />
+                            </svg>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../Admin.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path
+                                    d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
+                            </svg>
+                            <span>Personal y Pacientes</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="Agenda.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path
+                                    d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM7 12h5v5H7v-5z" />
+                            </svg>
+                            <span>Agenda</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="reportes.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path
+                                    d="M5 9.2h3V19H5V9.2zm8 0h3V19h-3V9.2zm-4 0h3V19h-3V9.2zm0-5h3v4h-3V4.2zm-4 0h3v4H5V4.2zm8 0h3v4h-3V4.2zM2 21h20V2H2v19z" />
+                            </svg>
+                            <span>Reportes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="ajustes.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path
+                                    d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z" />
+                            </svg>
+                            <span>Ajustes</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="cerrarSesion">Cerrar Sesión</button>
+            </div>
+        </aside>
+
+        <div class="main-wrapper">
+            <header>
+                <h1 class="page-title">Agenda de Citas</h1>
+            </header>
+
+            <main>
+                <div class="agenda-view">
+                    <div class="calendar-main-panel">
+                        <div class="dashboard-panel">
+                            <div id='calendar'></div>
+                        </div>
+                    </div>
+
+                    <div class="event-details-panel" id="eventDetailsPanel">
+                        <button class="close-panel-btn" id="closeDetailsPanel">&times;</button>
+                        <h3>Detalles de la Cita</h3>
+                        <div class="details-content">
+                            <div class="detail-item">
+                                <span class="detail-label">Servicio:</span>
+                                <span class="detail-value" id="detailServicio">--</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Paciente:</span>
+                                <span class="detail-value" id="detailPaciente">--</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Médico:</span>
+                                <span class="detail-value" id="detailMedico">--</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Fecha y Hora:</span>
+                                <span class="detail-value" id="detailFechaHora">--</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Estado:</span>
+                                <span class="detail-value" id="detailEstado"><span class="status-badge">--</span></span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Sala:</span>
+                                <span class="detail-value" id="detailSala">--</span>
+                            </div>
+                            <div class="detail-item full-width">
+                                <span class="detail-label">Observaciones:</span>
+                                <p class="detail-text" id="detailObservaciones">--</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-panel" style="margin-top: 32px;">
+                    <h3>Próximas Citas del Día</h3>
+                    <ul class="upcoming-appointments-list" id="lista-proximas-citas">
+                    </ul>
+                </div>
+
+                <div class="dashboard-panel" style="margin-top: 32px;">
+                    <h3>Historial de Citas</h3>
+                    <div class="filtros-citas">
+                        <input type="text" id="busquedaCita" placeholder="Buscar por paciente, médico o servicio...">
+                        <div class="filtro-fecha">
+                            <label>Desde:</label>
+                            <input type="date" id="fechaDesde">
+                        </div>
+                        <div class="filtro-fecha">
+                            <label>Hasta:</label>
+                            <input type="date" id="fechaHasta">
+                        </div>
+                        <button id="btnLimpiarFiltros" class="btn-secondary">Limpiar Filtros</button>
+                    </div>
+                    <div class="tabla-container">
+                        <table id="tablaTodasCitas">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Hora</th>
+                                    <th>Paciente</th>
+                                    <th>Médico</th>
+                                    <th>Servicio</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="pagination-controls" id="paginationCitas">
+                    <select class="rows-per-page">
+                        <option value="5" selected>5</option>
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                    </select>
+                    <span>filas por página</span>
+                    <div class="page-nav">
+                        <button class="prev-page" disabled>&lt; Anterior</button>
+                        <span class="page-info">Página 1 de 1</span>
+                        <button class="next-page" disabled>Siguiente &gt;</button>
+                    </div>
+                </div>
+        </div>
+        </main>
+    </div>
+
+    <div id="modalConfirmacionAgenda" class="modal">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <p id="mensajeConfirmacionAgenda" style="font-size: 1.2em; margin-bottom: 24px;"></p>
+            <div class="confirmation-buttons">
+                <button id="btnConfirmarAgenda" class="btn-primary">Sí, continuar</button>
+                <button id="btnCancelarAgenda" class="btn-secondary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+    <div id="modalEditarCita" class="modal">
+        <div class="modal-content" style="max-width: 550px;">
+            <span class="close" id="closeEditarCitaModal">&times;</span>
+            <div class="modal-body">
+                <h2>Editar Cita</h2>
+                <form id="formEditarCita">
+                    <input type="hidden" name="idConsulta">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Fecha</label>
+                            <input type="date" name="fecha" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Hora</label>
+                            <input type="time" name="hora" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Servicio</label>
+                            <select name="idServicio" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Médico</label>
+                            <select name="idMedico">
+                                <option value="">Sin Asignar</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Sala</label>
+                            <select name="idSala" required></select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Estado</label>
+                            <select name="estado" required>
+                                <option value="pendiente">Pendiente</option>
+                                <option value="realizada">Realizada</option>
+                                <option value="cancelada">Cancelada</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Observaciones</label>
+                            <textarea name="observaciones" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary">Guardar Cambios</button>
+                    <p id="mensaje-editar-cita" class="form-message"></p>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const calendarEl = document.getElementById('calendar');
+            const detailsPanel = document.getElementById('eventDetailsPanel');
+            const closePanelBtn = document.getElementById('closeDetailsPanel');
+
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'es',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                eventDisplay: 'list-item',
+                events: '/api/agenda/eventos-calendario',
+                eventClick: function (info) {
+                    const consultaId = info.event.id;
+                    cargarDetallesDeCita(consultaId); // Llama a la función global
+                }
+            });
+            calendar.render();
+
+            // Listener para el botón de cerrar el panel de detalles
+            closePanelBtn.addEventListener('click', () => {
+                detailsPanel.classList.remove('visible');
+            });
+
+            // Listener para el formulario de edición
+            document.getElementById('formEditarCita').addEventListener('submit', async function (e) {
+                // ... (El código de este listener no necesita cambios)
+            });
+
+            // Listener para el botón de cerrar el modal de edición
+            document.getElementById('closeEditarCitaModal').addEventListener('click', () => {
+                document.getElementById('modalEditarCita').style.display = 'none';
+            });
+            
+            // Carga inicial de datos
+            cargarProximasCitas();
+            cargarTodasLasCitas();
+        });
+
+        document.getElementById("cerrarSesion").addEventListener("click", () => {
+            window.location.href = "../Clinica.html";
+        });
+
+
+        async function cargarDetallesDeCita(id) {
+            const detailsPanel = document.getElementById('eventDetailsPanel');
+            try {
+                detailsPanel.classList.add('visible');
+                document.getElementById('detailServicio').textContent = 'Cargando...';
+                // Limpiamos los otros campos mientras carga
+                document.getElementById('detailPaciente').textContent = '--';
+                document.getElementById('detailMedico').textContent = '--';
+                document.getElementById('detailFechaHora').textContent = '--';
+                document.getElementById('detailSala').textContent = '--';
+                document.getElementById('detailObservaciones').textContent = '--';
+
+                const response = await fetch(`/api/agenda/cita/${id}`);
+                const result = await response.json();
+
+                if (result.ok) {
+                    const cita = result.data;
+                    document.getElementById('detailServicio').textContent = cita.nombreServicio;
+                    document.getElementById('detailPaciente').textContent = cita.nombrePaciente;
+                    document.getElementById('detailMedico').textContent = cita.nombreMedico;
+                    // Corregimos la fecha para usar el formato que viene de la API (DD/MM/YYYY)
+                    document.getElementById('detailFechaHora').textContent = `${cita.fecha} a las ${cita.hora}`;
+                    document.getElementById('detailSala').textContent = cita.nombreSala;
+                    document.getElementById('detailObservaciones').textContent = cita.observaciones || 'Ninguna.';
+
+                    const estadoBadge = document.getElementById('detailEstado').querySelector('.status-badge');
+                    estadoBadge.textContent = cita.estado;
+                    estadoBadge.className = `status-badge status-${cita.estado}`;
+                }
+            } catch (error) {
+                console.error("Error al cargar detalles de la cita:", error);
+            }
+        }
+
+
+
+        // Cargar próximas citas al inicio
+        async function cargarProximasCitas() {
+            const list = document.getElementById('lista-proximas-citas');
+            try {
+                const response = await fetch('/api/dashboard/proximas-citas');
+                const result = await response.json();
+
+                list.innerHTML = '';
+
+                if (!result.ok || result.data.length === 0) {
+                    list.innerHTML = '<li class="no-hover">No hay citas pendientes para hoy.</li>';
+                    return;
+                }
+
+                result.data.forEach(cita => {
+                    const li = document.createElement('li');
+                    // ¡CAMBIO CLAVE! Añadimos el evento onclick al <li>
+                    li.setAttribute('onclick', `cargarDetallesDeCita(${cita.idConsulta})`);
+
+                    li.innerHTML = `
+                <span class="appointment-time">${cita.hora}</span>
+                <span class="appointment-patient"><strong>${cita.nombrePaciente}</strong></span>
+                <span class="appointment-doctor">con ${cita.nombreMedico}</span>
+            `;
+                    list.appendChild(li);
+                });
+
+            } catch (error) {
+                console.error("Error al cargar próximas citas:", error);
+                list.innerHTML = '<li class="no-hover">Error al cargar las citas.</li>';
+            }
+        }
+        // Cargar todas las citas al inicio
+
+        // AÑADE ESTE CÓDIGO A TU SCRIPT Y REEMPLAZA LA FUNCIÓN cargarTodasLasCitas
+
+        // --- LÓGICA DE BÚSQUEDA Y PAGINACIÓN PARA TABLA DE CITAS ---
+
+        let allCitas = [];
+        let filteredCitas = [];
+        let currentPageCitas = 1;
+        let rowsPerPageCitas = 10;
+
+        async function cargarTodasLasCitas() {
+            const tbody = document.querySelector("#tablaTodasCitas tbody");
+            tbody.innerHTML = '<tr><td colspan="7">Cargando...</td></tr>';
+            try {
+                const response = await fetch('/api/agenda/todas');
+                const result = await response.json();
+                if (result.ok) {
+                    allCitas = result.data;
+                    aplicarFiltrosYCargarTabla();
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="7">No se encontraron citas.</td></tr>';
+                }
+            } catch (error) {
+                console.error("Error al cargar todas las citas:", error);
+                tbody.innerHTML = '<tr><td colspan="7">Error al cargar las citas.</td></tr>';
+            }
+        }
+
+        function aplicarFiltrosYCargarTabla() {
+            const textoBusqueda = document.getElementById('busquedaCita').value.toLowerCase();
+            const fechaDesde = document.getElementById('fechaDesde').value;
+            const fechaHasta = document.getElementById('fechaHasta').value;
+
+            filteredCitas = allCitas.filter(cita => {
+                const textoCompleto = [cita.nombrePaciente, cita.nombreMedico, cita.nombreServicio].join(' ').toLowerCase();
+                const busquedaOk = textoCompleto.includes(textoBusqueda);
+
+                // Convertimos la fecha de la cita (DD/MM/YYYY) a formato YYYY-MM-DD para comparar
+                const fechaCita = cita.fecha.split('/').reverse().join('-');
+
+                const fechaDesdeOk = !fechaDesde || fechaCita >= fechaDesde;
+                const fechaHastaOk = !fechaHasta || fechaCita <= fechaHasta;
+
+                return busquedaOk && fechaDesdeOk && fechaHastaOk;
+            });
+
+            currentPageCitas = 1; // Reseteamos a la primera página con cada filtro
+            renderTablaCitas();
+        }
+
+        function renderTablaCitas() {
+            const tbody = document.querySelector("#tablaTodasCitas tbody");
+            tbody.innerHTML = '';
+
+            const startIndex = (currentPageCitas - 1) * rowsPerPageCitas;
+            const endIndex = startIndex + rowsPerPageCitas;
+            const paginatedCitas = filteredCitas.slice(startIndex, endIndex);
+
+            if (paginatedCitas.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7">No se encontraron citas con los filtros aplicados.</td></tr>';
+            } else {
+                paginatedCitas.forEach(cita => {
+                    const fila = document.createElement('tr');
+                    fila.innerHTML = `
+                <td>${cita.fecha}</td>
+                <td>${cita.hora}</td>
+                <td>${cita.nombrePaciente}</td>
+                <td>${cita.nombreMedico}</td>
+                <td>${cita.nombreServicio}</td>
+                <td><span class="status-badge status-${cita.estado}">${cita.estado}</span></td>
+                <td>
+                    <div class="action-buttons-container">
+                        <button class="btn-accion btn-editar" title="Editar Cita" onclick="editarCita(${cita.idConsulta})">Editar</button>
+                        ${cita.estado === 'pendiente' ? `
+                            <button class="btn-accion btn-realizada" title="Marcar como Realizada" onclick="marcarCitaComo(${cita.idConsulta}, 'realizada')">✓</button>
+                            <button class="btn-accion btn-cancelar" title="Cancelar Cita" onclick="marcarCitaComo(${cita.idConsulta}, 'cancelada')">✕</button>
+                        ` : ''}
+                    </div>
+                </td>
+            `;
+                    tbody.appendChild(fila);
+                });
+            }
+            updatePaginationInfoCitas();
+        }
+
+        function updatePaginationInfoCitas() {
+            const pageInfo = document.querySelector("#paginationCitas .page-info");
+            const prevBtn = document.querySelector("#paginationCitas .prev-page");
+            const nextBtn = document.querySelector("#paginationCitas .next-page");
+            const totalPages = Math.ceil(filteredCitas.length / rowsPerPageCitas);
+
+            pageInfo.textContent = `Página ${currentPageCitas} de ${totalPages > 0 ? totalPages : 1}`;
+            prevBtn.disabled = currentPageCitas === 1;
+            nextBtn.disabled = currentPageCitas === totalPages || totalPages === 0;
+        }
+
+        // --- Event Listeners para la nueva tabla ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // ... tu código existente de FullCalendar y otras funciones ...
+
+            // Listeners para filtros
+            document.getElementById('busquedaCita').addEventListener('input', aplicarFiltrosYCargarTabla);
+            document.getElementById('fechaDesde').addEventListener('change', aplicarFiltrosYCargarTabla);
+            document.getElementById('fechaHasta').addEventListener('change', aplicarFiltrosYCargarTabla);
+
+            // Listener para limpiar filtros
+            document.getElementById('btnLimpiarFiltros').addEventListener('click', () => {
+                document.getElementById('busquedaCita').value = '';
+                document.getElementById('fechaDesde').value = '';
+                document.getElementById('fechaHasta').value = '';
+                aplicarFiltrosYCargarTabla();
+            });
+
+            // Listeners para paginación
+            const paginationCitas = document.getElementById('paginationCitas');
+            paginationCitas.querySelector('.rows-per-page').addEventListener('change', (e) => {
+                rowsPerPageCitas = parseInt(e.target.value);
+                currentPageCitas = 1;
+                renderTablaCitas();
+            });
+            paginationCitas.querySelector('.prev-page').addEventListener('click', () => {
+                if (currentPageCitas > 1) { currentPageCitas--; renderTablaCitas(); }
+            });
+            paginationCitas.querySelector('.next-page').addEventListener('click', () => {
+                const totalPages = Math.ceil(filteredCitas.length / rowsPerPageCitas);
+                if (currentPageCitas < totalPages) { currentPageCitas++; renderTablaCitas(); }
+            });
+        });
+
+        async function marcarCitaComo(idConsulta, nuevoEstado) {
+            const accion = nuevoEstado === 'realizada' ? 'marcar como realizada' : 'cancelar';
+
+            // Referencias a los elementos del nuevo modal
+            const modal = document.getElementById('modalConfirmacionAgenda');
+            const mensajeP = document.getElementById('mensajeConfirmacionAgenda');
+            const btnConfirmar = document.getElementById('btnConfirmarAgenda');
+            const btnCancelar = document.getElementById('btnCancelarAgenda');
+
+            // Muestra el mensaje en el modal y lo hace visible
+            mensajeP.textContent = `¿Estás seguro de que deseas ${accion} esta cita?`;
+            modal.style.display = 'flex';
+
+            // Creamos una promesa para esperar la decisión del usuario
+            const userConfirmed = await new Promise(resolve => {
+                btnConfirmar.onclick = () => resolve(true);
+                btnCancelar.onclick = () => resolve(false);
+                // Permite cerrar haciendo clic fuera
+                window.onclick = (e) => {
+                    if (e.target === modal) resolve(false);
+                };
+            });
+
+            modal.style.display = 'none'; // Ocultamos el modal después de la decisión
+
+            // Si el usuario no confirmó, detenemos la ejecución
+            if (!userConfirmed) {
+                return;
+            }
+
+            // Si confirmó, procedemos con la petición fetch
+            try {
+                const response = await fetch(`/api/agenda/citas/${idConsulta}/estado`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ estado: nuevoEstado })
+                });
+
+                const result = await response.json();
+
+                if (result.ok) {
+                    mostrarMensajeSistema(result.mensaje);
+                    cargarTodasLasCitas();
+                    const calendarEl = document.getElementById('calendar');
+                    const calendar = FullCalendar.Calendar.getInstance(calendarEl);
+                    if (calendar) {
+                        calendar.refetchEvents();
+                    }
+                } else {
+                    mostrarMensajeSistema(`Error: ${result.mensaje}`, '#cc0000', '#ffe6e6');
+                }
+            } catch (error) {
+                console.error('Error al actualizar el estado de la cita:', error);
+                mostrarMensajeSistema('Error de conexión al intentar actualizar la cita.', '#cc0000', '#ffe6e6');
+            }
+        }
+
+        async function editarCita(idConsulta) {
+            const modal = document.getElementById('modalEditarCita');
+            const form = document.getElementById('formEditarCita');
+            const mensaje = document.getElementById('mensaje-editar-cita');
+
+            mensaje.className = "form-message"; // Limpia mensajes de error previos
+            form.reset(); // Resetea el formulario
+
+            try {
+                // 1. Obtener los datos actuales de la cita
+                const [citaRes, medicosRes, serviciosRes, salasRes] = await Promise.all([
+                    fetch(`/api/agenda/cita/${idConsulta}`),
+                    fetch('/api/agenda/catalogos/medicos'),
+                    fetch('/api/agenda/catalogos/servicios'),
+                    fetch('/api/agenda/catalogos/salas')
+                ]);
+
+                const citaResult = await citaRes.json();
+                if (!citaResult.ok) throw new Error('No se pudo cargar la cita.');
+                const cita = citaResult.data;
+
+                // 2. Llenar los selects (Médicos, Servicios, Salas)
+                const medicos = await medicosRes.json();
+                const servicios = await serviciosRes.json();
+                const salas = await salasRes.json();
+
+                form.idServicio.innerHTML = servicios.map(s => `<option value="${s.idServicio}">${s.nombreServicio}</option>`).join('');
+                form.idMedico.innerHTML = '<option value="">Sin Asignar</option>' + medicos.map(m => `<option value="${m.idMedico}">${m.nombreCompleto}</option>`).join('');
+                form.idSala.innerHTML = salas.map(s => `<option value="${s.idSala}">${s.nombre}</option>`).join('');
+
+                // 3. Poblar el formulario con los datos de la cita
+                form.idConsulta.value = cita.idConsulta;
+                form.fecha.value = cita.fecha.split('/').reverse().join('-'); // Convierte DD/MM/YYYY a YYYY-MM-DD
+                form.hora.value = cita.hora;
+                form.idServicio.value = cita.idServicio;
+                form.idMedico.value = cita.idMedico || '';
+                form.idSala.value = cita.idSala;
+                form.estado.value = cita.estado;
+                form.observaciones.value = cita.observaciones || '';
+
+                modal.style.display = 'flex'; // Mostrar el modal
+
+            } catch (error) {
+                console.error('Error al preparar la edición:', error);
+                alert('Error al cargar los datos para editar la cita.');
+            }
+        }
+
+        // Maneja el envío del formulario de edición
+        document.getElementById('formEditarCita').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const form = e.target;
+            const idConsulta = form.idConsulta.value;
+            const mensaje = document.getElementById('mensaje-editar-cita');
+
+            const datos = {
+                fecha: form.fecha.value,
+                hora: form.hora.value,
+                idMedico: form.idMedico.value,
+                idServicio: form.idServicio.value,
+                idSala: form.idSala.value,
+                estado: form.estado.value,
+                observaciones: form.observaciones.value
+            };
+
+            try {
+                const response = await fetch(`/api/agenda/cita/${idConsulta}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(datos)
+                });
+                const result = await response.json();
+
+                if (result.ok) {
+                    mostrarMensajeSistema(result.mensaje);
+                    document.getElementById('modalEditarCita').style.display = 'none';
+                    // Recargamos todo para ver los cambios
+                    cargarTodasLasCitas();
+                    const calendarEl = document.getElementById('calendar');
+                    const calendar = FullCalendar.Calendar.getInstance(calendarEl);
+                    if (calendar) calendar.refetchEvents();
+                } else {
+                    mensaje.textContent = result.mensaje;
+                    mensaje.className = 'form-message error';
+                }
+            } catch (error) {
+                mensaje.textContent = 'Error de conexión al guardar.';
+                mensaje.className = 'form-message error';
+            }
+        });
+
+        // Cierra el modal de edición
+        document.getElementById('closeEditarCitaModal').addEventListener('click', () => {
+            document.getElementById('modalEditarCita').style.display = 'none';
+        });
+
+        function mostrarMensajeSistema(texto, color = "#155724", fondo = "#d4edda") {
+            const mensajeDiv = document.getElementById("mensajeSistema"); // Asumimos que tienes un div con este id o lo creamos
+            if (!mensajeDiv) {
+                const nuevoDiv = document.createElement("div");
+                nuevoDiv.id = "mensajeSistema";
+                document.body.appendChild(nuevoDiv);
+                // Re-intenta obtenerlo
+                return mostrarMensajeSistema(texto, color, fondo);
+            }
+
+            mensajeDiv.innerText = texto;
+            mensajeDiv.style.backgroundColor = fondo;
+            mensajeDiv.style.color = color;
+            mensajeDiv.classList.add("visible");
+            setTimeout(() => {
+                mensajeDiv.classList.remove("visible");
+            }, 3000);
+        }
+
+    </script>
+</body>
+
+</html>

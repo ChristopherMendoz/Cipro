@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes - Clínica Cipro</title>
+    <link rel="stylesheet" href="../adminstyle.css">
+    <link rel="stylesheet" href="styleAgenda.css">
+    <link rel="stylesheet" href="styleReportes.css">
+    <link rel="icon" href="../logo.jpg" type="image/jpeg">
+</head>
+
+<body>
+    <div class="admin-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../logo.jpg" alt="Logo Clínica Cipro" class="logo">
+                <span class="sidebar-title">Clínica Cipro</span>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="../AdminComponentes/Dashboard.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5z" />
+                            </svg>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../Admin.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path
+                                    d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
+                            </svg>
+                            <span>Personal y Pacientes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Agenda.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path
+                                    d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM7 12h5v5H7v-5z" />
+                            </svg>
+                            <span>Agenda</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="reportes.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path
+                                    d="M5 9.2h3V19H5V9.2zm8 0h3V19h-3V9.2zm-4 0h3V19h-3V9.2zm0-5h3v4h-3V4.2zm-4 0h3v4H5V4.2zm8 0h3v4h-3V4.2zM2 21h20V2H2v19z" />
+                            </svg>
+                            <span>Reportes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="ajustes.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path
+                                    d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z" />
+                            </svg>
+                            <span>Ajustes</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="cerrarSesion">Cerrar Sesión</button>
+            </div>
+        </aside>
+
+        <div class="main-wrapper">
+            <header>
+                <h1 class="page-title">Generador de Reportes</h1>
+            </header>
+            <main>
+                <div class="dashboard-panel">
+                    <h3>Reporte de Actividad por Médico</h3>
+                    <div class="report-filters">
+                        <select id="medicoSelect"></select>
+                        <div class="filtro-fecha">
+                            <label for="medicoFechaDesde">Desde:</label>
+                            <input type="date" id="medicoFechaDesde">
+                        </div>
+                        <div class="filtro-fecha">
+                            <label for="medicoFechaHasta">Hasta:</label>
+                            <input type="date" id="medicoFechaHasta">
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="checkDesdeSiempreMedico">
+                            <label for="checkDesdeSiempreMedico">Desde siempre</label>
+                        </div>
+                        <button id="btnGenerarReporteMedico" class="btn-primary">Generar Reporte</button>
+                    </div>
+                    <div id="contenedorReporteMedico" class="report-results"></div>
+                </div>
+
+                <div class="dashboard-panel" style="margin-top: 32px;">
+                    <h3>Historial de Citas por Paciente</h3>
+                    <div class="report-filters">
+                        <select id="pacienteSelect"></select>
+                        <div class="filtro-fecha">
+                            <label for="pacienteFechaDesde">Desde:</label>
+                            <input type="date" id="pacienteFechaDesde">
+                        </div>
+                        <div class="filtro-fecha">
+                            <label for="pacienteFechaHasta">Hasta:</label>
+                            <input type="date" id="pacienteFechaHasta">
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="checkDesdeSiemprePaciente">
+                            <label for="checkDesdeSiemprePaciente">Desde siempre</label>
+                        </div>
+                        <button id="btnGenerarReportePaciente" class="btn-primary">Generar Historial</button>
+                    </div>
+                    <div id="contenedorReportePaciente" class="report-results"></div>
+                </div>
+
+                <div id="modalAlertaReportes" class="modal">
+                    <div class="modal-content"
+                        style="max-width: 400px; text-align: center; height: auto; min-height: initial;">
+                        <p id="mensajeAlertaReportes" style="font-size: 1.2em; margin-bottom: 24px;"></p>
+                        <div class="confirmation-buttons">
+                            <button id="btnAceptarAlerta" class="btn-primary">Aceptar</button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("cerrarSesion").addEventListener("click", () => {
+            window.location.href = "../Clinica.html";
+        });
+
+        // En public/AdminComponentes/reportes.js
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- OBTENER ELEMENTOS DEL DOM ---
+            const medicoSelect = document.getElementById('medicoSelect');
+            const medicoFechaDesde = document.getElementById('medicoFechaDesde');
+            const medicoFechaHasta = document.getElementById('medicoFechaHasta');
+            const checkDesdeSiempreMedico = document.getElementById('checkDesdeSiempreMedico');
+            const btnGenerarReporteMedico = document.getElementById('btnGenerarReporteMedico');
+            const contenedorReporteMedico = document.getElementById('contenedorReporteMedico');
+
+            const pacienteSelect = document.getElementById('pacienteSelect');
+            const pacienteFechaDesde = document.getElementById('pacienteFechaDesde');
+            const pacienteFechaHasta = document.getElementById('pacienteFechaHasta');
+            const checkDesdeSiemprePaciente = document.getElementById('checkDesdeSiemprePaciente');
+            const btnGenerarReportePaciente = document.getElementById('btnGenerarReportePaciente');
+            const contenedorReportePaciente = document.getElementById('contenedorReportePaciente');
+
+            // --- FUNCIÓN PARA MOSTRAR ALERTAS PERSONALIZADAS ---
+            function mostrarAlerta(mensaje) {
+                const modal = document.getElementById('modalAlertaReportes');
+                const mensajeP = document.getElementById('mensajeAlertaReportes');
+                const btnAceptar = document.getElementById('btnAceptarAlerta');
+
+                mensajeP.textContent = mensaje;
+                modal.style.display = 'flex';
+
+                btnAceptar.onclick = () => { modal.style.display = 'none'; };
+                window.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
+            }
+
+            // --- LÓGICA DE LOS CHECKBOX "DESDE SIEMPRE" ---
+            checkDesdeSiempreMedico.addEventListener('change', function () {
+                medicoFechaDesde.disabled = this.checked;
+                medicoFechaHasta.disabled = this.checked;
+            });
+
+            checkDesdeSiemprePaciente.addEventListener('change', function () {
+                pacienteFechaDesde.disabled = this.checked;
+                pacienteFechaHasta.disabled = this.checked;
+            });
+
+            // --- EVENT LISTENERS PARA GENERAR REPORTES ---
+            btnGenerarReporteMedico.addEventListener('click', async () => {
+                let fechaDesde = medicoFechaDesde.value;
+                let fechaHasta = medicoFechaHasta.value;
+
+                if (checkDesdeSiempreMedico.checked) {
+                    fechaDesde = '2000-01-01'; // Una fecha muy antigua
+                    fechaHasta = new Date().toISOString().split('T')[0]; // Hoy
+                }
+
+                if (!medicoSelect.value || !fechaDesde || !fechaHasta) {
+                    mostrarAlerta('Por favor, seleccione un médico y un rango de fechas.');
+                    return;
+                }
+
+                generarReporte('/api/reportes/por-medico', { medicoId: medicoSelect.value, fechaDesde, fechaHasta }, contenedorReporteMedico);
+            });
+
+            btnGenerarReportePaciente.addEventListener('click', async () => {
+                let fechaDesde = pacienteFechaDesde.value;
+                let fechaHasta = pacienteFechaHasta.value;
+
+                if (checkDesdeSiemprePaciente.checked) {
+                    fechaDesde = '2000-01-01';
+                    fechaHasta = new Date().toISOString().split('T')[0];
+                }
+
+                if (!pacienteSelect.value || !fechaDesde || !fechaHasta) {
+                    mostrarAlerta('Por favor, seleccione un paciente y un rango de fechas.');
+                    return;
+                }
+
+                generarReporte('/api/reportes/por-paciente', { pacienteId: pacienteSelect.value, fechaDesde, fechaHasta }, contenedorReportePaciente);
+            });
+
+            // --- FUNCIÓN GENÉRICA PARA HACER FETCH Y RENDERIZAR REPORTE ---
+            async function generarReporte(url, body, contenedor) {
+                contenedor.innerHTML = '<p>Generando reporte...</p>';
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(body)
+                    });
+                    const result = await response.json();
+                    if (result.ok) {
+                        renderizarTabla(contenedor, result.data);
+                    } else {
+                        contenedor.innerHTML = `<p>${result.mensaje || 'Error al generar el reporte.'}</p>`;
+                    }
+                } catch (error) {
+                    contenedor.innerHTML = `<p>Error de conexión con el servidor.</p>`;
+                }
+            }
+
+            // --- FUNCIONES AUXILIARES (sin cambios) ---
+            function renderizarTabla(contenedor, datos) {
+                if (datos.length === 0) {
+                    contenedor.innerHTML = `<p>No se encontraron resultados para los filtros seleccionados.</p>`;
+                    return;
+                }
+                const headers = Object.keys(datos[0]);
+                const tabla = document.createElement('table');
+                let theadHTML = '<thead><tr>';
+                headers.forEach(h => theadHTML += `<th>${h}</th>`);
+                theadHTML += '</tr></thead>';
+                tabla.innerHTML = theadHTML;
+                let tbodyHTML = '<tbody>';
+                datos.forEach(fila => {
+                    tbodyHTML += '<tr>';
+                    headers.forEach(h => tbodyHTML += `<td>${fila[h] || ''}</td>`);
+                    tbodyHTML += '</tr>';
+                });
+                tbodyHTML += '</tbody>';
+                tabla.innerHTML += tbodyHTML;
+                contenedor.innerHTML = '';
+                contenedor.appendChild(tabla);
+            }
+
+            async function cargarSelect(selectElement, url, valueField, textField1, textField2) {
+                selectElement.innerHTML = `<option value="">Cargando...</option>`;
+                try {
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    selectElement.innerHTML = `<option value="">-- Seleccione una opción --</option>`;
+                    data.forEach(item => {
+                        const option = document.createElement('option');
+                        option.value = item[valueField];
+                        option.textContent = textField2 ? `${item[textField1]} ${item[textField2]}` : item[textField1];
+                        selectElement.appendChild(option);
+                    });
+                } catch (error) {
+                    selectElement.innerHTML = `<option value="">Error al cargar</option>`;
+                }
+            }
+
+            // --- CARGA INICIAL DE DATOS ---
+            cargarSelect(medicoSelect, '/api/reportes/catalogo-medicos', 'idMedico', 'nombreCompleto');
+            cargarSelect(pacienteSelect, '/api/reportes/catalogo-pacientes', 'idPaciente', 'primerNombre', 'primerApellido');
+        });
+    </script>
+</body>
+
+</html>

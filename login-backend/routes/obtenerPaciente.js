@@ -43,27 +43,26 @@ router.put('/:id/baja', async (req, res) => {
   }
 });
 
-// Editar paciente
+// Editar paciente (Añadimos la cédula)
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
     const {
         primerNombre, segundoNombre, primerApellido, segundoApellido,
-        fechaNacimiento, sexo, direccion, telefono, tipoSangre
+        fechaNacimiento, sexo, direccion, telefono, tipoSangre, cedula // <-- Recibimos la cédula
     } = req.body;
+    
+    // Limpiamos la cédula de guiones antes de guardarla
+    const cedulaLimpia = cedula ? cedula.replace(/-/g, '') : null;
 
     try {
         await sql.connect(config);
         await sql.query`
             UPDATE Paciente SET
-                primerNombre = ${primerNombre},
-                segundoNombre = ${segundoNombre},
-                primerApellido = ${primerApellido},
-                segundoApellido = ${segundoApellido},
-                fechaNacimiento = ${fechaNacimiento},
-                sexo = ${sexo},
-                direccion = ${direccion},
-                telefono = ${telefono},
-                tipoSangre = ${tipoSangre}
+                primerNombre = ${primerNombre}, segundoNombre = ${segundoNombre},
+                primerApellido = ${primerApellido}, segundoApellido = ${segundoApellido},
+                fechaNacimiento = ${fechaNacimiento}, sexo = ${sexo},
+                direccion = ${direccion}, telefono = ${telefono},
+                tipoSangre = ${tipoSangre}, cedula = ${cedulaLimpia} -- <-- Actualizamos la cédula
             WHERE idPaciente = ${id}
         `;
         res.json({ ok: true });
@@ -113,43 +112,58 @@ router.put('/:id/reactivar', async (req, res) => {
 
 // agregar paciente nuevo
 router.post('/', async (req, res) => {
-    const { nombre, Snombre, apellido, Sapellido, fechan, genero, direccion, telefono, tipoSangre, correo, nombreUsuarioNuevo, contrasenaNuevo } = req.body;
+    const { nombre, Snombre, apellido, Sapellido, fechan, genero, direccion, telefono, tipoSangre, correo, nombreUsuarioNuevo, contrasenaNuevo, cedula } = req.body;
+    const cedulaLimpia = cedula ? cedula.replace(/-/g, '') : null;
+
     try {
         await sql.connect(config);
 
-        // 1. Buscar si el correo ya existe en UsuarioSistema
-        let usuario = await sql.query`SELECT idUsuario FROM UsuarioSistema WHERE correo = ${correo}`;
         let idUsuario;
-        if (usuario.recordset.length > 0) {
-            idUsuario = usuario.recordset[0].idUsuario;
+        const usuarioExistente = await sql.query`SELECT idUsuario FROM UsuarioSistema WHERE correo = ${correo}`;
+
+        if (usuarioExistente.recordset.length > 0) {
+            const idUsuarioExistente = usuarioExistente.recordset[0].idUsuario;
+            const pacienteExistente = await sql.query`SELECT idPaciente FROM Paciente WHERE idUsuario = ${idUsuarioExistente}`;
+            if (pacienteExistente.recordset.length > 0) {
+                return res.status(409).json({ ok: false, mensaje: 'El correo electrónico ya está registrado para otro paciente.' });
+            }
+            idUsuario = idUsuarioExistente;
         } else {
-            // Validar que los campos requeridos no sean nulos ni vacíos
             if (!nombreUsuarioNuevo || !contrasenaNuevo) {
                 return res.status(400).json({ ok: false, mensaje: "Faltan datos para crear el usuario (nombre de usuario y/o contraseña)." });
             }
-            idUsuario = await generarIdUsuarioPaciente(); // Generar un nuevo idUsuario
-            // ENCRIPTAR LA CONTRASEÑA
+
+            // ----> ¡NUEVA VALIDACIÓN AQUÍ! <----
+            // Verificamos si el nombre de usuario ya está en uso antes de intentar insertar.
+            const nombreUsuarioExistente = await sql.query`SELECT idUsuario FROM UsuarioSistema WHERE nombreUsuario = ${nombreUsuarioNuevo}`;
+            if (nombreUsuarioExistente.recordset.length > 0) {
+                // Si ya existe, enviamos un error específico.
+                return res.status(409).json({ ok: false, mensaje: 'Ese nombre de usuario ya está en uso. Por favor, elija otro.' });
+            }
+            // ----> FIN DE LA NUEVA VALIDACIÓN <----
+
+            idUsuario = await generarIdUsuarioPaciente();
             const hash = await bcrypt.hash(contrasenaNuevo, 10);
 
-            // 2. Insertar el nuevo usuario en UsuarioSistema
             await sql.query`
-                INSERT INTO UsuarioSistema (idUsuario, correo, nombreUsuario, contraseña, idRol)
-                VALUES (${idUsuario}, ${correo}, ${nombreUsuarioNuevo}, ${hash}, 1)
+                INSERT INTO UsuarioSistema (idUsuario, correo, nombreUsuario, contraseña, idRol, estado)
+                VALUES (${idUsuario}, ${correo}, ${nombreUsuarioNuevo}, ${hash}, 1, 1)
             `;
         }
 
-        // 3. Crear el paciente con el idUsuario
         await sql.query`
-            INSERT INTO Paciente (primerNombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, sexo, direccion, telefono, tipoSangre, idUsuario)
-            VALUES (${nombre}, ${Snombre}, ${apellido}, ${Sapellido}, ${fechan}, ${genero}, ${direccion}, ${telefono}, ${tipoSangre}, ${idUsuario})
+            INSERT INTO Paciente (primerNombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, sexo, direccion, telefono, tipoSangre, idUsuario, cedula)
+            VALUES (${nombre}, ${Snombre}, ${apellido}, ${Sapellido}, ${fechan}, ${genero}, ${direccion}, ${telefono}, ${tipoSangre}, ${idUsuario}, ${cedulaLimpia}) 
         `;
 
-        res.json({ ok: true });
+        res.status(201).json({ ok: true, mensaje: "Paciente agregado correctamente." });
+
     } catch (err) {
         console.error("❌ Error al agregar paciente:", err);
-        res.status(500).json({ ok: false, mensaje: "Error al agregar paciente" });
+        res.status(500).json({ ok: false, mensaje: "Error interno del servidor al agregar el paciente." });
     }
 });
+
 
 // Función para generar un nuevo idUsuario para pacientes
 // Este idUsuario tendrá el formato 'CLI001', 'CLI002', etc.

@@ -1,0 +1,72 @@
+/* En public/AdminComponentes/reportes.css */
+.report-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 16px;
+    background-color: var(--background-light);
+    border-radius: 8px;
+    margin-bottom: 24px;
+    align-items: center;
+}
+
+.report-filters select,
+.report-filters input[type="text"],
+.report-filters input[type="date"] {
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    min-width: 200px;
+}
+
+.report-filters select {
+    flex-grow: 1;
+}
+
+.report-results {
+    margin-top: 16px;
+}
+
+#modalAlertaReportes .modal-content {
+    align-self: center; /* Ayuda a que no se estire verticalmente */
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.checkbox-group label {
+    font-size: 0.9em;
+    color: var(--text-dark);
+}
+
+.checkbox-group input {
+    appearance: none; /* Oculta el checkbox por defecto */
+    background-color: var(--background-light);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    position: relative;
+    outline: none;
+}
+
+.checkbox-group input:checked::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 5px;
+    width: 5px;
+    height: 9px;
+    border: solid var(--primary-color);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.checkbox-group input:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 1px;
+}

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const sql = require('mssql');
-const config = require('../config'); // Asume que tienes un archivo config.js con la configuración de la BD
+const config = require('../../config'); // Asume que tienes un archivo config.js con la configuración de la BD
 
 router.get('/:idUsuario', async (req, res) => {
     const { idUsuario } = req.params;
