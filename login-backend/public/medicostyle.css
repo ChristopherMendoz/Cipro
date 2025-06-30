@@ -114,7 +114,6 @@ body {
 }
 
 .sidebar-footer {
-    margin-top: auto; /* Empuja este contenedor al fondo */
     padding-top: 20px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -136,6 +135,12 @@ body {
     transition: all 0.3s ease;
 }
 
+#cerrarSesion svg {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
 #cerrarSesion:hover {
     background-color: var(--danger-color);
     border-color: var(--danger-color);
@@ -146,12 +151,20 @@ body {
 
 
 /* --- 4. CONTENIDO PRINCIPAL --- */
-.contenido {
-    margin-left: 280px; /* Ancho del sidebar */
+.main-content {
+    margin-left: 280px; /* Mismo ancho que el sidebar */
     width: calc(100% - 280px);
+    position: relative; /* Clave para contener a los dropdowns */
+    overflow: auto; /* Permite el scroll interno sin afectar al sidebar */
+    height: 100vh;
+}
+
+/* El contenido ahora solo se preocupa de su padding y animación */
+.contenido {
     padding: 40px;
     box-sizing: border-box;
     animation: fadeInUp 0.5s ease-out;
+
 }
 
 @keyframes fadeInUp {
@@ -776,4 +789,50 @@ body {
 .imagen-item:hover .btn-eliminar-img {
     opacity: 1;
     transform: scale(1);
+}
+
+/* --- 13. ESTILOS PARA CONTROLES DE PAGINACIÓN --- */
+
+.pagination-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    margin-top: 10px;
+    border-top: 1px solid var(--border-color);
+    font-size: 14px;
+    color: var(--text-normal);
+}
+
+.pagination-controls select {
+    padding: 6px 8px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    margin-right: 8px;
+}
+
+.pagination-controls .page-nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.pagination-controls button {
+    background-color: #fff;
+    border: 1px solid var(--border-color);
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.pagination-controls button:hover:not(:disabled) {
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+}
+
+.pagination-controls button:disabled {
+    background-color: #f8f9fa;
+    color: #c0d0e0;
+    cursor: not-allowed;
 }

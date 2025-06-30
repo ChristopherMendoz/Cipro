@@ -3,7 +3,7 @@ const sql = require('mssql');
 const config = {
   user: 'sa',
   password: '123456',
-  server: 'DESKTOP-GMBSO0H',
+  server: 'ACER_Core_i7',
   database: 'Cipro',
   options: {
     trustServerCertificate: true,

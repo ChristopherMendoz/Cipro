@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Médico</title>
     <link rel="stylesheet" href="medicostyle.css" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js" defer></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js'></script>
 </head>
 
@@ -35,142 +38,160 @@
                 </button>
             </div>
         </aside>
-        <section id="inicioPanelMedico" class="contenido">
-            <img src="logosinfondo.png" alt="Logo de Clínica Cipro" class="logo-panel-inicio">
-            <p>Bienvenido al Panel de Médico. Seleccione una opción del menú.</p>
-        </section>
-        <section class="contenido hidden" id="seccionDatosPersonalesMedico">
-            <h2>Bienvenido</h2>
-            <p>Seleccione una opción del menú lateral para comenzar.</p>
-        </section>
+        <main class="main-content">
+            <section id="inicioPanelMedico" class="contenido">
+                <img src="logosinfondo.png" alt="Logo de Clínica Cipro" class="logo-panel-inicio">
+                <p>Bienvenido al Panel de Médico. Seleccione una opción del menú.</p>
+            </section>
+            <section class="contenido hidden" id="seccionDatosPersonalesMedico">
+                <h2>Bienvenido</h2>
+                <p>Seleccione una opción del menú lateral para comenzar.</p>
+            </section>
 
-        <section id="seccionAgenda" class="contenido hidden">
-            <h2>Agenda</h2>
-            <div class="agenda-layout">
-                <div class="calendario-container">
-                    <div id="calendario-agenda"></div>
+            <section id="seccionAgenda" class="contenido hidden">
+                <h2>Agenda</h2>
+                <div class="agenda-layout">
+                    <div class="calendario-container">
+                        <div id="calendario-agenda"></div>
+                    </div>
+
+                    <div id="panelDetallesCita" class="panel-detalles">
+                        <button id="cerrarPanelDetalles" class="cerrar-panel-btn">&times;</button>
+                        <h3>Detalles de la Cita</h3>
+                        <div class="detalles-contenido">
+                            <div class="detalle-item">
+                                <label>Servicio:</label>
+                                <span id="detalleServicio">--</span>
+                            </div>
+                            <div class="detalle-item">
+                                <label>Paciente:</label>
+                                <span id="detallePaciente">--</span>
+                            </div>
+                            <div class="detalle-item">
+                                <label>Fecha y Hora:</label>
+                                <span id="detalleFechaHora">--</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <section id="seccionDatosConsulta" class="contenido hidden">
+
+                <div id="contenedorFormularioConsulta">
+                    <h2>Agregar Nueva Consulta</h2>
+                    <form id="formAgregarConsulta">
+                        <div class="form-group">
+                            <label for="fecha">Fecha:</label>
+                            <input type="date" id="fecha" name="fecha" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="hora">Hora:</label>
+                            <input type="time" id="hora" name="hora" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="selectServicio">Tipo de Servicio:</label>
+                            <select id="selectServicio" name="idServicio" required>
+                                <option value="">Cargando…</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="selectPaciente">Paciente:</label>
+                            <select id="selectPaciente" name="idPaciente" required>
+                                <option value="">Cargando…</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="selectMedico">Médico:</label>
+                            <select id="selectMedico" name="idMedico" required>
+                                <option value="">Cargando…</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="selectSala">Sala:</label>
+                            <select id="selectSala" name="idSala" required>
+                                <option value="">Cargando…</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="selectRecepcionista">Recepcionista:</label>
+                            <select id="selectRecepcionista" name="idRecepcionista" required>
+                                <option value="">Cargando…</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="estado">Estado:</label>
+                            <select id="estado" name="estado" required>
+                                <option value="pendiente">Pendiente</option>
+                                <option value="realizada">Realizada</option>
+                                <option value="cancelada">Cancelada</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="observaciones">Observaciones:</label>
+                            <textarea id="observaciones" name="observaciones"></textarea>
+                        </div>
+                        <div class="form-group full-width">
+                            <button type="submit">Agregar Consulta</button>
+                        </div>
+                    </form>
                 </div>
 
-                <div id="panelDetallesCita" class="panel-detalles">
-                    <button id="cerrarPanelDetalles" class="cerrar-panel-btn">&times;</button>
-                    <h3>Detalles de la Cita</h3>
-                    <div class="detalles-contenido">
-                        <div class="detalle-item">
-                            <label>Servicio:</label>
-                            <span id="detalleServicio">--</span>
-                        </div>
-                        <div class="detalle-item">
-                            <label>Paciente:</label>
-                            <span id="detallePaciente">--</span>
-                        </div>
-                        <div class="detalle-item">
-                            <label>Fecha y Hora:</label>
-                            <span id="detalleFechaHora">--</span>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <section id="seccionDatosConsulta" class="contenido hidden">
-
-            <div id="contenedorFormularioConsulta">
-                <h2>Agregar Nueva Consulta</h2>
-                <form id="formAgregarConsulta">
-                    <div class="form-group">
-                        <label for="fecha">Fecha:</label>
-                        <input type="date" id="fecha" name="fecha" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="hora">Hora:</label>
-                        <input type="time" id="hora" name="hora" required>
-                    </div>
-                    <div class="form-group full-width">
-                        <label for="selectServicio">Tipo de Servicio:</label>
-                        <select id="selectServicio" name="idServicio" required>
-                            <option value="">Cargando…</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="selectPaciente">Paciente:</label>
-                        <select id="selectPaciente" name="idPaciente" required>
-                            <option value="">Cargando…</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="selectMedico">Médico:</label>
-                        <select id="selectMedico" name="idMedico" required>
-                            <option value="">Cargando…</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="selectSala">Sala:</label>
-                        <select id="selectSala" name="idSala" required>
-                            <option value="">Cargando…</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="selectRecepcionista">Recepcionista:</label>
-                        <select id="selectRecepcionista" name="idRecepcionista" required>
-                            <option value="">Cargando…</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="estado">Estado:</label>
-                        <select id="estado" name="estado" required>
+                <div id="contenedorListaConsultas">
+                    <h2>Lista de Consultas</h2>
+                    <div class="filtros">
+                        <label for="filtroEstado">Filtrar por estado:</label>
+                        <select id="filtroEstado">
+                            <option value="">Todos</option>
                             <option value="pendiente">Pendiente</option>
                             <option value="realizada">Realizada</option>
                             <option value="cancelada">Cancelada</option>
                         </select>
+                        <label for="busquedaGeneral">Buscar:</label>
+                        <input type="text" id="busquedaGeneral" placeholder="Nombre de paciente">
                     </div>
-                    <div class="form-group full-width">
-                        <label for="observaciones">Observaciones:</label>
-                        <textarea id="observaciones" name="observaciones"></textarea>
-                    </div>
-                    <div class="form-group full-width">
-                        <button type="submit">Agregar Consulta</button>
-                    </div>
-                </form>
-            </div>
+                    <table id="tablaConsultas" border="1" cellpadding="8" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Fecha</th>
+                                <th>Hora</th>
+                                <th>Estado</th>
+                                <th>Paciente</th>
+                                <th>Cédula</th>
+                                <th>Médico</th>
+                                <th>Sala</th>
+                                <th>Recepcionista</th>
+                                <th>Observaciones</th>
+                                <th>Tipo de Servicio</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    ...
+                    </table>
 
-            <div id="contenedorListaConsultas">
-                <h2>Lista de Consultas</h2>
-                <div class="filtros">
-                    <label for="filtroEstado">Filtrar por estado:</label>
-                    <select id="filtroEstado">
-                        <option value="">Todos</option>
-                        <option value="pendiente">Pendiente</option>
-                        <option value="realizada">Realizada</option>
-                        <option value="cancelada">Cancelada</option>
-                    </select>
-                    <label for="busquedaServicio">Buscar por servicio:</label>
-                    <input type="text" id="busquedaServicio" placeholder="Nombre del servicio...">
+                    <div class="pagination-controls">
+                        <select id="rowsPerPage">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                        </select>
+                        <span>filas por página</span>
+                        <div class="page-nav">
+                            <button id="prevPage" disabled>&lt; Anterior</button>
+                            <span id="pageInfo">Página 1 de 1</span>
+                            <button id="nextPage" disabled>Siguiente &gt;</button>
+                        </div>
+                    </div>
                 </div>
-                <table id="tablaConsultas" border="1" cellpadding="8" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Fecha</th>
-                            <th>Hora</th>
-                            <th>Estado</th>
-                            <th>Paciente</th>
-                            <th>Cédula</th>
-                            <th>Médico</th>
-                            <th>Sala</th>
-                            <th>Recepcionista</th>
-                            <th>Observaciones</th>
-                            <th>Tipo de Servicio</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
+    </div>
 
-        </section>
-        <!-- Sección de Cargar Resultados (no se ha tocado) -->
+    </section>
+    </main>
 
     </div>
 
@@ -212,6 +233,12 @@
 
         let consultasGlobales = [];
         let archivosParaSubir = [];
+        let choicesPaciente = null; // <-- NUEVA VARIABLE
+        let choicesMedico = null;   // <-- NUEVA VARIABLE
+
+        let filteredConsultas = [];
+        let currentPage = 1;
+        let rowsPerPage = 5;
 
         // --- Referencias a elementos del panel ---
         const nombreUsuarioEl = document.getElementById("nombreUsuario");
@@ -312,7 +339,7 @@
 
         document.getElementById('formAgregarConsulta').addEventListener('submit', async (e) => { /* ... tu lógica de submit de consulta ... */ });
         document.querySelector('#filtroEstado').addEventListener('change', aplicarFiltros);
-        document.querySelector('#busquedaServicio').addEventListener('input', aplicarFiltros);
+        document.querySelector('#busquedaGeneral').addEventListener('input', aplicarFiltros);
 
         async function abrirModalGestionImagenes(idConsulta, nombrePaciente) {
             const modal = document.getElementById('modalSubirImagenes');
@@ -498,69 +525,106 @@
 
         function aplicarFiltros() {
             const filtroEstado = document.querySelector('#filtroEstado').value.toLowerCase();
-            const busquedaServicio = document.querySelector('#busquedaServicio').value.toLowerCase();
+            // Usamos el nuevo ID del campo de búsqueda
+            const busquedaGeneral = document.querySelector('#busquedaGeneral').value.toLowerCase();
+
+            filteredConsultas = consultasGlobales.filter(c => {
+                const estadoMatch = filtroEstado === '' || (c.estado?.toLowerCase() || '') === filtroEstado;
+
+                // La nueva lógica de búsqueda general
+                const busquedaMatch = busquedaGeneral === '' ||
+                    c.nombrePaciente?.toLowerCase().includes(busquedaGeneral) ||
+                    c.nombreMedico?.toLowerCase().includes(busquedaGeneral);
+
+                return estadoMatch && busquedaMatch;
+            });
+
+            currentPage = 1; // Siempre regresa a la primera página después de un filtro
+            renderTablePage(); // Llama a la nueva función para dibujar la tabla
+        }
+
+        /**
+ * Dibuja la página actual de la tabla.
+ */
+        function renderTablePage() {
             const tbody = document.querySelector('#tablaConsultas tbody');
             tbody.innerHTML = '';
 
-            if (!Array.isArray(consultasGlobales)) {
-                console.error("consultasGlobales no es un array");
-                return;
+            const startIndex = (currentPage - 1) * rowsPerPage;
+            const endIndex = startIndex + rowsPerPage;
+            const paginatedItems = filteredConsultas.slice(startIndex, endIndex);
+
+            if (paginatedItems.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="12" style="text-align: center; padding: 20px;">No se encontraron consultas.</td></tr>`;
+            } else {
+                paginatedItems.forEach(c => {
+                    const fila = document.createElement('tr');
+                    const fechaFormateada = c.fecha ? c.fecha.split('T')[0] : 'Sin fecha';
+                    let estadoClass = `estado-${c.estado?.toLowerCase() || 'default'}`;
+
+                    // El contenido de la fila sigue siendo el mismo
+                    fila.innerHTML = `
+                <td>${c.idConsulta || ''}</td>
+                <td>${fechaFormateada}</td>
+                <td>${c.hora || ''}</td>
+                <td><span class="estado-badge ${estadoClass}">${c.estado || ''}</span></td>
+                <td>${c.nombrePaciente || ''}</td>
+                <td>${c.cedula || 'N/A'}</td>
+                <td>${c.nombreMedico || ''}</td>
+                <td>${c.nombreSala || ''}</td>
+                <td>${c.nombreRecepcionista || ''}</td>
+                <td>${c.observaciones || ''}</td>
+                <td>${c.nombreServicio || ''}</td>
+                <td>
+                    <button class="btn-subir-img" data-id-consulta="${c.idConsulta}" data-paciente="${c.nombrePaciente}">
+                        Subir Imágenes
+                    </button>
+                </td>`;
+                    tbody.appendChild(fila);
+                });
             }
-
-            const filtradas = consultasGlobales.filter(c => {
-                const estadoMatch = filtroEstado === '' || (c.estado?.toLowerCase() || '') === filtroEstado;
-                const servicioMatch = c.nombreServicio?.toLowerCase().includes(busquedaServicio);
-                return estadoMatch && servicioMatch;
-            });
-
-            if (filtradas.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="12" style="text-align: center; padding: 20px;">No se encontraron consultas que coincidan con los filtros.</td></tr>`;
-                return;
-            }
-
-            filtradas.forEach(c => {
-                const fila = document.createElement('tr');
-                const fechaFormateada = c.fecha ? c.fecha.split('T')[0] : 'Sin fecha';
-
-                // Lógica para asignar clase de estado
-                let estadoClass = '';
-                switch (c.estado?.toLowerCase()) {
-                    case 'realizada':
-                        estadoClass = 'estado-realizada';
-                        break;
-                    case 'pendiente':
-                        estadoClass = 'estado-pendiente';
-                        break;
-                    case 'cancelada':
-                        estadoClass = 'estado-cancelada';
-                        break;
-                }
-
-                fila.innerHTML = `
-                    <td>${c.idConsulta || ''}</td>
-                    <td>${fechaFormateada}</td>
-                    <td>${c.hora || ''}</td>
-                    <td><span class="estado-badge ${estadoClass}">${c.estado || ''}</span></td>
-                    <td>${c.nombrePaciente || ''}</td>
-                    <td>${c.cedula || 'N/A'}</td>
-                    <td>${c.nombreMedico || ''}</td>
-                    <td>${c.nombreSala || ''}</td>
-                    <td>${c.nombreRecepcionista || ''}</td>
-                    <td>${c.observaciones || ''}</td>
-                    <td>${c.nombreServicio || ''}</td>
-                    <td>
-                        <button class="btn-subir-img" data-id-consulta="${c.idConsulta}" data-paciente="${c.nombrePaciente}">
-                            Subir Imágenes
-                        </button>
-                    </td>
-                    `;
-                tbody.appendChild(fila);
-            });
+            updatePaginationControls(); // Actualiza los botones "Anterior/Siguiente"
         }
 
+        /**
+         * Actualiza los controles de paginación (botones y texto).
+         */
+        function updatePaginationControls() {
+            const pageInfo = document.getElementById('pageInfo');
+            const prevPageBtn = document.getElementById('prevPage');
+            const nextPageBtn = document.getElementById('nextPage');
+
+            const totalPages = Math.ceil(filteredConsultas.length / rowsPerPage);
+
+            pageInfo.textContent = `Página ${currentPage} de ${totalPages > 0 ? totalPages : 1}`;
+            prevPageBtn.disabled = currentPage === 1;
+            nextPageBtn.disabled = currentPage === totalPages || totalPages === 0;
+        }
+
+        // Listeners para los nuevos controles de paginación
+        document.getElementById('prevPage').addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderTablePage();
+            }
+        });
+
+        document.getElementById('nextPage').addEventListener('click', () => {
+            const totalPages = Math.ceil(filteredConsultas.length / rowsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderTablePage();
+            }
+        });
+
+        document.getElementById('rowsPerPage').addEventListener('change', (e) => {
+            rowsPerPage = parseInt(e.target.value, 10);
+            currentPage = 1; // Resetea a la primera página
+            renderTablePage();
+        });
 
         document.querySelector('#filtroEstado').addEventListener('change', aplicarFiltros);
-        document.querySelector('#busquedaServicio').addEventListener('input', aplicarFiltros);
+        document.querySelector('#busquedaGeneral').addEventListener('input', aplicarFiltros);
 
         // --- CÓDIGO DE FORMULARIO (CON CORRECCIONES) ---
 
@@ -581,6 +645,24 @@
                 llenarSelect(document.getElementById('selectSala'), await salasRes.json(), 'idSala', 'nombre');
                 llenarSelect(document.getElementById('selectRecepcionista'), await recepcionistasRes.json(), 'idRecepcionista', 'nombreCompleto');
                 llenarSelect(document.getElementById('selectServicio'), await serviciosRes.json(), 'idServicio', 'nombreServicio');
+
+                // Destruimos instancias anteriores si es que existen (para evitar errores)
+                if (choicesPaciente) choicesPaciente.destroy();
+                if (choicesMedico) choicesMedico.destroy();
+
+                // Inicializamos el buscador para Pacientes
+                choicesPaciente = new Choices(document.getElementById('selectPaciente'), {
+                    searchPlaceholderValue: "Escribe para buscar un paciente...",
+                    removeItemButton: true, // Permite quitar la selección con una 'x'
+                    itemSelectText: 'Seleccionar',
+                });
+
+                // Inicializamos el buscador para Médicos
+                choicesMedico = new Choices(document.getElementById('selectMedico'), {
+                    searchPlaceholderValue: "Escribe para buscar un médico...",
+                    removeItemButton: true,
+                    itemSelectText: 'Seleccionar',
+                });
 
             } catch (error) {
                 console.error("Error al cargar los catálogos:", error);

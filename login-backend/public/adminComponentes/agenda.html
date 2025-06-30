@@ -9,6 +9,8 @@
     <link rel="icon" href="../logo.jpg" type="image/jpeg">
 
     <link rel="stylesheet" href="styleAgenda.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js" defer></script>
 
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
 </head>
@@ -129,7 +131,10 @@
                 </div>
 
                 <div class="dashboard-panel" style="margin-top: 32px;">
-                    <h3>Historial de Citas</h3>
+                    <div class="panel-header">
+                        <h3>Historial de Citas</h3>
+                        <button id="btnAbrirModalCita" class="btn-primary">+ Agregar Cita</button>
+                    </div>
                     <div class="filtros-citas">
                         <input type="text" id="busquedaCita" placeholder="Buscar por paciente, médico o servicio...">
                         <div class="filtro-fecha">
@@ -173,6 +178,61 @@
                         <button class="next-page" disabled>Siguiente &gt;</button>
                     </div>
                 </div>
+        </div>
+
+        <div id="modalAgregarCita" class="modal">
+            <div class="modal-content" style="max-width: 600px;">
+                <span class="close" id="closeAgregarCitaModal">&times;</span>
+                <div class="modal-body">
+                    <h2>Agendar Nueva Cita</h2>
+                    <form id="formAgregarCita">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Fecha de la Cita</label>
+                                <input type="date" name="fecha" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Hora</label>
+                                <input type="time" name="hora" required>
+                            </div>
+                            <div class="form-group full-width">
+                                <label>Paciente</label>
+                                <select name="idPaciente" required>
+                                    <option value="">Cargando pacientes...</option>
+                                </select>
+                            </div>
+                            <div class="form-group full-width">
+                                <label>Médico Asignado</label>
+                                <select name="idMedico" required>
+                                    <option value="">Cargando médicos...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Servicio a Realizar</label>
+                                <select name="idServicio" required>
+                                    <option value="">Cargando servicios...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Sala</label>
+                                <select name="idSala" required>
+                                    <option value="">Cargando salas...</option>
+                                </select>
+                            </div>
+                            <div class="form-group full-width">
+                                <label>Observaciones</label>
+                                <textarea name="observaciones" rows="3"
+                                    placeholder="Síntomas, notas importantes, etc."></textarea>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <button type="submit" class="btn-primary">Agendar Cita</button>
+                            </div>
+                        </div>
+                        <p id="mensaje-cita" class="form-message"></p>
+                    </form>
+                </div>
+            </div>
         </div>
         </main>
     </div>
@@ -243,6 +303,7 @@
             const detailsPanel = document.getElementById('eventDetailsPanel');
             const closePanelBtn = document.getElementById('closeDetailsPanel');
 
+
             const calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
                 locale: 'es',
@@ -274,7 +335,34 @@
             document.getElementById('closeEditarCitaModal').addEventListener('click', () => {
                 document.getElementById('modalEditarCita').style.display = 'none';
             });
-            
+
+            document.getElementById('busquedaCita').addEventListener('input', aplicarFiltrosYCargarTabla);
+            document.getElementById('fechaDesde').addEventListener('change', aplicarFiltrosYCargarTabla);
+            document.getElementById('fechaHasta').addEventListener('change', aplicarFiltrosYCargarTabla);
+
+            // Listener para limpiar filtros
+            document.getElementById('btnLimpiarFiltros').addEventListener('click', () => {
+                document.getElementById('busquedaCita').value = '';
+                document.getElementById('fechaDesde').value = '';
+                document.getElementById('fechaHasta').value = '';
+                aplicarFiltrosYCargarTabla();
+            });
+
+            // Listeners para paginación
+            const paginationCitas = document.getElementById('paginationCitas');
+            paginationCitas.querySelector('.rows-per-page').addEventListener('change', (e) => {
+                rowsPerPageCitas = parseInt(e.target.value);
+                currentPageCitas = 1;
+                renderTablaCitas();
+            });
+            paginationCitas.querySelector('.prev-page').addEventListener('click', () => {
+                if (currentPageCitas > 1) { currentPageCitas--; renderTablaCitas(); }
+            });
+            paginationCitas.querySelector('.next-page').addEventListener('click', () => {
+                const totalPages = Math.ceil(filteredCitas.length / rowsPerPageCitas);
+                if (currentPageCitas < totalPages) { currentPageCitas++; renderTablaCitas(); }
+            });
+
             // Carga inicial de datos
             cargarProximasCitas();
             cargarTodasLasCitas();
@@ -451,38 +539,6 @@
             nextBtn.disabled = currentPageCitas === totalPages || totalPages === 0;
         }
 
-        // --- Event Listeners para la nueva tabla ---
-        document.addEventListener('DOMContentLoaded', () => {
-            // ... tu código existente de FullCalendar y otras funciones ...
-
-            // Listeners para filtros
-            document.getElementById('busquedaCita').addEventListener('input', aplicarFiltrosYCargarTabla);
-            document.getElementById('fechaDesde').addEventListener('change', aplicarFiltrosYCargarTabla);
-            document.getElementById('fechaHasta').addEventListener('change', aplicarFiltrosYCargarTabla);
-
-            // Listener para limpiar filtros
-            document.getElementById('btnLimpiarFiltros').addEventListener('click', () => {
-                document.getElementById('busquedaCita').value = '';
-                document.getElementById('fechaDesde').value = '';
-                document.getElementById('fechaHasta').value = '';
-                aplicarFiltrosYCargarTabla();
-            });
-
-            // Listeners para paginación
-            const paginationCitas = document.getElementById('paginationCitas');
-            paginationCitas.querySelector('.rows-per-page').addEventListener('change', (e) => {
-                rowsPerPageCitas = parseInt(e.target.value);
-                currentPageCitas = 1;
-                renderTablaCitas();
-            });
-            paginationCitas.querySelector('.prev-page').addEventListener('click', () => {
-                if (currentPageCitas > 1) { currentPageCitas--; renderTablaCitas(); }
-            });
-            paginationCitas.querySelector('.next-page').addEventListener('click', () => {
-                const totalPages = Math.ceil(filteredCitas.length / rowsPerPageCitas);
-                if (currentPageCitas < totalPages) { currentPageCitas++; renderTablaCitas(); }
-            });
-        });
 
         async function marcarCitaComo(idConsulta, nuevoEstado) {
             const accion = nuevoEstado === 'realizada' ? 'marcar como realizada' : 'cancelar';
@@ -656,6 +712,131 @@
             }, 3000);
         }
 
+        // --- LÓGICA PARA EL MODAL DE AGREGAR CITA CON BUSCADORES ---
+
+        // Referencias a los elementos del modal
+        const modalCita = document.getElementById('modalAgregarCita');
+        const formCita = document.getElementById('formAgregarCita');
+        const btnAbrirModalCita = document.getElementById('btnAbrirModalCita');
+        const btnCerrarModalCita = document.getElementById('closeAgregarCitaModal');
+        const mensajeCita = document.getElementById('mensaje-cita');
+
+        // Función para llenar un select normal
+        async function llenarSelectNormal(selectElement, url, valueField, textField) {
+            // ... (El resto de esta función se mantiene igual, la usaremos para Sala y Servicio)
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                selectElement.innerHTML = '<option value="">-- Seleccione --</option>';
+                data.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item[valueField];
+                    option.textContent = item[textField];
+                    selectElement.appendChild(option);
+                });
+            } catch (error) {
+                selectElement.innerHTML = '<option value="">Error al cargar</option>';
+            }
+        }
+
+        // NUEVA función para actualizar los buscadores Choices.js
+        async function actualizarChoices(choicesInstance, url, valueField, textField1, textField2) {
+            try {
+                choicesInstance.clearStore(); // Limpia opciones anteriores
+                choicesInstance.setChoices([{ value: '', label: 'Cargando...', disabled: true }]);
+
+                const response = await fetch(url);
+                const data = await response.json();
+
+                const opciones = data.map(item => ({
+                    value: item[valueField],
+                    label: textField2 ? `${item[textField1]} ${item[textField2]}` : item[textField1]
+                }));
+
+                choicesInstance.setChoices(opciones, 'value', 'label', true);
+                choicesInstance.setChoiceByValue(''); // Resetea la selección
+
+            } catch (error) {
+                choicesInstance.setChoices([{ value: '', label: 'Error al cargar datos', disabled: true }]);
+            }
+        }
+
+
+        // Abre el modal y carga todos los datos
+        btnAbrirModalCita.addEventListener('click', () => {
+            formCita.reset();
+            mensajeCita.className = 'form-message';
+            modalCita.style.display = 'flex';
+
+            // ¡AQUÍ ESTÁ LA MAGIA!
+            // Inicializamos los buscadores Choices.js cada vez que se abre el modal.
+            // Esto también soluciona problemas si se abre y cierra varias veces.
+            const choicesPaciente = new Choices(formCita.idPaciente, {
+                searchPlaceholderValue: "Escribe para buscar un paciente...",
+                itemSelectText: 'Seleccionar',
+                removeItemButton: true
+            });
+            const choicesMedico = new Choices(formCita.idMedico, {
+                searchPlaceholderValue: "Escribe para buscar un médico...",
+                itemSelectText: 'Seleccionar',
+                removeItemButton: true
+            });
+
+            // Llenamos los buscadores y los selects normales
+            actualizarChoices(choicesPaciente, '/api/reportes/catalogo-pacientes', 'idPaciente', 'primerNombre', 'primerApellido');
+            actualizarChoices(choicesMedico, '/api/reportes/catalogo-medicos', 'idMedico', 'nombreCompleto');
+            llenarSelectNormal(formCita.idServicio, '/api/agenda/catalogos/servicios', 'idServicio', 'nombreServicio');
+            llenarSelectNormal(formCita.idSala, '/api/agenda/catalogos/salas', 'idSala', 'nombre');
+        });
+
+        // Cierra el modal
+        btnCerrarModalCita.addEventListener('click', () => {
+            modalCita.style.display = 'none';
+        });
+
+        // Maneja el envío del formulario (el código de fetch y la lógica interna no cambian)
+        formCita.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const datos = {
+                fecha: formCita.fecha.value,
+                hora: formCita.hora.value,
+                idPaciente: formCita.idPaciente.value,
+                idMedico: formCita.idMedico.value,
+                idServicio: formCita.idServicio.value,
+                idSala: formCita.idSala.value,
+                observaciones: formCita.observaciones.value,
+                estado: 'pendiente',
+                idRecepcionista: 1 // Asumimos que el admin/recepcionista tiene ID 1, puedes cambiar esto
+            };
+
+            try {
+                const response = await fetch('/api/agendar-cita', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(datos)
+                });
+                const result = await response.json();
+
+                if (result.ok) {
+                    modalCita.style.display = 'none';
+                    mostrarMensajeSistema('✅ Cita agendada correctamente.');
+                    // Recargamos todo para ver los cambios al instante
+                    cargarTodasLasCitas();
+                    const calendarEl = document.getElementById('calendar');
+                    const calendar = FullCalendar.Calendar.getInstance(calendarEl);
+                    if (calendar) {
+                        calendar.refetchEvents();
+                    }
+                } else {
+                    mensajeCita.textContent = result.mensaje || 'Error al agendar la cita.';
+                    mensajeCita.className = 'form-message error';
+                }
+            } catch (error) {
+                mensajeCita.textContent = 'Error de conexión con el servidor.';
+                mensajeCita.className = 'form-message error';
+            }
+        });
     </script>
 </body>
 

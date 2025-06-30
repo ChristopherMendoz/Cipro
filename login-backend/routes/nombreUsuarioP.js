@@ -4,9 +4,9 @@ const sql = require('mssql');
 
 // Configuración de conexión (usaremos variables de entorno si las tienes configuradas)
 const config = {
-    user: process.env.DB_USER || 'cipro_app_user',
-    password: process.env.DB_PASSWORD || '123456789',
-    server: process.env.DB_SERVER || 'DESKTOP-GMBSO0H',
+    user: process.env.DB_USER || 'sa',
+    password: process.env.DB_PASSWORD || '123456',
+    server: process.env.DB_SERVER || 'ACER_Core_i7',
     database: process.env.DB_DATABASE || 'Cipro',
     options: {
         trustServerCertificate: true,

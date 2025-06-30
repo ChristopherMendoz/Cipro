@@ -8,7 +8,7 @@ body {
 
 .hero-servicios {
   height: 50vh;
-  background: url('https://scontent.fmga7-2.fna.fbcdn.net/v/t39.30808-6/499828275_1203552668448979_6702401134202354048_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=yndnLp1vBWwQ7kNvwFIonsc&_nc_oc=AdmAaoUjTiQ4-3cMLTvxNZFXZEm17XE7yAV7sKunDs7Vy6MLC0cTX8QwMnBMlGkUX74&_nc_zt=23&_nc_ht=scontent.fmga7-2.fna&_nc_gid=TuckaYpstlHpFgIAhih4vg&oh=00_AfMJrEjqHEa7fV55SDNBhMXRscWYUJl0R48vljnnc_XcFw&oe=6858E685') center/cover no-repeat;
+  background: url('https://scontent.fmga7-2.fna.fbcdn.net/v/t39.30808-6/499828275_1203552668448979_6702401134202354048_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=GFShXnFjBTMQ7kNvwFtdXuR&_nc_oc=Admh0WXp2VIwGylvXUGNNQsqZY7MhOZmjnyZX9PDZ07DTitIAkaAUUsuCZokslKe-3A&_nc_zt=23&_nc_ht=scontent.fmga7-2.fna&_nc_gid=1uL661Kh3ffCLiTlYCKMgw&oh=00_AfOooewzENIt6GqvTwwCR0-oSKM016uXVuO6nqxlpJLoBQ&oe=6868B885') center/cover no-repeat;
   display: flex;
   align-items: flex-start; /* Cambia de center a flex-start */
   justify-content: center;

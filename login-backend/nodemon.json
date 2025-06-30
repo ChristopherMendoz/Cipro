@@ -1,0 +1,15 @@
+{
+  "verbose": true,
+  "ignore": [
+    "node_modules/",
+    "public/",
+    "sessions/",
+    "*.log",
+    ".git/"
+  ],
+  "watch": [
+    "routes/",
+    "*.js"
+  ],
+  "ext": "js,json"
+}
