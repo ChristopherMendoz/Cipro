@@ -4,6 +4,7 @@ const router = express.Router();
 const sql = require('mssql');
 const config = require('../config.js'); // Asegúrate que la ruta a tu config sea correcta
 
+
 // Endpoint para las tarjetas de estadísticas (KPIs)
 router.get('/stats', async (req, res) => {
     try {

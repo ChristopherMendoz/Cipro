@@ -1,7 +1,7 @@
 module.exports = {
-    user: 'cipro_app_user',
-    password: '123456789',
-    server: 'DESKTOP-GMBSO0H',
+    user: 'sa',
+    password: '123456',
+    server: 'ACER_Core_i7',
     database: 'Cipro',
     options: {
         trustServerCertificate: true,

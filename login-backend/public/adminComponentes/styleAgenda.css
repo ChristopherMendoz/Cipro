@@ -245,3 +245,43 @@
     cursor: default;
     background-color: transparent;
 }
+
+/* --- CORRECCIÓN PARA EL LAYOUT DEL MODAL DE AGREGAR CITA --- */
+
+/* 1. Convierte el contenedor principal del modal en un contenedor flexible */
+#modalAgregarCita .modal-content {
+    display: flex; /* Activa Flexbox */
+    flex-direction: column; /* Apila los elementos (título, cuerpo) verticalmente */
+    max-height: 90vh; /* Limita la altura máxima al 90% de la altura de la pantalla */
+    overflow: hidden; /* Oculta cualquier cosa que se salga de las esquinas redondeadas */
+}
+
+/* 2. Hace que el cuerpo del modal (el formulario) sea el área que crece y se desplaza */
+#modalAgregarCita .modal-body {
+    flex-grow: 1; /* Permite que esta área ocupe todo el espacio vertical disponible */
+    overflow-y: auto; /* IMPORTANTE: Si el contenido es muy alto, crea una barra de scroll vertical */
+    padding: 15px; /* Añade un poco de espacio interno para que no se pegue a los bordes */
+}
+
+/* 3. Asegura que la grilla del formulario se comporte correctamente */
+#modalAgregarCita .form-grid {
+    display: grid;
+    gap: 15px; /* Espacio entre los campos del formulario */
+}
+
+/* --- CORRECCIÓN PARA EL LAYOUT DEL MODAL DE EDITAR CITA --- */
+
+/* 1. Convierte el contenedor principal del modal en un contenedor flexible */
+#modalEditarCita .modal-content {
+    display: flex;          /* Activa Flexbox */
+    flex-direction: column; /* Apila los elementos verticalmente */
+    max-height: 90vh;       /* Limita la altura máxima al 90% de la pantalla */
+    overflow: hidden;       /* Oculta lo que se salga de las esquinas redondeadas */
+}
+
+/* 2. Hace que el cuerpo del modal (el formulario) sea el área que crece y se desplaza */
+#modalEditarCita .modal-body {
+    flex-grow: 1;         /* Permite que esta área ocupe el espacio vertical disponible */
+    overflow-y: auto;     /* IMPORTANTE: Si el contenido es muy alto, crea una barra de scroll */
+    padding: 15px;        /* Añade un poco de espacio interno para que no se pegue a los bordes */
+}

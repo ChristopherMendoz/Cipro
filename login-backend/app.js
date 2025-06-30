@@ -3,7 +3,7 @@
 //revisar en el firewall y liberar el puerto 1433 agregando una accion mas
 //revisar si la bd esta dando ping con un ping en cmd 
 require('dotenv').config();
-
+const sql = require('mssql');
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
@@ -66,6 +66,31 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 24 // 1 día de duración de la cookie de sesión
     }
 }));
+
+const dbConfig = {
+    user: process.env.DB_USER || 'sa',
+    password: process.env.DB_PASSWORD || '123456',
+    server: process.env.DB_SERVER || 'ACER_Core_i7',
+    database: process.env.DB_DATABASE || 'Cipro',
+    options: {
+        trustServerCertificate: true,
+        encrypt: false
+    }
+};
+
+// Función para iniciar la conexión global
+async function iniciarConexionGlobal() {
+    try {
+        console.log("Intentando establecer conexión global con la base de datos...");
+        await sql.connect(dbConfig);
+        console.log("¡Conexión global a la base de datos establecida exitosamente!");
+    } catch (error) {
+        console.error("Error fatal al conectar con la base de datos:", error);
+        // Si la conexión falla al inicio, cerramos el proceso para evitar más errores.
+        process.exit(1);
+    }
+}
+iniciarConexionGlobal();
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public/Inicio'))); 
