@@ -295,6 +295,11 @@ WHERE idServicio = 8;
 
 SELECT COUNT(*) FROM sys.dm_exec_connections;
 
+---------------------------------------------------------------------------------------------- cambios 30/06
+ALTER TABLE UsuarioSistema
+ADD resetToken NVARCHAR(255),
+    resetTokenExpires DATETIME;
+
 
 INSERT INTO Roles (idRol, nombreRol)
 VALUES (1, 'Cliente'), (2, 'Personal'), (3, 'Admin');

@@ -19,6 +19,7 @@ const agendaRoutes = require('./routes/agenda');
 const reportesRoutes = require('./routes/reportes');
 const serviciosARouter = require('./routes/serviciosA');
 const salasRoutes = require('./routes/salas');
+const passwordResetRoutes = require('./routes/password-reset');
 
 
 
@@ -84,7 +85,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public/Inicio'))); 
 
 
-
+app.use('/', passwordResetRoutes);
 app.use('/api/salas', salasRoutes);
 app.use('/api/serviciosA', serviciosARouter);
 app.use('/api/reportes', reportesRoutes);

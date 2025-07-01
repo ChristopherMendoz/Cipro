@@ -1218,3 +1218,26 @@ section {
     z-index: 10000; /* Un número más alto que el z-index de los otros modales */
 }
 
+.forgot-password-link {
+    font-size: 0.85em;
+    color: var(--primary-color);
+    text-decoration: none;
+    align-self: flex-end; /* Lo alinea a la derecha */
+    margin-right: 5%;
+    margin-top: -5px;
+    margin-bottom: 10px;
+}
+.modal-instructions {
+    font-size: 0.9em;
+    text-align: center;
+    color: #555;
+    margin-bottom: 15px;
+}
+.form-message {
+    margin-top: 15px;
+    font-weight: 500;
+    text-align: center;
+}
+.form-message.success { color: #28a745; }
+.form-message.error { color: #dc3545; }
+.form-message.info { color: #17a2b8; }

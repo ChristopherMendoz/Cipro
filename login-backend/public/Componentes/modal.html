@@ -7,6 +7,7 @@
       <h2>Iniciar Sesión</h2>
       <input type="text" name="username" placeholder="Usuario" required />
       <input type="password" name="contrasena" placeholder="Contraseña" required />
+      <a href="#" onclick="mostrarModalRecuperar(event)" class="forgot-password-link">¿Olvidé mi contraseña?</a>
       <button type="submit">Entrar</button>
       <p id="mensajeError" class="error-msg"></p>
       <p class="registro">¿No tienes cuenta? <a href="#" onclick="abrirRegistro(event)">Regístrate aquí</a></p>
@@ -80,6 +81,21 @@
     <h2 id="terminosTitulo"></h2>
     <div id="terminosContenido" class="terminos-scroll-content"></div>
     <button onclick="cerrarTerminos()" class="btn-terminos">CONFIRMAR</button>
+  </div>
+</div>
+
+<div id="modalRecuperar" class="modal">
+  <div class="modal-content animate-in login-size">
+    <span class="close" onclick="cerrarModalRecuperar()">&times;</span>
+    <form id="recuperarForm" class="login-form form-panel">
+      <img src="../logo.jpg" alt="Logo" class="modal-logo" />
+      <h2>Recuperar Contraseña</h2>
+      <p class="modal-instructions">Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu
+        contraseña.</p>
+      <input type="email" name="correoRecuperar" placeholder="Tu correo electrónico" required />
+      <button type="submit">Enviar Enlace</button>
+      <p id="mensajeRecuperar" class="error-msg"></p>
+    </form>
   </div>
 </div>
 
@@ -296,5 +312,70 @@
       }, 4000);
     }
   });
+
+  // Funciones para el nuevo modal de recuperación
+  function mostrarModalRecuperar(event) {
+    event.preventDefault();
+    cerrarModalLogin(); // Cierra el modal de login
+    document.getElementById('modalRecuperar').style.display = 'flex';
+  }
+
+  function cerrarModalRecuperar() {
+    document.getElementById('modalRecuperar').style.display = 'none';
+    document.getElementById('recuperarForm').reset();
+    document.getElementById('mensajeRecuperar').textContent = '';
+    document.getElementById('mensajeRecuperar').className = 'form-message';
+  }
+
+  // Listener para el formulario de recuperación
+  document.getElementById('recuperarForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const correo = e.target.correoRecuperar.value;
+    const mensajeEl = document.getElementById('mensajeRecuperar');
+
+    // Ocultamos cualquier mensaje previo
+    mensajeEl.classList.remove('visible');
+    // Revertimos el estilo en caso de que fuera de éxito
+    mensajeEl.style.backgroundColor = '';
+    mensajeEl.style.color = '';
+
+    mensajeEl.textContent = 'Enviando...';
+    mensajeEl.style.color = '#17a2b8'; // Color informativo
+    mensajeEl.classList.add('visible');
+
+    try {
+      const res = await fetch('/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ correo: correo })
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        mensajeEl.textContent = data.mensaje;
+        // Aplicamos estilo de éxito directamente
+        mensajeEl.style.backgroundColor = '#d4edda';
+        mensajeEl.style.borderColor = '#c3e6cb';
+        mensajeEl.style.color = '#155724';
+        mensajeEl.classList.add('visible');
+      } else {
+        mensajeEl.textContent = data.mensaje;
+        // Dejamos que la clase .error-msg se encargue del estilo de error
+        mensajeEl.classList.add('visible');
+      }
+    } catch (err) {
+      mensajeEl.textContent = 'Error de conexión con el servidor.';
+      // Dejamos que la clase .error-msg se encargue del estilo de error
+      mensajeEl.classList.add('visible');
+    }
+  });
+
+  // Asegúrate de que el clic fuera del modal también lo cierre
+  window.onclick = function (e) {
+    if (e.target === document.getElementById("modalLogin")) cerrarModalLogin();
+    if (e.target === document.getElementById("modalRegistro")) cerrarModalRegistro();
+    if (e.target === document.getElementById("modalTerminos")) cerrarTerminos();
+    if (e.target === document.getElementById("modalRecuperar")) cerrarModalRecuperar(); // <-- Añade esta línea
+  };
 
 </script>
