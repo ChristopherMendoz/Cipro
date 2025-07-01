@@ -96,27 +96,29 @@
                                 <option value="">Cargando…</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label for="selectPaciente">Paciente:</label>
+                        <div class="form-group full-width">
+                            <label for="selectPaciente">Paciente (puede escribir para buscar):</label>
                             <select id="selectPaciente" name="idPaciente" required>
                                 <option value="">Cargando…</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label for="selectMedico">Médico:</label>
-                            <select id="selectMedico" name="idMedico" required>
+
+                        <div class="form-group full-width">
+                            <label for="nombreMedicoLogueado">Médico:</label>
+                            <input type="text" id="nombreMedicoLogueado" disabled value="Cargando...">
+                            <input type="hidden" id="idMedicoLogueado" name="idMedico">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="selectRecepcionista">Recepcionista:</label>
+                            <select id="selectRecepcionista" name="idRecepcionista" required>
                                 <option value="">Cargando…</option>
                             </select>
                         </div>
+
                         <div class="form-group">
                             <label for="selectSala">Sala:</label>
                             <select id="selectSala" name="idSala" required>
-                                <option value="">Cargando…</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="selectRecepcionista">Recepcionista:</label>
-                            <select id="selectRecepcionista" name="idRecepcionista" required>
                                 <option value="">Cargando…</option>
                             </select>
                         </div>
@@ -132,6 +134,7 @@
                             <label for="observaciones">Observaciones:</label>
                             <textarea id="observaciones" name="observaciones"></textarea>
                         </div>
+                        <p id="mensajeConsulta" class="mensaje-formulario"></p>
                         <div class="form-group full-width">
                             <button type="submit">Agregar Consulta</button>
                         </div>
@@ -406,6 +409,9 @@
         });
 
 
+        const hoy = new Date().toISOString().split('T')[0];
+        document.getElementById('fecha').setAttribute('min', hoy);
+
         // =======================================================
         // == PARTE 3: DEFINICIÓN DE TODAS LAS FUNCIONES ==
         // =======================================================
@@ -445,7 +451,14 @@
                 }
                 const dataNombre = await resNombre.json();
                 if (dataNombre.ok) {
+                    // Llenamos el saludo de la barra lateral
                     nombreUsuarioEl.textContent = `👨‍⚕️ ${dataNombre.nombreUsuario}`;
+
+                    // --- NUEVO: Llenamos los campos del formulario ---
+                    document.getElementById('nombreMedicoLogueado').value = dataNombre.nombreUsuario;
+                    document.getElementById('idMedicoLogueado').value = dataNombre.idMedico;
+                    // -------------------------------------------------
+
                     mostrarSeccion('inicioPanelMedico');
                 } else {
                     nombreUsuarioEl.textContent = "Usuario no encontrado";
@@ -648,7 +661,7 @@
 
                 // Destruimos instancias anteriores si es que existen (para evitar errores)
                 if (choicesPaciente) choicesPaciente.destroy();
-                if (choicesMedico) choicesMedico.destroy();
+
 
                 // Inicializamos el buscador para Pacientes
                 choicesPaciente = new Choices(document.getElementById('selectPaciente'), {
@@ -657,12 +670,6 @@
                     itemSelectText: 'Seleccionar',
                 });
 
-                // Inicializamos el buscador para Médicos
-                choicesMedico = new Choices(document.getElementById('selectMedico'), {
-                    searchPlaceholderValue: "Escribe para buscar un médico...",
-                    removeItemButton: true,
-                    itemSelectText: 'Seleccionar',
-                });
 
             } catch (error) {
                 console.error("Error al cargar los catálogos:", error);
@@ -685,6 +692,7 @@
         document.getElementById('formAgregarConsulta').addEventListener('submit', async (e) => {
             e.preventDefault();
             const form = e.target;
+
             const datos = {
                 fecha: form.fecha.value,
                 hora: form.hora.value,
@@ -698,23 +706,59 @@
             };
 
             const mensajeDiv = document.getElementById('mensajeConsulta');
+
+            const fechaSeleccionada = new Date(form.fecha.value + 'T' + form.hora.value);
+            if (fechaSeleccionada < new Date()) {
+                mensajeDiv.className = 'mensaje-formulario error'; // Usa la clase de error
+                mensajeDiv.textContent = '❌ No se puede agendar una consulta en una fecha u hora pasada.';
+
+                // Limpiamos el mensaje después de 4 segundos
+                setTimeout(() => {
+                    mensajeDiv.textContent = '';
+                    mensajeDiv.className = 'mensaje-formulario';
+                }, 4000);
+                return; // Detenemos el envío
+            }
+
+            
+            // Función para limpiar el mensaje después de un tiempo
+            const limpiarMensaje = () => {
+                setTimeout(() => {
+                    mensajeDiv.textContent = '';
+                    // Quita las clases 'exito' y 'error' para ocultar el fondo y los bordes
+                    mensajeDiv.className = 'mensaje-formulario';
+                }, 4000); // El mensaje desaparecerá después de 4 segundos
+            };
+
             try {
                 const res = await fetch('/agregar-consulta', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(datos),
-                    credentials: 'include' // No olvidar las credenciales!
+                    credentials: 'include'
                 });
                 const data = await res.json();
-                mensajeDiv.style.color = data.ok ? 'green' : 'red';
-                mensajeDiv.textContent = data.mensaje;
+
+                // Limpiamos clases de un uso anterior
+                mensajeDiv.classList.remove('exito', 'error');
+
                 if (data.ok) {
+                    mensajeDiv.classList.add('exito'); // ✅ Añade la clase de éxito
+                    mensajeDiv.textContent = data.mensaje;
                     form.reset();
-                    cargarConsultas(); // refrescar tabla
+                    cargarConsultas();
+                } else {
+                    mensajeDiv.classList.add('error'); // ❌ Añade la clase de error
+                    mensajeDiv.textContent = data.mensaje;
                 }
+
+                limpiarMensaje(); // Llama a la función para que el mensaje desaparezca
+
             } catch (err) {
-                mensajeDiv.style.color = 'red';
-                mensajeDiv.textContent = 'Error de conexión al agregar consulta.';
+                mensajeDiv.classList.remove('exito', 'error');
+                mensajeDiv.classList.add('error');
+                mensajeDiv.textContent = 'Error de conexión. Inténtelo de nuevo.';
+                limpiarMensaje(); // También hacemos que desaparezca en caso de error
             }
         });
 

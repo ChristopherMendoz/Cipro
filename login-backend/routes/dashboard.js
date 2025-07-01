@@ -2,14 +2,14 @@
 const express = require('express');
 const router = express.Router();
 const sql = require('mssql');
-const config = require('../config.js'); // Asegúrate que la ruta a tu config sea correcta
+const { pool, poolConnect } = require('./dashboard-db.js');
 
 
 // Endpoint para las tarjetas de estadísticas (KPIs)
 router.get('/stats', async (req, res) => {
     try {
-        await sql.connect(config);
-        const pool = new sql.Request();
+        await poolConnect;
+        const request = pool.request();
 
         // Ejecutamos todas las consultas de conteo en paralelo para más eficiencia
         const [
@@ -51,14 +51,14 @@ router.get('/stats', async (req, res) => {
 
 router.get('/servicios-distribucion', async (req, res) => {
     try {
-        await sql.connect(config);
-        const result = await sql.query`
+        await poolConnect;
+        const result = await pool.request().query(`
             SELECT TOP 7 S.nombreServicio, COUNT(C.idConsulta) as total
             FROM Consulta C
             JOIN Servicios S ON C.idServicio = S.idServicio
             GROUP BY S.nombreServicio
             ORDER BY total DESC
-        `;
+        `);
         res.json({ ok: true, data: result.recordset });
     } catch (error) {
         console.error("Error al obtener distribución de servicios:", error);
@@ -69,17 +69,15 @@ router.get('/servicios-distribucion', async (req, res) => {
 // Endpoint para la actividad reciente (mostraremos los últimos pacientes agregados)
 router.get('/actividad-reciente', async (req, res) => {
     try {
-        await sql.connect(config);
-
-        // NUEVA CONSULTA: Usamos DATEDIFF para calcular la diferencia en segundos
-        const result = await sql.query`
+        await poolConnect;
+        const result = await pool.request().query(`
             SELECT TOP 10
                 P.primerNombre,
                 P.primerApellido,
                 DATEDIFF(second, P.fechaRegistro, GETDATE()) as segundosTranscurridos
             FROM Paciente P
             WHERE P.fechaRegistro IS NOT NULL
-            ORDER BY P.fechaRegistro DESC`;
+            ORDER BY P.fechaRegistro DESC`);
 
         // Enviamos los datos directamente. Cada item tendrá la propiedad "segundosTranscurridos".
         res.json({ ok: true, data: result.recordset });
@@ -92,8 +90,8 @@ router.get('/actividad-reciente', async (req, res) => {
 
 router.get('/citas-semana', async (req, res) => {
     try {
-        await sql.connect(config);
-        const result = await sql.query`
+        await poolConnect;
+        const result = await pool.request().query(`
             SET LANGUAGE Spanish;
             SELECT 
                 DATENAME(weekday, fecha) as dia,
@@ -102,7 +100,7 @@ router.get('/citas-semana', async (req, res) => {
             WHERE fecha >= DATEADD(day, -6, GETDATE()) AND fecha <= GETDATE()
             GROUP BY DATENAME(weekday, fecha), CAST(fecha AS DATE)
             ORDER BY CAST(fecha AS DATE) ASC;
-        `;
+        `);
         res.json({ ok: true, data: result.recordset });
     } catch (error) {
         console.error("Error al obtener datos para el gráfico de citas:", error);
@@ -113,8 +111,8 @@ router.get('/citas-semana', async (req, res) => {
 
 router.get('/proximas-citas', async (req, res) => {
     try {
-        await sql.connect(config);
-        const result = await sql.query`
+        await poolConnect;
+        const result = await pool.request().query(`
             SELECT TOP 5
                 C.idConsulta, -- ¡LÍNEA CLAVE AÑADIDA!
                 CONVERT(varchar(5), C.hora, 108) as hora,
@@ -127,7 +125,7 @@ router.get('/proximas-citas', async (req, res) => {
                 C.estado = 'pendiente' AND
                 CAST(C.fecha AS DATE) = CAST(GETDATE() AS DATE)
             ORDER BY C.hora ASC;
-        `;
+        `);
         res.json({ ok: true, data: result.recordset });
     } catch (error) {
         console.error("Error al obtener las próximas citas:", error);
@@ -137,8 +135,8 @@ router.get('/proximas-citas', async (req, res) => {
 
 router.get('/eventos-calendario', async (req, res) => {
     try {
-        await sql.connect(config);
-        const result = await sql.query`
+        await poolConnect;
+        const result = await pool.request().query(`
             SELECT 
                 C.idConsulta,
                 S.nombreServicio as title,
@@ -152,7 +150,7 @@ router.get('/eventos-calendario', async (req, res) => {
                 END as color
             FROM Consulta C
             JOIN Servicios S ON C.idServicio = S.idServicio
-        `;
+        `);
         res.json(result.recordset);
     } catch (error) {
         console.error("Error al obtener eventos para el calendario:", error);

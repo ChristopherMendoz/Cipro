@@ -1,16 +1,25 @@
 const express = require('express');
 const router = express.Router();
 const sql = require('mssql');
-const config = require('../config.js');
+// Asegúrate de que la ruta a tu config sea correcta
+const config = require('../config.js'); 
 
 router.post('/', async (req, res) => {
-    // CAMBIO 1: Cambiar tipoEstudio por idServicio
     const { fecha, hora, estado, idServicio, observaciones, idPaciente, idMedico, idSala, idRecepcionista } = req.body;
+
+    // --- VALIDACIÓN DE FECHA EN EL SERVIDOR ---
+    const fechaDeConsulta = new Date(`${fecha}T${hora}`);
+    if (fechaDeConsulta < new Date()) {
+        return res.status(400).json({ 
+            ok: false, 
+            mensaje: 'Error de validación: No se pueden crear consultas en fechas pasadas.' 
+        });
+    }
+    // --- FIN DE LA VALIDACIÓN ---
 
     try {
         await sql.connect(config);
 
-        // CAMBIO 2: Actualizar la consulta INSERT
         const result = await sql.query`
             INSERT INTO Consulta 
             (fecha, hora, estado, idServicio, observaciones, idPaciente, idMedico, idSala, idRecepcionista)
@@ -21,7 +30,7 @@ router.post('/', async (req, res) => {
         res.json({ ok: true, mensaje: 'Consulta agregada correctamente' });
     } catch (error) {
         console.error('Error al agregar consulta:', error);
-        res.status(500).json({ ok: false, mensaje: 'Error al agregar consulta' });
+        res.status(500).json({ ok: false, mensaje: 'Error del servidor al agregar la consulta' });
     }
 });
 

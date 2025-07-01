@@ -289,6 +289,13 @@ UPDATE Consulta
 SET hora = CAST('19:30:00' AS TIME)
 WHERE idConsulta = 3;
 
+
+DELETE FROM Consulta 
+WHERE idServicio = 8;
+
+SELECT COUNT(*) FROM sys.dm_exec_connections;
+
+
 INSERT INTO Roles (idRol, nombreRol)
 VALUES (1, 'Cliente'), (2, 'Personal'), (3, 'Admin');
 GO

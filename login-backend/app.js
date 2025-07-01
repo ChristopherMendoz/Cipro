@@ -79,18 +79,6 @@ const dbConfig = {
 };
 
 // Función para iniciar la conexión global
-async function iniciarConexionGlobal() {
-    try {
-        console.log("Intentando establecer conexión global con la base de datos...");
-        await sql.connect(dbConfig);
-        console.log("¡Conexión global a la base de datos establecida exitosamente!");
-    } catch (error) {
-        console.error("Error fatal al conectar con la base de datos:", error);
-        // Si la conexión falla al inicio, cerramos el proceso para evitar más errores.
-        process.exit(1);
-    }
-}
-iniciarConexionGlobal();
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public/Inicio'))); 

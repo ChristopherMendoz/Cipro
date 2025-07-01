@@ -298,6 +298,8 @@
     </div>
 
     <script>
+        let choicesPaciente = null;
+        let choicesMedico = null;
         document.addEventListener('DOMContentLoaded', function () {
             const calendarEl = document.getElementById('calendar');
             const detailsPanel = document.getElementById('eventDetailsPanel');
@@ -768,15 +770,22 @@
             mensajeCita.className = 'form-message';
             modalCita.style.display = 'flex';
 
+            if (choicesPaciente) {
+                choicesPaciente.destroy();
+            }
+            if (choicesMedico) {
+                choicesMedico.destroy();
+            }
+
             // ¡AQUÍ ESTÁ LA MAGIA!
             // Inicializamos los buscadores Choices.js cada vez que se abre el modal.
             // Esto también soluciona problemas si se abre y cierra varias veces.
-            const choicesPaciente = new Choices(formCita.idPaciente, {
+            choicesPaciente = new Choices(formCita.idPaciente, {
                 searchPlaceholderValue: "Escribe para buscar un paciente...",
                 itemSelectText: 'Seleccionar',
                 removeItemButton: true
             });
-            const choicesMedico = new Choices(formCita.idMedico, {
+            choicesMedico = new Choices(formCita.idMedico, {
                 searchPlaceholderValue: "Escribe para buscar un médico...",
                 itemSelectText: 'Seleccionar',
                 removeItemButton: true

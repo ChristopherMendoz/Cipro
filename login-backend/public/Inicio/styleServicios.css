@@ -886,5 +886,83 @@ footer {
     overflow: hidden;
 }
 
+/* --- ESTILOS PARA CHECKBOX Y MODAL DE TÉRMINOS --- */
+
+.form-group-checkbox {
+    display: flex;
+    align-items: flex-start; /* Alinea el check al inicio del texto */
+    gap: 10px;
+    width: 90%;
+    text-align: left;
+    margin: 5px 0;
+}
+
+.form-group-checkbox input[type="checkbox"] {
+    margin-top: 4px; /* Ajuste vertical del checkbox */
+    width: auto;
+    flex-shrink: 0;
+}
+
+.form-group-checkbox label {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.5;
+}
+
+.form-group-checkbox label a {
+    color: #007BFF;
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+/* Estilos para el nuevo modal de términos */
+.modal-content-terminos {
+    background: #fff;
+    padding: 25px 35px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 550px; /* Un poco más ancho para leer */
+    text-align: center;
+    position: relative;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
+
+.close-terminos {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    color: #999;
+    cursor: pointer;
+}
+
+#terminosTitulo {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.terminos-scroll-content {
+    height: 300px; /* Altura fija para el contenido */
+    overflow-y: auto; /* Scroll vertical si el texto es muy largo */
+    text-align: left;
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    background: #f9f9f9;
+    line-height: 1.6;
+    color: #444;
+}
+
+.btn-terminos {
+    margin-top: 20px;
+    background: #007BFF;
+    color: white;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
 
 

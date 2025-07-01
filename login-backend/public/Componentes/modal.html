@@ -35,12 +35,37 @@
       </select>
       <input type="text" name="direccion" placeholder="Dirección" required>
       <input type="text" name="telefono" placeholder="Teléfono" required>
-      <input type="text" name="tipoSangre" placeholder="Tipo de Sangre" required>
+      <label for="tipoSangre">Tipo de Sangre</label>
+      <select name="tipoSangre" id="tipoSangre" required>
+        <option value="">-- Seleccione su tipo --</option>
+        <option value="A+">A+</option>
+        <option value="A-">A-</option>
+        <option value="B+">B+</option>
+        <option value="B-">B-</option>
+        <option value="AB+">AB+</option>
+        <option value="AB-">AB-</option>
+        <option value="O+">O+</option>
+        <option value="O-">O-</option>
+      </select>
       <input type="email" name="correo" placeholder="Correo Electrónico" required />
       <input type="text" name="nombreUsuario" placeholder="Nombre de Usuario" required />
       <div class="password-container">
         <input type="password" name="contraseña" id="password" placeholder="Contraseña" required />
         <span class="toggle-password" onclick="togglePassword()">👁️</span>
+      </div>
+      <div class="form-group-checkbox">
+        <input type="checkbox" id="aceptoTerminos" name="aceptoTerminos">
+        <label for="aceptoTerminos">
+          Acepto los <a href="#" onclick="mostrarTerminos('terminos', event)">Términos y condiciones</a> y declaro
+          conocer la <a href="#" onclick="mostrarTerminos('privacidad', event)">Protección de Privacidad</a>.
+        </label>
+      </div>
+      <div class="form-group-checkbox">
+        <input type="checkbox" id="aceptoPromociones" name="aceptoPromociones">
+        <label for="aceptoPromociones">
+          Doy mi consentimiento para <a href="#" onclick="mostrarTerminos('adicionales', event)">usos adicionales</a>,
+          como disfrutar de beneficios y promociones.
+        </label>
       </div>
       <button type="submit">Registrar</button>
       <p id="mensajeErrorRegistro" class="error-msg"></p>
@@ -49,7 +74,32 @@
   </div>
 </div>
 
+<div id="modalTerminos" class="modal">
+  <div class="modal-content-terminos">
+    <span class="close-terminos" onclick="cerrarTerminos()">&times;</span>
+    <h2 id="terminosTitulo"></h2>
+    <div id="terminosContenido" class="terminos-scroll-content"></div>
+    <button onclick="cerrarTerminos()" class="btn-terminos">CONFIRMAR</button>
+  </div>
+</div>
+
 <script>
+
+  // Objeto con los textos legales para mostrar en el modal
+  const textosLegales = {
+    terminos: {
+      titulo: "Términos y Condiciones de Registro",
+      contenido: `En Clínica Cipro nos preocupamos por la protección y privacidad de los datos personales de nuestros usuarios. Por ello, garantizamos la absoluta confidencialidad de los mismos y empleamos altos estándares de seguridad conforme a lo establecido en la <strong>Ley N° 787, Ley de Protección de los Datos Personales de Nicaragua</strong>, y su normativa de desarrollo.`
+    },
+    privacidad: {
+      titulo: "Política de Protección de Privacidad",
+      contenido: `Su privacidad es importante. La información personal recopilada será utilizada para gestionar su registro, agendar citas y comunicarnos con usted sobre sus servicios. No compartiremos sus datos con terceros sin su consentimiento explícito, salvo obligación legal.`
+    },
+    adicionales: {
+      titulo: "Consentimiento para Usos Adicionales",
+      contenido: `Al marcar esta opción, usted autoriza a Clínica Cipro a utilizar su información de contacto (correo electrónico y teléfono) para enviarle información sobre nuevos servicios, beneficios, promociones y descuentos especiales. Puede revocar este consentimiento en cualquier momento.`
+    }
+  };
   function abrirModal() {
     const modal = document.getElementById('modalLogin');
     const modalContent = modal.querySelector('.modal-content');
@@ -89,10 +139,29 @@
     mensaje.classList.remove("visible");
   }
 
+  function mostrarTerminos(tipo, event) {
+    event.preventDefault(); // Evita que el link '#' recargue la página
+    const modal = document.getElementById('modalTerminos');
+    const tituloEl = document.getElementById('terminosTitulo');
+    const contenidoEl = document.getElementById('terminosContenido');
+
+    if (textosLegales[tipo]) {
+      tituloEl.textContent = textosLegales[tipo].titulo;
+      contenidoEl.innerHTML = `<p>${textosLegales[tipo].contenido}</p>`;
+      modal.style.display = 'flex';
+    }
+  }
+
+  function cerrarTerminos() {
+    document.getElementById('modalTerminos').style.display = 'none';
+  }
+
   // Cerrar modal al hacer click fuera del contenido
   window.onclick = function (e) {
     if (e.target === document.getElementById("modalLogin")) cerrarModalLogin();
     if (e.target === document.getElementById("modalRegistro")) cerrarModalRegistro();
+    if (e.target === document.getElementById("modalTerminos")) cerrarTerminos();
+
   };
 
   document.getElementById("loginForm").addEventListener("submit", async function (event) {
@@ -154,6 +223,7 @@
   document.getElementById("registroForm").addEventListener("submit", async function (event) {
     event.preventDefault();
 
+
     const form = event.target;
     const datos = {
       primerNombre: form.primerNombre.value.trim(),
@@ -171,10 +241,16 @@
     };
 
     const mensaje = document.getElementById("mensajeErrorRegistro");
-
+    const terminosCheckbox = document.getElementById('aceptoTerminos');
     const soloLetras = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
     const passwordSegura = /^(?=.*[a-zA-Z])(?=.*\d).{5,}$/;
 
+
+    if (!terminosCheckbox.checked) {
+      mensaje.style.color = "#cc0000";
+      mostrarMensaje("Debes aceptar los Términos y Condiciones para continuar.");
+      return; // Detiene el envío del formulario
+    }
     if (!soloLetras.test(datos.primerNombre)) {
       mensaje.style.color = "#cc0000";
       return mostrarMensaje("El nombre solo debe contener letras.");

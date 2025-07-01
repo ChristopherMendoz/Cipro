@@ -29,13 +29,25 @@ router.use((req, res, next) => {
 
 // Obtener todas las consultas para el médico logueado
 router.get('/', async (req, res) => {
-    // Recupera el idMedico de la sesión
     const idMedicoLogueado = req.session.idMedico;
     console.log(`Obteniendo consultas para el Médico ID: ${idMedicoLogueado}`);
 
     try {
         await sql.connect(config);
 
+        // ===== PASO 1: ACTUALIZAR ESTADOS DE CONSULTAS PASADAS =====
+        // Cambia a 'cancelada' todas las consultas 'pendientes' cuya fecha sea anterior a hoy.
+        const updateResult = await sql.query`
+            UPDATE Consulta
+            SET estado = 'cancelada'
+            WHERE idMedico = ${idMedicoLogueado}
+              AND estado = 'pendiente'
+              AND fecha < GETDATE() 
+        `;
+        console.log(`${updateResult.rowsAffected[0]} consultas pasadas fueron actualizadas a 'cancelada'.`);
+        // =============================================================
+
+        // ===== PASO 2: OBTENER LA LISTA DE CONSULTAS YA ACTUALIZADA =====
         const result = await sql.query`
             SELECT 
                 c.idConsulta, p.cedula,
@@ -55,8 +67,9 @@ router.get('/', async (req, res) => {
             INNER JOIN Recepcionista r ON c.idRecepcionista = r.idRecepcionista
             INNER JOIN Servicios serv ON c.idServicio = serv.idServicio
             WHERE c.idMedico = ${idMedicoLogueado}
-            ORDER BY c.idConsulta DESC
+            ORDER BY c.fecha DESC, c.hora DESC
         `;
+        // =================================================================
 
         const consultas = result.recordset.map(c => {
             let hora = c.hora instanceof Date ? c.hora.toTimeString().substring(0, 5) : c.hora;
@@ -66,14 +79,15 @@ router.get('/', async (req, res) => {
         res.json({ ok: true, consultas });
 
     } catch (error) {
-        console.error('Error al obtener consultas para el médico logueado:', error);
-        res.status(500).json({ ok: false, mensaje: 'Error al obtener consultas para el médico logueado' });
+        console.error('Error al obtener consultas para el médico:', error);
+        res.status(500).json({ ok: false, mensaje: 'Error al obtener las consultas' });
     }
 });
 
+
 router.get('/agenda', async (req, res) => {
     const idMedicoLogueado = req.session.idMedico;
-    
+
     try {
         await sql.connect(config);
         const result = await sql.query`
